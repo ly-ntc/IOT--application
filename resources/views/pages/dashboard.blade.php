@@ -1,184 +1,172 @@
 @extends('layouts.app')
-<style>
-    .col {
-        padding: 20px;
-        color: white;
-        text-align: center;
-        font-size: 20px;
-    }
 
-    /* Gradient for Temperature */
-    .bg-temperature {
-        background: linear-gradient(90deg, #e0cbc6, #feb47b);
-        /* Warm tones representing temperature */
-    }
-
-    /* Gradient for Humidity */
-    .bg-humidity {
-        background: linear-gradient(90deg, #9cb4b9, #51e1eb);
-        /* Cool tones representing humidity */
-    }
-
-    /* Gradient for Light */
-    .bg-light {
-        background: linear-gradient(90deg, #cfd5a4, #ffd200);
-        /* Bright tones representing light */
-    }
-
-    .circle {
-        width: 100px;
-        height: 100px;
-        border-radius: 50%;
-        background-color: rgba(255, 255, 255, 0.2);
-        /* Semi-transparent white */
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 24px;
-        margin: 0 auto;
-        /* Center the circle horizontally */
-    }
-
-    .circle span {
-        font-weight: bold;
-        color: white;
-    }
-</style>
 @section('content')
-    <div class="container-fluid">
-        <div class="row">
-            <div class="container">
-                <div class="row">
-                    <div class="col bg-temperature mr-2 " style="border-radius: 15px;">
-                        <div class="circle">
-                            <span>25°C</span>
-                        </div>
-                        Temperature
+    <style>
+        /* Temperature Background Gradient (Even Lighter) */
+        .bg-gradient-temperature-light {
+            background: linear-gradient(135deg, #f2e0d4, #ffd8c0);
+        }
+
+        .dark\:bg-gradient-temperature-dark-light {
+            background: linear-gradient(135deg, #ffb07c, #ffd8c0);
+        }
+
+        /* Humidity Background Gradient (Even Lighter) */
+        .bg-gradient-humidity-light {
+            background: linear-gradient(135deg, #e0e8f1, #e8f3fe);
+        }
+
+        .dark\:bg-gradient-humidity-dark-light {
+            background: linear-gradient(135deg, #7db2e8, #e8f3fe);
+        }
+
+        /* Light Background Gradient (Even Lighter) */
+        .bg-gradient-light-light {
+            background: linear-gradient(135deg, #fff9d9, #fefde6);
+        }
+
+        .dark\:bg-gradient-light-dark-light {
+            background: linear-gradient(135deg, #fff9d9, #fefde6);
+        }
+
+        .panel {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem; /* Space between rows */
+}
+
+.control-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-radius: 8px;
+    height: 100px; /* Ensure uniform height */
+    background: linear-gradient(to right, currentColor, transparent); /* Gradient effect */
+}
+
+.btn {
+    background-color: white;
+    color: black;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.btn:hover {
+    background-color: #ddd;
+}
+
+.fas {
+    font-size: 2rem; /* Adjust size as needed */
+}
+
+    </style>
+    <!-- start main content section -->
+    <div x-data="sales">
+        <ul class="flex space-x-2 rtl:space-x-reverse">
+            <li>
+                <a href="javascript:;" class="text-primary hover:underline">Dashboard</a>
+            </li>
+
+        </ul>
+
+        <div class="pt-5">
+            <div class="mb-6 grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
+                <!-- Temperature -->
+                <div x-ref="temperature"
+                    class="rounded-lg bg-gradient-temperature-light dark:bg-gradient-temperature-dark-light">
+                    <!-- loader -->
+                    <div
+                        class="grid min-h-[300px] place-content-center bg-white-light/30 dark:bg-dark dark:bg-opacity-[0.08]">
+                        <span
+                            class="inline-flex h-5 w-5 animate-spin rounded-full border-2 border-black !border-l-transparent dark:border-white"></span>
                     </div>
-                    <div class="col bg-humidity mx-2" style="border-radius: 15px;">
-                        <div class="circle">
-                            <span>60%</span>
-                        </div>
-                        Humidity
+                </div>
+
+                <!-- Humidity -->
+                <div x-ref="humidity" class="rounded-lg bg-gradient-humidity-light dark:bg-gradient-humidity-dark-light">
+                    <!-- loader -->
+                    <div
+                        class="grid min-h-[300px] place-content-center bg-white-light/30 dark:bg-dark dark:bg-opacity-[0.08]">
+                        <span
+                            class="inline-flex h-5 w-5 animate-spin rounded-full border-2 border-black !border-l-transparent dark:border-white"></span>
                     </div>
-                    <div class="col bg-light ml-2" style="border-radius: 15px;">
-                        <div class="circle">
-                            <span>300lx</span>
-                        </div>
-                        Light
+                </div>
+
+                <!-- Light -->
+                <div x-ref="light" class="rounded-lg bg-gradient-light-light dark:bg-gradient-light-dark-light">
+                    <!-- loader -->
+                    <div
+                        class="grid min-h-[300px] place-content-center bg-white-light/30 dark:bg-dark dark:bg-opacity-[0.08]">
+                        <span
+                            class="inline-flex h-5 w-5 animate-spin rounded-full border-2 border-black !border-l-transparent dark:border-white"></span>
                     </div>
                 </div>
             </div>
 
-        </div>
-        {{-- <div class="row my-3">
-            <div class="col-md-8 bg-warning" style="border-radius: 15px;">
-                <canvas id="line-chart" style="width: 100%; height: 500px;"></canvas>
-            </div>
-            <div class="col-md-4 bg-secondary" style="border-radius: 15px;">
-                <div class="row">
-                    <div class="col bg-black">Quạt</div>
-                </div>
-                <div class="row">
-                    <div class="col bg-primary">Điều hòa</div>
-                </div>
-                <div class="row">
-                    <div class="col bg-mute">Đèn</div>
-                </div>
-            </div>
-        </div> --}}
 
-        <div class="row g-3 my-3">
-            <div class="col-md-8 bg-warning p-3" style="border-radius: 15px;">
-                <canvas id="line-chart" style="width: 100%; height: 500px;"></canvas>
-            </div>
-            <div class="col-md-4 bg-secondary p-3" style="border-radius: 15px;">
-                {{-- Control elements go here --}}
+            <div class="mb-6 grid gap-6 xl:grid-cols-3">
+                {{-- start chart --}}
+                <div class="panel h-full xl:col-span-2">
+                    <div class="mb-5 flex items-center dark:text-white-light">
+                        <h5 class="text-lg font-semibold">Chart</h5>
+                        <div x-data="dropdown" @click.outside="open = false" class="dropdown ltr:ml-auto rtl:mr-auto">
+                            <a href="javascript:;" @click="toggle">
+                                <svg class="h-5 w-5 text-black/70 hover:!text-primary dark:text-white/70"
+                                    viewbox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <circle cx="5" cy="12" r="2" stroke="currentColor" stroke-width="1.5">
+                                    </circle>
+                                    <circle opacity="0.5" cx="12" cy="12" r="2" stroke="currentColor"
+                                        stroke-width="1.5"></circle>
+                                    <circle cx="19" cy="12" r="2" stroke="currentColor" stroke-width="1.5">
+                                    </circle>
+                                </svg>
+                            </a>
+
+                        </div>
+                    </div>
+
+
+                    <div class="relative overflow-hidden">
+                        <div x-ref="revenueChart" class="rounded-lg bg-white dark:bg-black">
+                            <!-- loader -->
+                            <div
+                                class="grid min-h-[325px] place-content-center bg-white-light/30 dark:bg-dark dark:bg-opacity-[0.08]">
+                                <span
+                                    class="inline-flex h-5 w-5 animate-spin rounded-full border-2 border-black !border-l-transparent dark:border-white"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {{-- end chart --}}
+                <div class="panel h-full flex flex-col space-y-4">
+                    <div
+                        class="control-item bg-gradient-to-r from-blue-500 to-teal-500 p-4 flex items-center justify-between">
+                        <button class="btn">Toggle Fan</button>
+                        <i class="fas fa-fan  text-2xl"></i>
+                    </div>
+                    <div
+                        class="control-item bg-gradient-to-r from-red-500 to-yellow-500 p-4 flex items-center justify-between">
+                        <button class="btn">Toggle AC</button>
+                        <i class="fas fa-snowflake  text-2xl"></i>
+                    </div>
+                    <div
+                        class="control-item bg-gradient-to-r from-green-500 to-lime-500 p-4 flex items-center justify-between">
+                        <button class="btn">Toggle Light</button>
+                        <i class="fas fa-lightbulb  text-2xl"></i>
+                    </div>
+                </div>
+
+
             </div>
         </div>
     </div>
 
-
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script>
-        // Sample data for the chart
-        // Sample data for the chart
-        const labels = ['00:00', '02:00', '04:00', '06:00', '08:00', '10:00', '12:00', '14:00', '16:00', '18:00', '20:00',
-            '22:00'
-        ];
-        const temperatureData = [22, 23, 25, 28, 30, 31, 29, 27, 26, 24, 22, 21];
-        const humidityData = [60, 62, 65, 70, 72, 73, 68, 64, 62, 61, 59, 57];
-        const lightData = [300, 500, 700, 900, 1000, 1050, 950, 850, 750, 550, 400, 350];
+    <script></script>
 
-        const ctx = document.getElementById('line-chart').getContext('2d');
-        const lineChart = new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: labels,
-                datasets: [{
-                    label: 'Temperature (°C)',
-                    data: temperatureData,
-                    borderColor: 'rgba(255, 99, 132, 1)',
-                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                    fill: false,
-                    tension: 0.1,
-                    yAxisID: 'y' // Assign this dataset to the left y-axis
-                }, {
-                    label: 'Humidity (%)',
-                    data: humidityData,
-                    borderColor: 'rgba(54, 162, 235, 1)',
-                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                    fill: false,
-                    tension: 0.1,
-                    yAxisID: 'y' // Assign this dataset to the left y-axis
-                }, {
-                    label: 'Light (Lux)',
-                    data: lightData,
-                    borderColor: 'rgba(75, 192, 192, 1)',
-                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                    fill: false,
-                    tension: 0.1,
-                    yAxisID: 'y1' // Assign this dataset to the right y-axis
-                }]
-            },
-            options: {
-                responsive: true,
-                scales: {
-                    x: {
-                        title: {
-                            display: true,
-                            text: 'Time of Day'
-                        }
-                    },
-                    y: {
-                        type: 'linear',
-                        display: true,
-                        position: 'left',
-                        title: {
-                            display: true,
-                            text: 'Temperature (°C) / Humidity (%)'
-                        }
-                    },
-                    y1: {
-                        type: 'linear',
-                        display: true,
-                        position: 'right',
-                        title: {
-                            display: true,
-                            text: 'Light (Lux)'
-                        },
-                        grid: {
-                            drawOnChartArea: false // Only draw grid lines for the left y-axis
-                        }
-                    }
-                },
-                plugins: {
-                    legend: {
-                        display: true,
-                        position: 'top',
-                    }
-                }
-            }
-        });
-    </script>
+    <!-- end main content section -->
 @endsection
