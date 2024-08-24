@@ -1,205 +1,1212 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" dir="ltr">
 
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bootstrap Sidebar</title>
-    <link href="https://cdn.lineicons.com/4.0/lineicons.css" rel="stylesheet" />
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
-
-        body {
-            font-family: 'Poppins', sans-serif;
-        }
-
-        h1 {
-            font-weight: 800;
-        }
-
-        li {
-            list-style: none;
-        }
-
-        a {
-            text-decoration: none;
-        }
-
-        .main {
-            min-height: 100vh;
-            width: 100%;
-            overflow: hidden;
-            background-color: #f9f9f9;
-        }
-
-        #sidebar {
-            max-width: 264px;
-            min-width: 264px;
-            transition: all 0.35s ease-in-out;
-            background-color: #dcb1b1;
-            display: flex;
-            flex-direction: column;
-        }
-
-        #sidebar.collapsed {
-            margin-left: -264px;
-        }
-
-        .toggler-btn {
-            background-color: transparent;
-            cursor: pointer;
-            border: 0;
-        }
-
-        .toggler-btn i {
-            font-size: 1.75rem;
-            color: #dcb1b1;
-            font-weight: 1000;
-        }
-
-        .navbar {
-            padding: 1.15rem 1.5rem;
-            border-bottom: 2px dashed #b3a8a8;
-        }
-
-        .sidebar-nav {
-            flex: 1 1 auto;
-        }
-
-        .sidebar-logo {
-            padding: 1.15rem 1.5rem;
-            text-align: center;
-        }
-
-        .sidebar-logo a {
-            color: #FFF;
-            font-weight: 800;
-            font-size: 1.5rem;
-        }
-
-        .sidebar-header {
-            color: #FFF;
-            font-size: .75rem;
-            padding: 1.5rem 1.5rem .375rem;
-        }
-
-        a.sidebar-link {
-            padding: .625rem 1.625rem;
-            color: #FFF;
-            position: relative;
-            transition: all 0.35s;
-            display: block;
-            font-size: 1.25rem;
-        }
-
-        a.sidebar-link:hover {
-            background-color: #f9f6f630;
-        }
-
-        .sidebar-link[data-bs-toggle="collapse"]::after {
-            border: solid;
-            border-width: 0 .075rem .075rem 0;
-            content: "";
-            display: inline-block;
-            padding: 2px;
-            position: absolute;
-            right: 1.5rem;
-            top: 1.4rem;
-            transform: rotate(-135deg);
-            transition: all .2s ease-out;
-        }
-
-        .sidebar-link[data-bs-toggle="collapse"].collapsed::after {
-            transform: rotate(45deg);
-            transition: all .2s ease-out;
-        }
-
-        /* Screen size less than 768px */
-
-        @media (max-width:768px) {
-
-            .sidebar-toggle {
-                margin-left: -264px;
-            }
-
-            #sidebar.collapsed {
-                margin-left: 0;
-            }
-        }
-    </style>
-<style>
-    .navbar {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 10px;
-    }
-    .search-bar {
-        flex: 1;
-        text-align: center;
-    }
-    .search-bar .form-group {
-        display: inline-block;
-        width: 300px; /* Adjust the width of the search bar */
-    }
-    .navbar .user-info {
-        display: flex;
-        align-items: center;
-    }
-    .navbar .user-image {
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        margin-left: 10px;
-    }
-    .navbar .user-name {
-        font-size: 16px;
-        margin-left: 10px;
-    }
-</style>
+    <title>Dashboard Template</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/x-icon" href="favicon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link href="css2?family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" media="screen" href="{{ asset('assets') }} /css/perfect-scrollbar.min.css">
+    <link rel="stylesheet" type="text/css" media="screen" href="{{ asset('assets') }}/css/style.css">
+    <link defer="" rel="stylesheet" type="text/css" media="screen" href="{{ asset('assets') }}/css/animate.css">
+    <script src="{{ asset('assets') }}/js/perfect-scrollbar.min.js"></script>
+    <script defer="" src="{{ asset('assets') }}/js/popper.min.js"></script>
+    <script defer="" src="{{ asset('assets') }}/js/tippy-bundle.umd.min.js"></script>
+    <script defer="" src="{{ asset('assets') }}/js/sweetalert.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
 </head>
 
-<body>
-    <div class="d-flex">
-        @include('layouts.sidebar')
-        {{-- Header --}}
-        @include('layouts.header')
-        {{-- end Header --}}
-        <!-- Main Component -->
-        <div class="main">
-            <nav class="navbar navbar-expand">
-                <button class="toggler-btn" type="button">
-                    <i class="lni lni-text-align-left"></i>
-                </button>
-            
-                <div class="search-bar">
-                    <i class="fa-solid fa-magnifying-glass"></i>
-                    <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Search">
+<body x-data="main" class="relative overflow-x-hidden font-nunito text-sm font-normal antialiased"
+    :class="[$store.app.sidebar ? 'toggle-sidebar' : '', $store.app.theme === 'dark' || $store.app.isDarkMode ? 'dark' : '',
+        $store.app.menu, $store.app.layout, $store.app.rtlClass
+    ]">
+    <!-- sidebar menu overlay -->
+    <div x-cloak="" class="fixed inset-0 z-50 bg-[black]/60 lg:hidden" :class="{ 'hidden': !$store.app.sidebar }"
+        @click="$store.app.toggleSidebar()"></div>
+
+    <!-- screen loader -->
+    <div
+        class="screen_loader animate__animated fixed inset-0 z-[60] grid place-content-center bg-[#fafafa] dark:bg-[#060818]">
+        <svg width="64" height="64" viewbox="0 0 135 135" xmlns="http://www.w3.org/2000/svg" fill="#4361ee">
+            <path
+                d="M67.447 58c5.523 0 10-4.477 10-10s-4.477-10-10-10-10 4.477-10 10 4.477 10 10 10zm9.448 9.447c0 5.523 4.477 10 10 10 5.522 0 10-4.477 10-10s-4.478-10-10-10c-5.523 0-10 4.477-10 10zm-9.448 9.448c-5.523 0-10 4.477-10 10 0 5.522 4.477 10 10 10s10-4.478 10-10c0-5.523-4.477-10-10-10zM58 67.447c0-5.523-4.477-10-10-10s-10 4.477-10 10 4.477 10 10 10 10-4.477 10-10z">
+                <animatetransform attributename="transform" type="rotate" from="0 67 67" to="-360 67 67" dur="2.5s"
+                    repeatcount="indefinite"></animatetransform>
+            </path>
+            <path
+                d="M28.19 40.31c6.627 0 12-5.374 12-12 0-6.628-5.373-12-12-12-6.628 0-12 5.372-12 12 0 6.626 5.372 12 12 12zm30.72-19.825c4.686 4.687 12.284 4.687 16.97 0 4.686-4.686 4.686-12.284 0-16.97-4.686-4.687-12.284-4.687-16.97 0-4.687 4.686-4.687 12.284 0 16.97zm35.74 7.705c0 6.627 5.37 12 12 12 6.626 0 12-5.373 12-12 0-6.628-5.374-12-12-12-6.63 0-12 5.372-12 12zm19.822 30.72c-4.686 4.686-4.686 12.284 0 16.97 4.687 4.686 12.285 4.686 16.97 0 4.687-4.686 4.687-12.284 0-16.97-4.685-4.687-12.283-4.687-16.97 0zm-7.704 35.74c-6.627 0-12 5.37-12 12 0 6.626 5.373 12 12 12s12-5.374 12-12c0-6.63-5.373-12-12-12zm-30.72 19.822c-4.686-4.686-12.284-4.686-16.97 0-4.686 4.687-4.686 12.285 0 16.97 4.686 4.687 12.284 4.687 16.97 0 4.687-4.685 4.687-12.283 0-16.97zm-35.74-7.704c0-6.627-5.372-12-12-12-6.626 0-12 5.373-12 12s5.374 12 12 12c6.628 0 12-5.373 12-12zm-19.823-30.72c4.687-4.686 4.687-12.284 0-16.97-4.686-4.686-12.284-4.686-16.97 0-4.687 4.686-4.687 12.284 0 16.97 4.686 4.687 12.284 4.687 16.97 0z">
+                <animatetransform attributename="transform" type="rotate" from="0 67 67" to="360 67 67" dur="8s"
+                    repeatcount="indefinite"></animatetransform>
+            </path>
+        </svg>
+    </div>
+
+    <!-- scroll to top button -->
+    <div class="fixed bottom-6 z-50 ltr:right-6 rtl:left-6" x-data="scrollToTop">
+        <template x-if="showTopButton">
+            <button type="button"
+                class="btn btn-outline-primary animate-pulse rounded-full bg-[#fafafa] p-2 dark:bg-[#060818] dark:hover:bg-primary"
+                @click="goToTop">
+                <svg width="24" height="24" class="h-4 w-4" viewbox="0 0 24 24" fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path opacity="0.5" fill-rule="evenodd" clip-rule="evenodd"
+                        d="M12 20.75C12.4142 20.75 12.75 20.4142 12.75 20L12.75 10.75L11.25 10.75L11.25 20C11.25 20.4142 11.5858 20.75 12 20.75Z"
+                        fill="currentColor"></path>
+                    <path
+                        d="M6.00002 10.75C5.69667 10.75 5.4232 10.5673 5.30711 10.287C5.19103 10.0068 5.25519 9.68417 5.46969 9.46967L11.4697 3.46967C11.6103 3.32902 11.8011 3.25 12 3.25C12.1989 3.25 12.3897 3.32902 12.5304 3.46967L18.5304 9.46967C18.7449 9.68417 18.809 10.0068 18.6929 10.287C18.5768 10.5673 18.3034 10.75 18 10.75L6.00002 10.75Z"
+                        fill="currentColor"></path>
+                </svg>
+            </button>
+        </template>
+    </div>
+
+    <!-- start theme customizer section -->
+    <div x-data="customizer">
+        <div class="fixed inset-0 z-[51] hidden bg-[black]/60 px-4 transition-[display]"
+            :class="{ '!block': showCustomizer }" @click="showCustomizer = false"></div>
+
+        <nav class="fixed bottom-0 top-0 z-[51] w-full max-w-[400px] bg-white p-4 shadow-[5px_0_25px_0_rgba(94,92,154,0.1)] transition-[right] duration-300 ltr:-right-[400px] rtl:-left-[400px] dark:bg-[#0e1726]"
+            :class="{ 'ltr:!right-0 rtl:!left-0': showCustomizer }">
+            <a href="javascript:;"
+                class="absolute bottom-0 top-0 my-auto flex h-10 w-12 cursor-pointer items-center justify-center bg-primary text-white ltr:-left-12 ltr:rounded-bl-full ltr:rounded-tl-full rtl:-right-12 rtl:rounded-br-full rtl:rounded-tr-full"
+                @click="showCustomizer = !showCustomizer">
+                <svg width="24" height="24" viewbox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
+                    class="h-5 w-5 animate-[spin_3s_linear_infinite]">
+                    <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.5"></circle>
+                    <path opacity="0.5"
+                        d="M13.7654 2.15224C13.3978 2 12.9319 2 12 2C11.0681 2 10.6022 2 10.2346 2.15224C9.74457 2.35523 9.35522 2.74458 9.15223 3.23463C9.05957 3.45834 9.0233 3.7185 9.00911 4.09799C8.98826 4.65568 8.70226 5.17189 8.21894 5.45093C7.73564 5.72996 7.14559 5.71954 6.65219 5.45876C6.31645 5.2813 6.07301 5.18262 5.83294 5.15102C5.30704 5.08178 4.77518 5.22429 4.35436 5.5472C4.03874 5.78938 3.80577 6.1929 3.33983 6.99993C2.87389 7.80697 2.64092 8.21048 2.58899 8.60491C2.51976 9.1308 2.66227 9.66266 2.98518 10.0835C3.13256 10.2756 3.3397 10.437 3.66119 10.639C4.1338 10.936 4.43789 11.4419 4.43786 12C4.43783 12.5581 4.13375 13.0639 3.66118 13.3608C3.33965 13.5629 3.13248 13.7244 2.98508 13.9165C2.66217 14.3373 2.51966 14.8691 2.5889 15.395C2.64082 15.7894 2.87379 16.193 3.33973 17C3.80568 17.807 4.03865 18.2106 4.35426 18.4527C4.77508 18.7756 5.30694 18.9181 5.83284 18.8489C6.07289 18.8173 6.31632 18.7186 6.65204 18.5412C7.14547 18.2804 7.73556 18.27 8.2189 18.549C8.70224 18.8281 8.98826 19.3443 9.00911 19.9021C9.02331 20.2815 9.05957 20.5417 9.15223 20.7654C9.35522 21.2554 9.74457 21.6448 10.2346 21.8478C10.6022 22 11.0681 22 12 22C12.9319 22 13.3978 22 13.7654 21.8478C14.2554 21.6448 14.6448 21.2554 14.8477 20.7654C14.9404 20.5417 14.9767 20.2815 14.9909 19.902C15.0117 19.3443 15.2977 18.8281 15.781 18.549C16.2643 18.2699 16.8544 18.2804 17.3479 18.5412C17.6836 18.7186 17.927 18.8172 18.167 18.8488C18.6929 18.9181 19.2248 18.7756 19.6456 18.4527C19.9612 18.2105 20.1942 17.807 20.6601 16.9999C21.1261 16.1929 21.3591 15.7894 21.411 15.395C21.4802 14.8691 21.3377 14.3372 21.0148 13.9164C20.8674 13.7243 20.6602 13.5628 20.3387 13.3608C19.8662 13.0639 19.5621 12.558 19.5621 11.9999C19.5621 11.4418 19.8662 10.9361 20.3387 10.6392C20.6603 10.4371 20.8675 10.2757 21.0149 10.0835C21.3378 9.66273 21.4803 9.13087 21.4111 8.60497C21.3592 8.21055 21.1262 7.80703 20.6602 7C20.1943 6.19297 19.9613 5.78945 19.6457 5.54727C19.2249 5.22436 18.693 5.08185 18.1671 5.15109C17.9271 5.18269 17.6837 5.28136 17.3479 5.4588C16.8545 5.71959 16.2644 5.73002 15.7811 5.45096C15.2977 5.17191 15.0117 4.65566 14.9909 4.09794C14.9767 3.71848 14.9404 3.45833 14.8477 3.23463C14.6448 2.74458 14.2554 2.35523 13.7654 2.15224Z"
+                        stroke="currentColor" stroke-width="1.5"></path>
+                </svg>
+            </a>
+            <div class="perfect-scrollbar h-full overflow-y-auto overflow-x-hidden">
+                <div class="relative pb-5 text-center">
+                    <a href="javascript:;"
+                        class="absolute top-0 opacity-30 hover:opacity-100 ltr:right-0 rtl:left-0 dark:text-white"
+                        @click="showCustomizer = false">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewbox="0 0 24 24"
+                            fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                            stroke-linejoin="round" class="h-5 w-5">
+                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                        </svg>
+                    </a>
+                    <h4 class="mb-1 dark:text-white">TEMPLATE CUSTOMIZER</h4>
+                    <p class="text-white-dark">Set preferences that will be cookied for your live preview
+                        demonstration.</p>
+                </div>
+                <div class="mb-3 rounded-md border border-dashed border-[#e0e6ed] p-3 dark:border-[#1b2e4b]">
+                    <h5 class="mb-1 text-base leading-none dark:text-white">Color Scheme</h5>
+                    <p class="text-xs text-white-dark">Overall light or dark presentation.</p>
+                    <div class="mt-3 grid grid-cols-3 gap-2">
+                        <button type="button" class="btn"
+                            :class="[$store.app.theme === 'light' ? 'btn-primary' : 'btn-outline-primary']"
+                            @click="$store.app.toggleTheme('light')">
+                            <svg width="20" height="20" viewbox="0 0 24 24" fill="none"
+                                xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 shrink-0 ltr:mr-2 rtl:ml-2">
+                                <circle cx="12" cy="12" r="5" stroke="currentColor"
+                                    stroke-width="1.5"></circle>
+                                <path d="M12 2V4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+                                </path>
+                                <path d="M12 20V22" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+                                </path>
+                                <path d="M4 12L2 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+                                </path>
+                                <path d="M22 12L20 12" stroke="currentColor" stroke-width="1.5"
+                                    stroke-linecap="round"></path>
+                                <path opacity="0.5" d="M19.7778 4.22266L17.5558 6.25424" stroke="currentColor"
+                                    stroke-width="1.5" stroke-linecap="round"></path>
+                                <path opacity="0.5" d="M4.22217 4.22266L6.44418 6.25424" stroke="currentColor"
+                                    stroke-width="1.5" stroke-linecap="round"></path>
+                                <path opacity="0.5" d="M6.44434 17.5557L4.22211 19.7779" stroke="currentColor"
+                                    stroke-width="1.5" stroke-linecap="round"></path>
+                                <path opacity="0.5" d="M19.7778 19.7773L17.5558 17.5551" stroke="currentColor"
+                                    stroke-width="1.5" stroke-linecap="round"></path>
+                            </svg>
+                            Light
+                        </button>
+                        <button type="button" class="btn"
+                            :class="[$store.app.theme === 'dark' ? 'btn-primary' : 'btn-outline-primary']"
+                            @click="$store.app.toggleTheme('dark')">
+                            <svg width="20" height="20" viewbox="0 0 24 24" fill="none"
+                                xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 shrink-0 ltr:mr-2 rtl:ml-2">
+                                <path
+                                    d="M21.0672 11.8568L20.4253 11.469L21.0672 11.8568ZM12.1432 2.93276L11.7553 2.29085V2.29085L12.1432 2.93276ZM21.25 12C21.25 17.1086 17.1086 21.25 12 21.25V22.75C17.9371 22.75 22.75 17.9371 22.75 12H21.25ZM12 21.25C6.89137 21.25 2.75 17.1086 2.75 12H1.25C1.25 17.9371 6.06294 22.75 12 22.75V21.25ZM2.75 12C2.75 6.89137 6.89137 2.75 12 2.75V1.25C6.06294 1.25 1.25 6.06294 1.25 12H2.75ZM15.5 14.25C12.3244 14.25 9.75 11.6756 9.75 8.5H8.25C8.25 12.5041 11.4959 15.75 15.5 15.75V14.25ZM20.4253 11.469C19.4172 13.1373 17.5882 14.25 15.5 14.25V15.75C18.1349 15.75 20.4407 14.3439 21.7092 12.2447L20.4253 11.469ZM9.75 8.5C9.75 6.41182 10.8627 4.5828 12.531 3.57467L11.7553 2.29085C9.65609 3.5593 8.25 5.86509 8.25 8.5H9.75ZM12 2.75C11.9115 2.75 11.8077 2.71008 11.7324 2.63168C11.6686 2.56527 11.6538 2.50244 11.6503 2.47703C11.6461 2.44587 11.6482 2.35557 11.7553 2.29085L12.531 3.57467C13.0342 3.27065 13.196 2.71398 13.1368 2.27627C13.0754 1.82126 12.7166 1.25 12 1.25V2.75ZM21.7092 12.2447C21.6444 12.3518 21.5541 12.3539 21.523 12.3497C21.4976 12.3462 21.4347 12.3314 21.3683 12.2676C21.2899 12.1923 21.25 12.0885 21.25 12H22.75C22.75 11.2834 22.1787 10.9246 21.7237 10.8632C21.286 10.804 20.7293 10.9658 20.4253 11.469L21.7092 12.2447Z"
+                                    fill="currentColor"></path>
+                            </svg>
+                            Dark
+                        </button>
+                        <button type="button" class="btn"
+                            :class="[$store.app.theme === 'system' ? 'btn-primary' : 'btn-outline-primary']"
+                            @click="$store.app.toggleTheme('system')">
+                            <svg width="20" height="20" viewbox="0 0 24 24" fill="none"
+                                xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 shrink-0 ltr:mr-2 rtl:ml-2">
+                                <path
+                                    d="M3 9C3 6.17157 3 4.75736 3.87868 3.87868C4.75736 3 6.17157 3 9 3H15C17.8284 3 19.2426 3 20.1213 3.87868C21 4.75736 21 6.17157 21 9V14C21 15.8856 21 16.8284 20.4142 17.4142C19.8284 18 18.8856 18 17 18H7C5.11438 18 4.17157 18 3.58579 17.4142C3 16.8284 3 15.8856 3 14V9Z"
+                                    stroke="currentColor" stroke-width="1.5"></path>
+                                <path opacity="0.5" d="M22 21H2" stroke="currentColor" stroke-width="1.5"
+                                    stroke-linecap="round"></path>
+                                <path opacity="0.5" d="M15 15H9" stroke="currentColor" stroke-width="1.5"
+                                    stroke-linecap="round"></path>
+                            </svg>
+                            System
+                        </button>
                     </div>
                 </div>
-            
-                <div class="user-info ml-auto">
-                    
-                    <img src="https://lh3.googleusercontent.com/ogw/AF2bZyiRtZJFfX22aVoZ6k_vr1CsXi3GTzOwRafWV5VtEH7Oyg=s64-c-mo"
-                         alt="User Image" class="user-image">
+
+                <div class="mb-3 rounded-md border border-dashed border-[#e0e6ed] p-3 dark:border-[#1b2e4b]">
+                    <h5 class="mb-1 text-base leading-none dark:text-white">Navigation Position</h5>
+                    <p class="text-xs text-white-dark">Select the primary navigation paradigm for your app.</p>
+                    <div class="mt-3 grid grid-cols-3 gap-2">
+                        <button type="button" class="btn"
+                            :class="[$store.app.menu === 'horizontal' ? 'btn-primary' : 'btn-outline-primary']"
+                            @click="$store.app.toggleMenu('horizontal')">
+                            Horizontal
+                        </button>
+                        <button type="button" class="btn"
+                            :class="[$store.app.menu === 'vertical' ? 'btn-primary' : 'btn-outline-primary']"
+                            @click="$store.app.toggleMenu('vertical')">
+                            Vertical
+                        </button>
+                        <button type="button" class="btn"
+                            :class="[$store.app.menu === 'collapsible-vertical' ? 'btn-primary' : 'btn-outline-primary']"
+                            @click="$store.app.toggleMenu('collapsible-vertical')">
+                            Collapsible
+                        </button>
+                    </div>
+                    <div class="mt-5 text-primary">
+                        <label class="mb-0 inline-flex">
+                            <input x-model="$store.app.semidark" type="checkbox" :value="true"
+                                class="form-checkbox" @change="$store.app.toggleSemidark()">
+                            <span>Semi Dark (Sidebar & Header)</span>
+                        </label>
+                    </div>
                 </div>
-                <div class="div"><span class="user-name">John Doe</span></div>
-            </nav>
-            <main class="p-3">
-                <div class="container-fluid">
-                    @yield('content')
+                <div class="mb-3 rounded-md border border-dashed border-[#e0e6ed] p-3 dark:border-[#1b2e4b]">
+                    <h5 class="mb-1 text-base leading-none dark:text-white">Layout Style</h5>
+                    <p class="text-xs text-white-dark">Select the primary layout style for your app.</p>
+                    <div class="mt-3 flex gap-2">
+                        <button type="button" class="btn flex-auto"
+                            :class="[$store.app.layout === 'boxed-layout' ? 'btn-primary' : 'btn-outline-primary']"
+                            @click="$store.app.toggleLayout('boxed-layout')">
+                            Box
+                        </button>
+                        <button type="button" class="btn flex-auto"
+                            :class="[$store.app.layout === 'full' ? 'btn-primary' : 'btn-outline-primary']"
+                            @click="$store.app.toggleLayout('full')">
+                            Full
+                        </button>
+                    </div>
                 </div>
-            </main>
+                <div class="mb-3 rounded-md border border-dashed border-[#e0e6ed] p-3 dark:border-[#1b2e4b]">
+                    <h5 class="mb-1 text-base leading-none dark:text-white">Direction</h5>
+                    <p class="text-xs text-white-dark">Select the direction for your app.</p>
+                    <div class="mt-3 flex gap-2">
+                        <button type="button" class="btn flex-auto"
+                            :class="[$store.app.rtlClass === 'ltr' ? 'btn-primary' : 'btn-outline-primary']"
+                            @click="$store.app.toggleRTL('ltr')">
+                            LTR
+                        </button>
+                        <button type="button" class="btn flex-auto"
+                            :class="[$store.app.rtlClass === 'rtl' ? 'btn-primary' : 'btn-outline-primary']"
+                            @click="$store.app.toggleRTL('rtl')">
+                            RTL
+                        </button>
+                    </div>
+                </div>
+
+                <div class="mb-3 rounded-md border border-dashed border-[#e0e6ed] p-3 dark:border-[#1b2e4b]">
+                    <h5 class="mb-1 text-base leading-none dark:text-white">Navbar Type</h5>
+                    <p class="text-xs text-white-dark">Sticky or Floating.</p>
+                    <div class="mt-3 flex items-center gap-3 text-primary">
+                        <label class="mb-0 inline-flex">
+                            <input x-model="$store.app.navbar" type="radio" value="navbar-sticky"
+                                class="form-radio" @change="$store.app.toggleNavbar()">
+                            <span>Sticky</span>
+                        </label>
+                        <label class="mb-0 inline-flex">
+                            <input x-model="$store.app.navbar" type="radio" value="navbar-floating"
+                                class="form-radio" @change="$store.app.toggleNavbar()">
+                            <span>Floating</span>
+                        </label>
+                        <label class="mb-0 inline-flex">
+                            <input x-model="$store.app.navbar" type="radio" value="navbar-static"
+                                class="form-radio" @change="$store.app.toggleNavbar()">
+                            <span>Static</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="mb-3 rounded-md border border-dashed border-[#e0e6ed] p-3 dark:border-[#1b2e4b]">
+                    <h5 class="mb-1 text-base leading-none dark:text-white">Router Transition</h5>
+                    <p class="text-xs text-white-dark">Animation of main content.</p>
+                    <div class="mt-3">
+                        <select x-model="$store.app.animation" class="form-select border-primary text-primary"
+                            @change="$store.app.toggleAnimation()">
+                            <option value="">None</option>
+                            <option value="animate__fadeIn">Fade</option>
+                            <option value="animate__fadeInDown">Fade Down</option>
+                            <option value="animate__fadeInUp">Fade Up</option>
+                            <option value="animate__fadeInLeft">Fade Left</option>
+                            <option value="animate__fadeInRight">Fade Right</option>
+                            <option value="animate__slideInDown">Slide Down</option>
+                            <option value="animate__slideInLeft">Slide Left</option>
+                            <option value="animate__slideInRight">Slide Right</option>
+                            <option value="animate__zoomIn">Zoom In</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </div>
+    <!-- end theme customizer section -->
+
+    <div class="main-container min-h-screen text-black dark:text-white-dark" :class="[$store.app.navbar]">
+
+        @include('layouts.sidebar')
+        <div class="main-content flex min-h-screen flex-col">
+            @include('layouts.header')
+            <!-- end header section -->
+
+            <div class="animate__animated p-6" :class="[$store.app.animation]">
+                @yield('content')
+            </div>
+
+            @include('layouts.footer')
         </div>
     </div>
-    @include('layouts.footer')
+
+    <script src="{{ asset('assets') }}/js/alpine-collaspe.min.js"></script>
+    <script src="{{ asset('assets') }}/js/alpine-persist.min.js"></script>
+    <script defer="" src="{{ asset('assets') }}/js/alpine-ui.min.js"></script>
+    <script defer="" src="{{ asset('assets') }}/js/alpine-focus.min.js"></script>
+    <script defer="" src="{{ asset('assets') }}/js/alpine.min.js"></script>
+    <script src="{{ asset('assets') }}/js/custom.js"></script>
+    <script defer="" src="{{ asset('assets') }}/js/apexcharts.js"></script>
+
+    <script>
+        document.addEventListener('alpine:init', () => {
+            // main section
+            Alpine.data('scrollToTop', () => ({
+                showTopButton: false,
+                init() {
+                    window.onscroll = () => {
+                        this.scrollFunction();
+                    };
+                },
+
+                scrollFunction() {
+                    if (document.body.scrollTop > 50 || document.documentElement.scrollTop > 50) {
+                        this.showTopButton = true;
+                    } else {
+                        this.showTopButton = false;
+                    }
+                },
+
+                goToTop() {
+                    document.body.scrollTop = 0;
+                    document.documentElement.scrollTop = 0;
+                },
+            }));
+
+            // theme customization
+            Alpine.data('customizer', () => ({
+                showCustomizer: false,
+            }));
+
+            // sidebar section
+            Alpine.data('sidebar', () => ({
+                init() {
+                    const selector = document.querySelector('.sidebar ul a[href="' + window.location
+                        .pathname + '"]');
+                    if (selector) {
+                        selector.classList.add('active');
+                        const ul = selector.closest('ul.sub-menu');
+                        if (ul) {
+                            let ele = ul.closest('li.menu').querySelectorAll('.nav-link');
+                            if (ele) {
+                                ele = ele[0];
+                                setTimeout(() => {
+                                    ele.click();
+                                });
+                            }
+                        }
+                    }
+                },
+            }));
+
+            // header section
+            Alpine.data('header', () => ({
+                init() {
+                    const selector = document.querySelector('ul.horizontal-menu a[href="' + window
+                        .location.pathname + '"]');
+                    if (selector) {
+                        selector.classList.add('active');
+                        const ul = selector.closest('ul.sub-menu');
+                        if (ul) {
+                            let ele = ul.closest('li.menu').querySelectorAll('.nav-link');
+                            if (ele) {
+                                ele = ele[0];
+                                setTimeout(() => {
+                                    ele.classList.add('active');
+                                });
+                            }
+                        }
+                    }
+                },
+
+                notifications: [{
+                        id: 1,
+                        profile: 'user-profile.jpeg',
+                        message: '<strong class="text-sm mr-1">StarCode Kh</strong>invite you to <strong>Prototyping</strong>',
+                        time: '45 min ago',
+                    },
+                    {
+                        id: 2,
+                        profile: 'profile-34.jpeg',
+                        message: '<strong class="text-sm mr-1">Adam Nolan</strong>mentioned you to <strong>UX Basics</strong>',
+                        time: '9h Ago',
+                    },
+                    {
+                        id: 3,
+                        profile: 'profile-16.jpeg',
+                        message: '<strong class="text-sm mr-1">Anna Morgan</strong>Upload a file',
+                        time: '9h Ago',
+                    },
+                ],
+
+                messages: [{
+                        id: 1,
+                        image: '<span class="grid place-content-center w-9 h-9 rounded-full bg-success-light dark:bg-success text-success dark:text-success-light"><svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg></span>',
+                        title: 'Congratulations!',
+                        message: 'Your OS has been updated.',
+                        time: '1hr',
+                    },
+                    {
+                        id: 2,
+                        image: '<span class="grid place-content-center w-9 h-9 rounded-full bg-info-light dark:bg-info text-info dark:text-info-light"><svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></span>',
+                        title: 'Did you know?',
+                        message: 'You can switch between artboards.',
+                        time: '2hr',
+                    },
+                    {
+                        id: 3,
+                        image: '<span class="grid place-content-center w-9 h-9 rounded-full bg-danger-light dark:bg-danger text-danger dark:text-danger-light"><svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></span>',
+                        title: 'Something went wrong!',
+                        message: 'Send Reposrt',
+                        time: '2days',
+                    },
+                    {
+                        id: 4,
+                        image: '<span class="grid place-content-center w-9 h-9 rounded-full bg-warning-light dark:bg-warning text-warning dark:text-warning-light"><svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">    <circle cx="12" cy="12" r="10"></circle>    <line x1="12" y1="8" x2="12" y2="12"></line>    <line x1="12" y1="16" x2="12.01" y2="16"></line></svg></span>',
+                        title: 'Warning',
+                        message: 'Your password strength is low.',
+                        time: '5days',
+                    },
+                ],
+
+                languages: [{
+                        id: 1,
+                        key: 'Khmer',
+                        value: 'kh',
+                    },
+                    {
+                        id: 2,
+                        key: 'Danish',
+                        value: 'da',
+                    },
+                    {
+                        id: 3,
+                        key: 'English',
+                        value: 'en',
+                    },
+                    {
+                        id: 4,
+                        key: 'French',
+                        value: 'fr',
+                    },
+                    {
+                        id: 5,
+                        key: 'German',
+                        value: 'de',
+                    },
+                    {
+                        id: 6,
+                        key: 'Greek',
+                        value: 'el',
+                    },
+                    {
+                        id: 7,
+                        key: 'Hungarian',
+                        value: 'hu',
+                    },
+                    {
+                        id: 8,
+                        key: 'Italian',
+                        value: 'it',
+                    },
+                    {
+                        id: 9,
+                        key: 'Japanese',
+                        value: 'ja',
+                    },
+                    {
+                        id: 10,
+                        key: 'Polish',
+                        value: 'pl',
+                    },
+                    {
+                        id: 11,
+                        key: 'Portuguese',
+                        value: 'pt',
+                    },
+                    {
+                        id: 12,
+                        key: 'Russian',
+                        value: 'ru',
+                    },
+                    {
+                        id: 13,
+                        key: 'Spanish',
+                        value: 'es',
+                    },
+                    {
+                        id: 14,
+                        key: 'Swedish',
+                        value: 'sv',
+                    },
+                    {
+                        id: 15,
+                        key: 'Turkish',
+                        value: 'tr',
+                    },
+                    {
+                        id: 16,
+                        key: 'Arabic',
+                        value: 'ae',
+                    },
+                ],
+
+                removeNotification(value) {
+                    this.notifications = this.notifications.filter((d) => d.id !== value);
+                },
+
+                removeMessage(value) {
+                    this.messages = this.messages.filter((d) => d.id !== value);
+                },
+            }));
+
+            // content section
+            Alpine.data('sales', () => ({
+                init() {
+                    isDark = this.$store.app.theme === 'dark' || this.$store.app.isDarkMode ? true :
+                        false;
+                    isRtl = this.$store.app.rtlClass === 'rtl' ? true : false;
+
+                    const revenueChart = null;
+                    const dailySales = null;
+                    const totalOrders = null;
+                    const temperature = null;
+                    const humidity = null;
+                    const light = null;
+                    // revenue
+                    setTimeout(() => {
+                        this.revenueChart = new ApexCharts(this.$refs.revenueChart, this
+                            .revenueChartOptions);
+                        this.$refs.revenueChart.innerHTML = '';
+                        this.revenueChart.render();
+
+                        //temperature
+                        this.temperature = new ApexCharts(this.$refs.temperature, this
+                            .temperatureOptions);
+                        this.$refs.temperature.innerHTML = '';
+                        this.temperature.render();
+                        //humidity
+                        this.humidity = new ApexCharts(this.$refs.humidity, this
+                            .humidityOptions);
+                        this.$refs.humidity.innerHTML = '';
+                        this.humidity.render();
+                        //light
+                        this.light = new ApexCharts(this.$refs.light, this
+                            .lightOptions);
+                        this.$refs.light.innerHTML = '';
+                        this.light.render();
+                        // daily sales
+                        this.dailySales = new ApexCharts(this.$refs.dailySales, this
+                            .dailySalesOptions);
+                        this.$refs.dailySales.innerHTML = '';
+                        this.dailySales.render();
+
+                        // total orders
+                        this.totalOrders = new ApexCharts(this.$refs.totalOrders, this
+                            .totalOrdersOptions);
+                        this.$refs.totalOrders.innerHTML = '';
+                        this.totalOrders.render();
+                    }, 300);
+
+                    this.$watch('$store.app.theme', () => {
+                        isDark = this.$store.app.theme === 'dark' || this.$store.app
+                            .isDarkMode ? true : false;
+
+                        this.revenueChart.updateOptions(this.revenueChartOptions);
+                        this.dailySales.updateOptions(this.dailySalesOptions);
+                        this.totalOrders.updateOptions(this.totalOrdersOptions);
+                        this.temperature.updateOptions(this.temperatureOptions);
+                        this.humidity.updateOptions(this.humidityOptions);
+                        this.light.updateOptions(this.lightOptions);
+                    });
+
+                    this.$watch('$store.app.rtlClass', () => {
+                        isRtl = this.$store.app.rtlClass === 'rtl' ? true : false;
+                        this.revenueChart.updateOptions(this.revenueChartOptions);
+                    });
+                },
+
+                // revenue
+                get revenueChartOptions() {
+                    return {
+                        series: [{
+                                name: 'Temperature',
+                                data: [
+                                    [new Date('2024-01-01').getTime(), 23],
+                                    [new Date('2024-02-01').getTime(), 24],
+                                    [new Date('2024-03-01').getTime(), 22],
+                                    [new Date('2024-04-01').getTime(), 25],
+                                    [new Date('2024-05-01').getTime(), 24],
+                                    [new Date('2024-06-01').getTime(), 26],
+                                    [new Date('2024-07-01').getTime(), 27],
+                                    [new Date('2024-08-01').getTime(), 26],
+                                    [new Date('2024-09-01').getTime(), 25],
+                                    [new Date('2024-10-01').getTime(), 24],
+                                    [new Date('2024-11-01').getTime(), 23],
+                                    [new Date('2024-12-01').getTime(), 24],
+                                ],
+                                yaxis: {
+                                    show: true,
+                                    seriesIndex: 0,
+                                    opposite: false,
+                                },
+                            },
+                            {
+                                name: 'Humidity',
+                                data: [
+                                    [new Date('2024-01-01').getTime(), 60],
+                                    [new Date('2024-02-01').getTime(), 62],
+                                    [new Date('2024-03-01').getTime(), 58],
+                                    [new Date('2024-04-01').getTime(), 65],
+                                    [new Date('2024-05-01').getTime(), 64],
+                                    [new Date('2024-06-01').getTime(), 67],
+                                    [new Date('2024-07-01').getTime(), 70],
+                                    [new Date('2024-08-01').getTime(), 66],
+                                    [new Date('2024-09-01').getTime(), 63],
+                                    [new Date('2024-10-01').getTime(), 62],
+                                    [new Date('2024-11-01').getTime(), 61],
+                                    [new Date('2024-12-01').getTime(), 60],
+                                ],
+                                yaxis: {
+                                    show: true,
+                                    seriesIndex: 1,
+                                    opposite: false,
+                                },
+                            },
+                            {
+                                name: 'Light',
+                                data: [
+                                    [new Date('2024-01-01').getTime(), 300],
+                                    [new Date('2024-02-01').getTime(), 320],
+                                    [new Date('2024-03-01').getTime(), 280],
+                                    [new Date('2024-04-01').getTime(), 350],
+                                    [new Date('2024-05-01').getTime(), 340],
+                                    [new Date('2024-06-01').getTime(), 360],
+                                    [new Date('2024-07-01').getTime(), 370],
+                                    [new Date('2024-08-01').getTime(), 340],
+                                    [new Date('2024-09-01').getTime(), 330],
+                                    [new Date('2024-10-01').getTime(), 320],
+                                    [new Date('2024-11-01').getTime(), 310],
+                                    [new Date('2024-12-01').getTime(), 300],
+                                ],
+                                yaxis: {
+                                    show: true,
+                                    seriesIndex: 2,
+                                    opposite: true,
+                                },
+                            }
+                        ],
+                        chart: {
+                            height: 325,
+                            type: 'area',
+                            fontFamily: 'Nunito, sans-serif',
+                            zoom: {
+                                enabled: false,
+                            },
+                            toolbar: {
+                                show: false,
+                            },
+                        },
+                        dataLabels: {
+                            enabled: false,
+                        },
+                        stroke: {
+                            show: true,
+                            curve: 'smooth',
+                            width: 2,
+                            lineCap: 'square',
+                        },
+                        dropShadow: {
+                            enabled: true,
+                            opacity: 0.2,
+                            blur: 10,
+                            left: -7,
+                            top: 22,
+                        },
+                        colors: isDark ? ['#ff9800', '#00bcd4', '#4caf50'] : ['#ff5722', '#03a9f4',
+                            '#8bc34a'
+                        ],
+                        markers: {
+                            discrete: [{
+                                    seriesIndex: 0,
+                                    dataPointIndex: 6,
+                                    fillColor: '#ff9800',
+                                    strokeColor: 'transparent',
+                                    size: 7,
+                                },
+                                {
+                                    seriesIndex: 1,
+                                    dataPointIndex: 5,
+                                    fillColor: '#00bcd4',
+                                    strokeColor: 'transparent',
+                                    size: 7,
+                                },
+                                {
+                                    seriesIndex: 2,
+                                    dataPointIndex: 4,
+                                    fillColor: '#4caf50',
+                                    strokeColor: 'transparent',
+                                    size: 7,
+                                }
+                            ],
+                        },
+                        xaxis: {
+                            type: 'datetime',
+                            axisBorder: {
+                                show: false,
+                            },
+                            axisTicks: {
+                                show: false,
+                            },
+                            labels: {
+                                format: 'MMM yyyy',
+                                style: {
+                                    fontSize: '12px',
+                                    cssClass: 'apexcharts-xaxis-title',
+                                },
+                            },
+                        },
+                        yaxis: [{
+                                seriesIndex: 0,
+                                labels: {
+                                    formatter: (value) => value,
+                                    style: {
+                                        fontSize: '12px',
+                                        cssClass: 'apexcharts-yaxis-title',
+                                    },
+                                },
+                                title: {
+                                    text: 'Temperature / Humidity',
+                                },
+                            },
+                            {
+                                seriesIndex: 2,
+                                opposite: true,
+                                labels: {
+                                    formatter: (value) => value,
+                                    style: {
+                                        fontSize: '12px',
+                                        cssClass: 'apexcharts-yaxis-title',
+                                    },
+                                },
+                                title: {
+                                    text: 'Light',
+                                },
+                            }
+                        ],
+                        grid: {
+                            borderColor: isDark ? '#191e3a' : '#e0e6ed',
+                            strokeDashArray: 5,
+                            xaxis: {
+                                lines: {
+                                    show: true,
+                                },
+                            },
+                            yaxis: {
+                                lines: {
+                                    show: false,
+                                },
+                            },
+                            padding: {
+                                top: 0,
+                                right: 0,
+                                bottom: 0,
+                                left: 0,
+                            },
+                        },
+                        legend: {
+                            position: 'top',
+                            horizontalAlign: 'right',
+                            fontSize: '16px',
+                            markers: {
+                                width: 10,
+                                height: 10,
+                                offsetX: -2,
+                            },
+                            itemMargin: {
+                                horizontal: 10,
+                                vertical: 5,
+                            },
+                        },
+                        tooltip: {
+                            x: {
+                                format: 'MMM dd, yyyy',
+                            },
+                            marker: {
+                                show: true,
+                            },
+                        },
+                        fill: {
+                            type: 'gradient',
+                            gradient: {
+                                shadeIntensity: 1,
+                                inverseColors: !1,
+                                opacityFrom: isDark ? 0.19 : 0.28,
+                                opacityTo: 0.05,
+                                stops: isDark ? [100, 100] : [45, 100],
+                            },
+                        },
+                    };
+                },
+
+                // sales by category
+
+                get temperatureOptions() {
+                    return {
+                        series: [75], // Example temperature percentage
+                        chart: {
+                            type: 'radialBar',
+                            height: 240,
+                            fontFamily: 'Nunito, sans-serif',
+                            events: {
+                                mouseEnter: function(event, chartContext, config) {
+                                    chartContext.updateOptions({
+                                        plotOptions: {
+                                            radialBar: {
+                                                hollow: {
+                                                    size: '80%', // Increase size on hover
+                                                },
+                                                track: {
+                                                    background: '#ffebee', // Light pink background on hover
+                                                },
+                                                dataLabels: {
+                                                    name: {
+                                                        fontSize: '22px', // Increase font size on hover
+                                                    },
+                                                    value: {
+                                                        fontSize: '40px', // Increase font size on hover
+                                                    },
+                                                },
+                                            },
+                                        },
+                                        colors: ['#FF5722'], // Orange color on hover
+                                    });
+                                },
+                                mouseLeave: function(event, chartContext, config) {
+                                    chartContext.updateOptions({
+                                        plotOptions: {
+                                            radialBar: {
+                                                hollow: {
+                                                    size: '70%', // Original size
+                                                },
+                                                track: {
+                                                    background: '#ffe0b2', // Original track color
+                                                },
+                                                dataLabels: {
+                                                    name: {
+                                                        fontSize: '20px', // Original font size
+                                                    },
+                                                    value: {
+                                                        fontSize: '36px', // Original font size
+                                                    },
+                                                },
+                                            },
+                                        },
+                                        colors: ['#FF5722'], // Original color
+                                    });
+                                },
+                            },
+                        },
+                        plotOptions: {
+                            radialBar: {
+                                startAngle: -90,
+                                endAngle: 90,
+                                hollow: {
+                                    size: '70%',
+                                    background: 'transparent',
+                                },
+                                track: {
+                                    strokeWidth: '100%',
+                                    background: '#ffe0b2', // Light peach background
+                                },
+                                dataLabels: {
+                                    name: {
+                                        show: true,
+                                        fontSize: '20px',
+                                        color: '#333',
+                                        offsetY: -10,
+                                    },
+                                    value: {
+                                        show: true,
+                                        fontSize: '36px',
+                                        color: '#333',
+                                        offsetY: 10,
+                                        formatter: (val) => {
+                                            return `${val}°C`;
+                                        },
+                                    },
+                                },
+                            },
+                        },
+                        colors: ['#FF5722'], // Base color
+                        stroke: {
+                            lineCap: 'round',
+                        },
+                        labels: ['Temperature'],
+                    };
+                },
+                get humidityOptions() {
+                    return {
+                        series: [75], // Example humidity percentage
+                        chart: {
+                            type: 'radialBar',
+                            height: 240,
+                            fontFamily: 'Nunito, sans-serif',
+                            events: {
+                                mouseEnter: function(event, chartContext, config) {
+                                    chartContext.updateOptions({
+                                        plotOptions: {
+                                            radialBar: {
+                                                hollow: {
+                                                    size: '80%', // Increase size on hover
+                                                },
+                                                track: {
+                                                    background: '#e0f7fa', // Light cyan background on hover
+                                                },
+                                                dataLabels: {
+                                                    name: {
+                                                        fontSize: '22px', // Increase font size on hover
+                                                    },
+                                                    value: {
+                                                        fontSize: '40px', // Increase font size on hover
+                                                    },
+                                                },
+                                            },
+                                        },
+                                        colors: ['#00BCD4'], // Cyan color on hover
+                                    });
+                                },
+                                mouseLeave: function(event, chartContext, config) {
+                                    chartContext.updateOptions({
+                                        plotOptions: {
+                                            radialBar: {
+                                                hollow: {
+                                                    size: '70%', // Original size
+                                                },
+                                                track: {
+                                                    background: '#b2ebf2', // Original track color
+                                                },
+                                                dataLabels: {
+                                                    name: {
+                                                        fontSize: '20px', // Original font size
+                                                    },
+                                                    value: {
+                                                        fontSize: '36px', // Original font size
+                                                    },
+                                                },
+                                            },
+                                        },
+                                        colors: ['#00BCD4'], // Original color
+                                    });
+                                },
+                            },
+                        },
+                        plotOptions: {
+                            radialBar: {
+                                startAngle: -90,
+                                endAngle: 90,
+                                hollow: {
+                                    size: '70%',
+                                    background: 'transparent',
+                                },
+                                track: {
+                                    strokeWidth: '100%',
+                                    background: '#b2ebf2', // Light cyan background
+                                },
+                                dataLabels: {
+                                    name: {
+                                        show: true,
+                                        fontSize: '20px',
+                                        color: '#333',
+                                        offsetY: -10,
+                                    },
+                                    value: {
+                                        show: true,
+                                        fontSize: '36px',
+                                        color: '#333',
+                                        offsetY: 10,
+                                        formatter: (val) => {
+                                            return `${val}%`;
+                                        },
+                                    },
+                                },
+                            },
+                        },
+                        colors: ['#00BCD4'], // Base color
+                        stroke: {
+                            lineCap: 'round',
+                        },
+                        labels: ['Humidity'],
+                    };
+                },
+                get lightOptions() {
+                    return {
+                        series: [75], // Example light intensity percentage
+                        chart: {
+                            type: 'radialBar',
+                            height: 240,
+                            fontFamily: 'Nunito, sans-serif',
+                            events: {
+                                mouseEnter: function(event, chartContext, config) {
+                                    chartContext.updateOptions({
+                                        plotOptions: {
+                                            radialBar: {
+                                                hollow: {
+                                                    size: '80%', // Increase size on hover
+                                                },
+                                                track: {
+                                                    background: '#fffde7', // Light yellow background on hover
+                                                },
+                                                dataLabels: {
+                                                    name: {
+                                                        fontSize: '22px', // Increase font size on hover
+                                                    },
+                                                    value: {
+                                                        fontSize: '40px', // Increase font size on hover
+                                                    },
+                                                },
+                                            },
+                                        },
+                                        colors: ['#FFC107'], // Yellow color on hover
+                                    });
+                                },
+                                mouseLeave: function(event, chartContext, config) {
+                                    chartContext.updateOptions({
+                                        plotOptions: {
+                                            radialBar: {
+                                                hollow: {
+                                                    size: '70%', // Original size
+                                                },
+                                                track: {
+                                                    background: '#fff9c4', // Original track color
+                                                },
+                                                dataLabels: {
+                                                    name: {
+                                                        fontSize: '20px', // Original font size
+                                                    },
+                                                    value: {
+                                                        fontSize: '36px', // Original font size
+                                                    },
+                                                },
+                                            },
+                                        },
+                                        colors: ['#FFC107'], // Original color
+                                    });
+                                },
+                            },
+                        },
+                        plotOptions: {
+                            radialBar: {
+                                startAngle: -90,
+                                endAngle: 90,
+                                hollow: {
+                                    size: '70%',
+                                    background: 'transparent',
+                                },
+                                track: {
+                                    strokeWidth: '100%',
+                                    background: '#fff9c4', // Light yellow background
+                                },
+                                dataLabels: {
+                                    name: {
+                                        show: true,
+                                        fontSize: '20px',
+                                        color: '#333',
+                                        offsetY: -10,
+                                    },
+                                    value: {
+                                        show: true,
+                                        fontSize: '36px',
+                                        color: '#333',
+                                        offsetY: 10,
+                                        formatter: (val) => {
+                                            return `${val} Lux`;
+                                        },
+                                    },
+                                },
+                            },
+                        },
+                        colors: ['#FFC107'], // Base yellow color
+                        stroke: {
+                            lineCap: 'round',
+                        },
+                        labels: ['Light'],
+                    };
+                },
+
+                // daily sales
+                get dailySalesOptions() {
+                    return {
+                        series: [{
+                                name: 'Sales',
+                                data: [44, 55, 41, 67, 22, 43, 21],
+                            },
+                            {
+                                name: 'Last Week',
+                                data: [13, 23, 20, 8, 13, 27, 33],
+                            },
+                        ],
+                        chart: {
+                            height: 160,
+                            type: 'bar',
+                            fontFamily: 'Nunito, sans-serif',
+                            toolbar: {
+                                show: false,
+                            },
+                            stacked: true,
+                            stackType: '100%',
+                        },
+                        dataLabels: {
+                            enabled: false,
+                        },
+                        stroke: {
+                            show: true,
+                            width: 1,
+                        },
+                        colors: ['#e2a03f', '#e0e6ed'],
+                        responsive: [{
+                            breakpoint: 480,
+                            options: {
+                                legend: {
+                                    position: 'bottom',
+                                    offsetX: -10,
+                                    offsetY: 0,
+                                },
+                            },
+                        }, ],
+                        xaxis: {
+                            labels: {
+                                show: false,
+                            },
+                            categories: ['Sun', 'Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat'],
+                        },
+                        yaxis: {
+                            show: false,
+                        },
+                        fill: {
+                            opacity: 1,
+                        },
+                        plotOptions: {
+                            bar: {
+                                horizontal: false,
+                                columnWidth: '25%',
+                            },
+                        },
+                        legend: {
+                            show: false,
+                        },
+                        grid: {
+                            show: false,
+                            xaxis: {
+                                lines: {
+                                    show: false,
+                                },
+                            },
+                            padding: {
+                                top: 10,
+                                right: -20,
+                                bottom: -20,
+                                left: -20,
+                            },
+                        },
+                    };
+                },
+
+                // total orders
+                get totalOrdersOptions() {
+                    return {
+                        series: [{
+                            name: 'Sales',
+                            data: [28, 40, 36, 52, 38, 60, 38, 52, 36, 40],
+                        }, ],
+                        chart: {
+                            height: 290,
+                            type: 'area',
+                            fontFamily: 'Nunito, sans-serif',
+                            sparkline: {
+                                enabled: true,
+                            },
+                        },
+                        stroke: {
+                            curve: 'smooth',
+                            width: 2,
+                        },
+                        colors: isDark ? ['#00ab55'] : ['#00ab55'],
+                        labels: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'],
+                        yaxis: {
+                            min: 0,
+                            show: false,
+                        },
+                        grid: {
+                            padding: {
+                                top: 125,
+                                right: 0,
+                                bottom: 0,
+                                left: 0,
+                            },
+                        },
+                        fill: {
+                            opacity: 1,
+                            type: 'gradient',
+                            gradient: {
+                                type: 'vertical',
+                                shadeIntensity: 1,
+                                inverseColors: !1,
+                                opacityFrom: 0.3,
+                                opacityTo: 0.05,
+                                stops: [100, 100],
+                            },
+                        },
+                        tooltip: {
+                            x: {
+                                show: false,
+                            },
+                        },
+                    };
+                },
+            }));
+        });
+    </script>
 </body>
 
 </html>
