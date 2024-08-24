@@ -53,7 +53,8 @@
                                     <h1 class="text-3xl font-extrabold uppercase !leading-snug text-primary md:text-4xl">Sign in</h1>
                                     <p class="text-base font-bold leading-normal text-white-dark">Enter your email and password to login</p>
                                 </div>
-                                <form class="space-y-5 dark:text-white" @submit.prevent="window.location='index.html'">
+                                <form class="space-y-5 dark:text-white" @submit.prevent="window.location='/dashboard'" action="{{route('login')}} " method="POST">
+                                    @csrf
                                     <div>
                                         <label for="Email">Email</label>
                                         <div class="relative text-white-dark">
