@@ -30,39 +30,42 @@
         }
 
         .panel {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem; /* Space between rows */
-}
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            /* Space between rows */
+        }
 
-.control-item {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    border-radius: 8px;
-    height: 100px; /* Ensure uniform height */
-    background: linear-gradient(to right, currentColor, transparent); /* Gradient effect */
-}
+        .control-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-radius: 8px;
+            height: 100px;
+            /* Ensure uniform height */
+            background: linear-gradient(to right, currentColor, transparent);
+            /* Gradient effect */
+        }
 
-.btn {
-    background-color: white;
-    color: black;
-    border: none;
-    padding: 0.5rem 1rem;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 16px;
-}
+        .btn {
+            background-color: white;
+            color: black;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
 
-.btn:hover {
-    background-color: #ddd;
-}
+        .btn:hover {
+            background-color: #ddd;
+        }
 
-.fas {
-    font-size: 2rem; /* Adjust size as needed */
-}
-
+        .fas {
+            font-size: 2rem;
+            /* Adjust size as needed */
+        }
     </style>
     <!-- start main content section -->
     <div x-data="sales">
