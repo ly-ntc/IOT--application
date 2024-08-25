@@ -7,8 +7,8 @@
     </div>
     <div class="mb-5">
         <div class="flex flex-col items-center justify-center text-center">
-            <img src="assets/images/profile-34.jpeg" alt="image" class="mb-5 h-24 w-24 rounded-full object-cover">
-            <p class="text-xl font-semibold text-primary">Name: Nguyễn Thị Cẩm Ly</p>
+            <img src="{{asset('images')}}/{{$user->image}} " alt="image" class="mb-5 h-24 w-24 rounded-full object-cover">
+            <p class="text-xl font-semibold text-primary">Name:{{$user->name}} </p>
         </div>
         <ul class="m-auto mt-5 max-w-[300px] space-y-4 font-semibold text-white-dark text-center">
             <li class="flex items-center justify-center gap-2">
@@ -19,7 +19,7 @@
                     <path d="M4.99994 7.5L5.11605 7.38388C5.62322 6.87671 5.68028 6.0738 5.24994 5.5C4.81959 4.9262 4.87665 4.12329 5.38382 3.61612L5.49994 3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
                     <path d="M14.4999 7.5L14.6161 7.38388C15.1232 6.87671 15.1803 6.0738 14.7499 5.5C14.3196 4.9262 14.3767 4.12329 14.8838 3.61612L14.9999 3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
                 </svg>
-                Student code: B21DCCN506
+                Student code: {{$user->student_code}} 
             </li>
             <li class="flex items-center justify-center gap-2">
                 <svg width="24" height="24" viewbox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5">
@@ -28,14 +28,14 @@
                     <path opacity="0.5" d="M17 4V2.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path>
                     <path opacity="0.5" d="M2 9H22" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path>
                 </svg>
-                Birthday: 30/05/2003
+                Birthday: {{$user->birthday}} 
             </li>
             <li class="flex items-center justify-center gap-2">
                 <svg width="24" height="24" viewbox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5">
                     <path opacity="0.5" d="M4 10.1433C4 5.64588 7.58172 2 12 2C16.4183 2 20 5.64588 20 10.1433C20 14.6055 17.4467 19.8124 13.4629 21.6744C12.5343 22.1085 11.4657 22.1085 10.5371 21.6744C6.55332 19.8124 4 14.6055 4 10.1433Z" stroke="currentColor" stroke-width="1.5"></path>
                     <circle cx="12" cy="10" r="3" stroke="currentColor" stroke-width="1.5"></circle>
                 </svg>
-                Address: Hà Nam
+                Address: {{$user->address}} 
             </li>
             <li class="flex items-center justify-center gap-2">
                 <a href="javascript:;" class="flex items-center gap-2">
@@ -43,7 +43,7 @@
                         <path opacity="0.5" d="M2 12C2 8.22876 2 6.34315 3.17157 5.17157C4.34315 4 6.22876 4 10 4H14C17.7712 4 19.6569 4 20.8284 5.17157C22 6.34315 22 8.22876 22 12C22 15.7712 22 17.6569 20.8284 18.8284C19.6569 20 17.7712 20 14 20H10C6.22876 20 4.34315 20 3.17157 18.8284C2 17.6569 2 15.7712 2 12Z" stroke="currentColor" stroke-width="1.5"></path>
                         <path d="M6 8L8.1589 9.79908C9.99553 11.3296 10.9139 12.0949 12 12.0949C13.0861 12.0949 14.0045 11.3296 15.8411 9.79908L18 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path>
                     </svg>
-                    <span class="truncate">Email: lycuyt@gmail.com</span>
+                    <span class="truncate">Email: {{$user->email}} </span>
                 </a>
             </li>
             <li class="flex items-center justify-center gap-2">
@@ -53,7 +53,7 @@
                         <path opacity="0.5" d="M18.6763 18.9651C17.0469 19.117 13.0622 18.9492 8.8154 14.7266C4.81076 10.7447 4.09308 7.33182 4.00293 5.74561" stroke="currentColor" stroke-width="1.5"></path>
                         <path opacity="0.5" d="M16.1007 13.3589C16.1007 13.3589 15.0181 14.4353 12.0631 11.4971C9.10807 8.55886 10.1907 7.48242 10.1907 7.48242" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path>
                     </svg>
-                    <span class="truncate">Phone number: 0385937348</span>
+                    <span class="truncate">Phone number: {{$user->phone_number}} </span>
                 </a>
             </li>
         </ul>
