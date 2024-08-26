@@ -26,9 +26,9 @@ Route::middleware('auth')->group(function () {
         return view('pages.dashboard');
     });
 
-    Route::get('/data_sensors', function () {
-        return view('pages.data_sensors');
-    });
+    // Route::get('/data_sensors', function () {
+    //     return view('pages.data_sensors');
+    // });
 
     Route::get('/action_history', function () {
         return view('pages.action_history');
@@ -40,5 +40,5 @@ Route::middleware('auth')->group(function () {
     });
 
     Route::get('/latest-data', [DataController::class, 'getLatestData']);
-
+    Route::get('/data_sensors', [DataController::class, 'getAllData'])->name('getAllData');
 });

@@ -22,6 +22,7 @@ class DataFactory extends Factory
         return [
             'temperature' => $this->faker->randomFloat(2, -10, 100), // Nhiệt độ giả lập từ -10 đến 50 độ C
             'humidity' => $this->faker->randomFloat(2, 0, 100), // Độ ẩm giả lập từ 0 đến 100%
+            'light' => $this->faker->randomFloat(2, 0, 1000), // Ánh sáng giả lập từ 0 đến 100%
             'time' => $this->faker->dateTimeBetween('-1 year', 'now'), // Thời gian ngẫu nhiên trong 1 năm qua
         ];
     }

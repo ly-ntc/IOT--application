@@ -21,4 +21,20 @@ class DataController extends Controller
         // Trả về dữ liệu dưới dạng JSON
         return response()->json($latestData);
     }
+
+    // public function getAllData(){
+    //     // Lấy tất cả dữ liệu nhiệt độ theo thời gian sớm nhất
+    //     $allData = Data::orderBy('time', 'asc')->paginate(10) ;
+    //     // $allData = Data::all();
+
+    //     // Trả về dữ liệu dưới dạng JSON
+    //     return view('pages.data_sensors', compact('allData'));
+    // }
+    public function getAllData(Request $request)
+    {
+        $itemsPerPage = $request->input('itemsPerPage', 10); // Default to 10 if not specified
+        $allData = Data::paginate($itemsPerPage);
+
+        return view('pages.data_sensors ', compact('allData'));
+    }
 }

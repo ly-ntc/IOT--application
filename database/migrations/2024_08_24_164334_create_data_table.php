@@ -16,7 +16,8 @@ return new class extends Migration
         Schema::create('datas', function (Blueprint $table) {
             $table->increments('id');
             $table->float('temperature'); // Nhiệt độ
-            $table->float('humidity'); // Độ ẩm
+            $table->float('humidity');
+            $table->float ('light'); // Độ ẩm
             $table->timestamp('time'); // Thời gian
             $table->timestamps();
         });

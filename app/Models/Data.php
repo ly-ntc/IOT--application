@@ -15,6 +15,7 @@ class Data extends Model
         'id',
         'temperature',
         'humidity',
-        'time'
+        'time',
+        'light',
     ];
 }

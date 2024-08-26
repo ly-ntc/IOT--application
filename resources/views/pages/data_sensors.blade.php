@@ -1,6 +1,17 @@
 @extends('layouts.app')
 
 @section('content')
+    <style>
+        .text-gray-500 {
+            --tw-text-opacity: 1;
+            color: #1037f0;
+
+            .bg-white {
+                --tw-bg-opacity: 1;
+                background-color: #f0f1f8;
+            }
+        }
+    </style>
     <div class="panel">
         <div class="mb-5 flex items-center justify-between">
             <h5 class="text-lg font-semibold dark:text-white-light">Data Sensors</h5>
@@ -24,35 +35,54 @@
         </div>
         <div class="mb-5">
             <div class="sm:ltr:mr-auto sm:rtl:ml-auto" x-data="{ search: false }" @click.outside="search = false">
-                <form class="absolute inset-x-0 top-1/2 z-10 mx-4 hidden -translate-y-1/2 sm:relative sm:top-0 sm:mx-0 sm:block sm:translate-y-0" :class="{'!block' : search}" @submit.prevent="search = false" style="width: 300px;"> <!-- Adjust width here -->
+                <form
+                    class="absolute inset-x-0 top-1/2 z-10 mx-4 hidden -translate-y-1/2 sm:relative sm:top-0 sm:mx-0 sm:block sm:translate-y-0"
+                    :class="{ '!block': search }" @submit.prevent="search = false" style="width: 300px;">
+                    <!-- Adjust width here -->
                     <div class="relative">
-                        <input type="text" class="peer form-input bg-gray-100 placeholder:tracking-widest ltr:pl-10 ltr:pr-10 rtl:pl-10 rtl:pr-10 sm:bg-transparent ltr:sm:pr-4 rtl:sm:pl-4" placeholder="Search..." style="padding-left: 10px; padding-right: 10px;"> <!-- Adjust padding here -->
-                        <button type="button" class="absolute inset-y-0 right-0 h-full w-10 appearance-none peer-focus:text-primary">
-                            <svg class="mx-auto h-6 w-6 dark:text-[#d0d2d6]" width="24" height="24" viewbox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <circle cx="11.5" cy="11.5" r="9.5" stroke="currentColor" stroke-width="1.5" opacity="0.5"></circle>
-                                <path d="M18.5 18.5L22 22" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path>
+                        <input type="text"
+                            class="peer form-input bg-gray-100 placeholder:tracking-widest ltr:pl-10 ltr:pr-10 rtl:pl-10 rtl:pr-10 sm:bg-transparent ltr:sm:pr-4 rtl:sm:pl-4"
+                            placeholder="Search..." style="padding-left: 10px; padding-right: 10px;">
+                        <!-- Adjust padding here -->
+                        <button type="button"
+                            class="absolute inset-y-0 right-0 h-full w-10 appearance-none peer-focus:text-primary">
+                            <svg class="mx-auto h-6 w-6 dark:text-[#d0d2d6]" width="24" height="24"
+                                viewbox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="11.5" cy="11.5" r="9.5" stroke="currentColor" stroke-width="1.5"
+                                    opacity="0.5"></circle>
+                                <path d="M18.5 18.5L22 22" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+                                </path>
                             </svg>
                         </button>
-                        <button type="button" class="absolute top-1/2 block -translate-y-1/2 hover:opacity-80 ltr:right-2 rtl:left-2 sm:hidden" @click="search = false">
-                            <svg width="20" height="20" viewbox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <circle opacity="0.5" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.5"></circle>
-                                <path d="M14.5 9.50002L9.5 14.5M9.49998 9.5L14.5 14.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path>
+                        <button type="button"
+                            class="absolute top-1/2 block -translate-y-1/2 hover:opacity-80 ltr:right-2 rtl:left-2 sm:hidden"
+                            @click="search = false">
+                            <svg width="20" height="20" viewbox="0 0 24 24" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <circle opacity="0.5" cx="12" cy="12" r="10" stroke="currentColor"
+                                    stroke-width="1.5"></circle>
+                                <path d="M14.5 9.50002L9.5 14.5M9.49998 9.5L14.5 14.5" stroke="currentColor"
+                                    stroke-width="1.5" stroke-linecap="round"></path>
                             </svg>
                         </button>
                     </div>
                 </form>
-                <button type="button" class="search_btn rounded-full bg-white-light/40 p-2 hover:bg-white-light/90 dark:bg-dark/40 dark:hover:bg-dark/60 sm:hidden" @click="search = ! search">
-                    <svg class="mx-auto h-4.5 w-4.5 dark:text-[#d0d2d6]" width="20" height="20" viewbox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <circle cx="11.5" cy="11.5" r="9.5" stroke="currentColor" stroke-width="1.5" opacity="0.5"></circle>
+                <button type="button"
+                    class="search_btn rounded-full bg-white-light/40 p-2 hover:bg-white-light/90 dark:bg-dark/40 dark:hover:bg-dark/60 sm:hidden"
+                    @click="search = ! search">
+                    <svg class="mx-auto h-4.5 w-4.5 dark:text-[#d0d2d6]" width="20" height="20" viewbox="0 0 24 24"
+                        fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="11.5" cy="11.5" r="9.5" stroke="currentColor" stroke-width="1.5"
+                            opacity="0.5"></circle>
                         <path d="M18.5 18.5L22 22" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path>
                     </svg>
                 </button>
             </div>
-        </div>        
+        </div>
 
         <div class="mb-5">
             <div class="table-responsive">
-                <table>
+                <table class="table">
                     <thead>
                         <tr>
                             <th>Id</th>
@@ -79,81 +109,39 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>22°C</td>
-                            <td>55%</td>
-                            <td>300 lux</td>
-                            <td>2024-08-24 10:00</td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>21°C</td>
-                            <td>60%</td>
-                            <td>320 lux</td>
-                            <td>2024-08-24 11:00</td>
-                        </tr>
-                        <tr>
-                            <td>3</td>
-                            <td>23°C</td>
-                            <td>53%</td>
-                            <td>310 lux</td>
-                            <td>2024-08-24 12:00</td>
-                        </tr>
-                        <tr>
-                            <td>4</td>
-                            <td>20°C</td>
-                            <td>62%</td>
-                            <td>300 lux</td>
-                            <td>2024-08-24 13:00</td>
-                        </tr>
-                        <tr>
-                            <td>5</td>
-                            <td>24°C</td>
-                            <td>50%</td>
-                            <td>330 lux</td>
-                            <td>2024-08-24 14:00</td>
-                        </tr>
-                        <tr>
-                            <td>6</td>
-                            <td>25°C</td>
-                            <td>45%</td>
-                            <td>340 lux</td>
-                            <td>2024-08-24 15:00</td>
-                        </tr>
-                        <tr>
-                            <td>7</td>
-                            <td>19°C</td>
-                            <td>65%</td>
-                            <td>290 lux</td>
-                            <td>2024-08-24 16:00</td>
-                        </tr>
-                        <tr>
-                            <td>8</td>
-                            <td>22°C</td>
-                            <td>58%</td>
-                            <td>310 lux</td>
-                            <td>2024-08-24 17:00</td>
-                        </tr>
-                        <tr>
-                            <td>9</td>
-                            <td>23°C</td>
-                            <td>52%</td>
-                            <td>320 lux</td>
-                            <td>2024-08-24 18:00</td>
-                        </tr>
-                        <tr>
-                            <td>10</td>
-                            <td>24°C</td>
-                            <td>49%</td>
-                            <td>330 lux</td>
-                            <td>2024-08-24 19:00</td>
-                        </tr>
+                        @foreach ($allData as $index => $item)
+                            <tr>
+                                <td>{{ $loop->iteration }}</td>
+                                <td>{{ $item->temperature }}</td>
+                                <td>{{ $item->humidity }}</td>
+                                <td>{{ $item->light }}</td>
+                                <td>{{ $item->time }}</td>
+                            </tr>
+                        @endforeach
                     </tbody>
                 </table>
 
+                <!-- Pagination and Items per Page -->
+                <div class="d-flex justify-content-between align-items-center mt-3">
+                    <!-- Dropdown to select number of items per page -->
+                    <form method="GET" action="{{ route('getAllData') }}" class="">
+                        <span for="itemsPerPage" class="mr-2">Limit</span>
+                        <select name="itemsPerPage" id="itemsPerPage" class="form-control w-auto border"
+                            onchange="this.form.submit()">
+                            <option value="10" {{ request('itemsPerPage') == 10 ? 'selected' : '' }}>10</option>
+                            <option value="15" {{ request('itemsPerPage') == 15 ? 'selected' : '' }}>15</option>
+                            <option value="20" {{ request('itemsPerPage') == 20 ? 'selected' : '' }}>20</option>
+                        </select>
+                    </form>
+
+                    <!-- Pagination links -->
+                    <div>
+                        {!! $allData->links() !!}
+                    </div>
+                </div>
             </div>
         </div>
+
 
     </div>
     <script>
@@ -161,22 +149,22 @@
             // Implement sorting logic here
             console.log(`Sorting ${column} in ${order} order.`);
         }
-    
+
         document.getElementById('searchInput').addEventListener('input', function() {
             let filter = this.value.toLowerCase();
             let rows = document.querySelectorAll('#tableBody tr');
-    
+
             rows.forEach(row => {
                 let cells = row.getElementsByTagName('td');
                 let match = false;
-    
+
                 for (let i = 0; i < cells.length; i++) {
                     if (cells[i].textContent.toLowerCase().includes(filter)) {
                         match = true;
                         break;
                     }
                 }
-    
+
                 row.style.display = match ? '' : 'none';
             });
         });
