@@ -364,7 +364,7 @@
                 notifications: [{
                         id: 1,
                         profile: 'user-profile.jpeg',
-                        message: '<strong class="text-sm mr-1">StarCode Kh</strong>invite you to <strong>Prototyping</strong>',
+                        message: '<strong class="text-sm mr-1">{{ auth()->user()->name }}</strong>invite you to <strong>Prototyping</strong>',
                         time: '45 min ago',
                     },
                     {

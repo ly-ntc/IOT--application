@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ActionController;
 use App\Http\Controllers\DataController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
@@ -41,4 +42,5 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/latest-data', [DataController::class, 'getLatestData']);
     Route::get('/data_sensors', [DataController::class, 'getAllData'])->name('getAllData');
+    Route::get('/action_history', [ActionController::class, 'getAllAction'])->name('getAllAction');
 });

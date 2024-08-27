@@ -4,8 +4,8 @@
         <div class="relative flex w-full items-center bg-white px-5 py-2.5 dark:bg-[#0e1726]">
             <div class="horizontal-logo flex items-center justify-between ltr:mr-2 rtl:ml-2 lg:hidden">
                 <a href="index.html" class="main-logo flex shrink-0 items-center">
-                    <img class="inline w-8 ltr:-ml-1 rtl:-mr-1" src="{{asset('assets')}}/images/logo.png" alt="image">
-                    <span class="hidden align-middle text-2xl font-semibold transition-all duration-300 ltr:ml-1.5 rtl:mr-1.5 dark:text-white-light md:inline">StarCode Kh</span>
+                    <img class="inline ml-[5px] w-10 h-10 flex-none rounded-full" src="{{asset('images')}}/{{auth()->user()->image}}" alt="image">
+                    <span class="hidden align-middle text-2xl font-semibold transition-all duration-300 ltr:ml-1.5 rtl:mr-1.5 dark:text-white-light md:inline">{{ auth()->user()->name }}</span>
                 </a>
 
                 <a href="javascript:;" class="collapse-icon flex flex-none rounded-full bg-white-light/40 p-2 hover:bg-white-light/90 hover:text-primary ltr:ml-2 rtl:mr-2 dark:bg-dark/40 dark:text-[#d0d2d6] dark:hover:bg-dark/60 dark:hover:text-primary lg:hidden" @click="$store.app.toggleSidebar()">
@@ -73,19 +73,22 @@
 
                 <div class="dropdown flex-shrink-0" x-data="dropdown" @click.outside="open = false">
                     <a href="javascript:;" class="group relative" @click="toggle()">
-                        <span><img class="h-9 w-9 rounded-full object-cover saturate-50 group-hover:saturate-100" src="{{asset('assets')}}/images/user-profile.jpeg" alt="image"></span>
+                        <span><img class="h-9 w-9 rounded-full object-cover saturate-50 group-hover:saturate-100" src="{{ asset('images') }}/{{ auth()->user()->image }}" alt="image"></span>
                     </a>
                     <ul x-cloak="" x-show="open" x-transition="" x-transition.duration.300ms="" class="top-11 w-[230px] !py-0 font-semibold text-dark ltr:right-0 rtl:left-0 dark:text-white-dark dark:text-white-light/90">
                         <li>
                             <div class="flex items-center px-4 py-4">
                                 <div class="flex-none">
-                                    <img class="h-10 w-10 rounded-md object-cover" src="{{asset('assets')}}/images/user-profile.jpeg" alt="image">
+                                    {{-- <img class="h-10 w-10 rounded-md object-cover" src="{{asset('assets')}}/images/user-profile.jpeg" alt="image"> --}}
+                                    <img class="ml-[5px] w-10 h-10 flex-none rounded-full" src="{{ asset('images') }}/{{ auth()->user()->image }}">
+
                                 </div>
                                 <div class="truncate ltr:pl-4 rtl:pr-4">
                                     <h4 class="text-base">
-                                        StarCode Kh<span class="rounded bg-success-light px-1 text-xs text-success ltr:ml-2 rtl:ml-2">Pro</span>
+                                        {{ auth()->user()->name }}
+                                        <span class="rounded bg-success-light px-1 text-xs text-success ltr:ml-2 rtl:ml-2">Pro</span>
                                     </h4>
-                                    <a class="text-black/60 hover:text-primary dark:text-dark-light/60 dark:hover:text-white" href="javascript:;">starcodekh@gmail.com</a>
+                                    <a class="text-black/60 hover:text-primary dark:text-dark-light/60 dark:hover:text-white" href="javascript:;">{{ auth()->user()->email }}</a>
                                 </div>
                             </div>
                         </li>

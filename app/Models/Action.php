@@ -16,5 +16,9 @@ class Action extends Model
         'action',
         'time',
     ];
-
-}
+    //mot action thuoc ve mot user
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+}   

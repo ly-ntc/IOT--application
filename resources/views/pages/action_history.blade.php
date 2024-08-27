@@ -1,6 +1,17 @@
 @extends('layouts.app')
 
 @section('content')
+<style>
+    .text-gray-500 {
+        --tw-text-opacity: 1;
+        color: #1037f0;
+
+        .bg-white {
+            --tw-bg-opacity: 1;
+            background-color: #f0f1f8;
+        }
+    }
+</style>
     <div class="panel">
         <div class="mb-5 flex items-center justify-between">
             <h5 class="text-lg font-semibold dark:text-white-light">Action History</h5>
@@ -80,79 +91,35 @@
                     </thead>
                     <tbody>
                         <!-- Sample Data Rows -->
-                        <tr>
-                            <td>1</td>
-                            <td>Device A</td>
-                            <td>Action X</td>
-                            <td>2024-08-24 10:00</td>
-                            <td>User1</td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>Device B</td>
-                            <td>Action Y</td>
-                            <td>2024-08-24 11:00</td>
-                            <td>User2</td>
-                        </tr>
-                        <tr>
-                            <td>3</td>
-                            <td>Device C</td>
-                            <td>Action Z</td>
-                            <td>2024-08-24 12:00</td>
-                            <td>User3</td>
-                        </tr>
-                        <tr>
-                            <td>4</td>
-                            <td>Device D</td>
-                            <td>Action A</td>
-                            <td>2024-08-24 13:00</td>
-                            <td>User4</td>
-                        </tr>
-                        <tr>
-                            <td>5</td>
-                            <td>Device E</td>
-                            <td>Action B</td>
-                            <td>2024-08-24 14:00</td>
-                            <td>User5</td>
-                        </tr>
-                        <tr>
-                            <td>6</td>
-                            <td>Device F</td>
-                            <td>Action C</td>
-                            <td>2024-08-24 15:00</td>
-                            <td>User6</td>
-                        </tr>
-                        <tr>
-                            <td>7</td>
-                            <td>Device G</td>
-                            <td>Action D</td>
-                            <td>2024-08-24 16:00</td>
-                            <td>User7</td>
-                        </tr>
-                        <tr>
-                            <td>8</td>
-                            <td>Device H</td>
-                            <td>Action E</td>
-                            <td>2024-08-24 17:00</td>
-                            <td>User8</td>
-                        </tr>
-                        <tr>
-                            <td>9</td>
-                            <td>Device I</td>
-                            <td>Action F</td>
-                            <td>2024-08-24 18:00</td>
-                            <td>User9</td>
-                        </tr>
-                        <tr>
-                            <td>10</td>
-                            <td>Device J</td>
-                            <td>Action G</td>
-                            <td>2024-08-24 19:00</td>
-                            <td>User10</td>
-                        </tr>
+                        @foreach ($allData as $index => $item)
+                            <tr>
+                                <td>{{ $loop->iteration }}</td>
+                                <td>{{ $item->device }}</td>
+                                <td>{{ $item->action }}</td>
+                                <td>{{ $item->time}}</td>
+                                <td>{{ $item->user->name}}</td>
+                            </tr>
+                        @endforeach
                     </tbody>
                 </table>
+                <!-- Pagination and Items per Page -->
+                <div class="d-flex justify-content-between align-items-center mt-3">
+                    <!-- Dropdown to select number of items per page -->
+                    <form method="GET" action="{{ route('getAllAction') }}" class="">
+                        <span for="itemsPerPage" class="mr-2">Limit</span>
+                        <select name="itemsPerPage" id="itemsPerPage" class="form-control w-auto border"
+                            onchange="this.form.submit()">
+                            <option value="10" {{ request('itemsPerPage') == 10 ? 'selected' : '' }}>10</option>
+                            <option value="15" {{ request('itemsPerPage') == 15 ? 'selected' : '' }}>15</option>
+                            <option value="20" {{ request('itemsPerPage') == 20 ? 'selected' : '' }}>20</option>
+                        </select>
+                    </form>
 
+                    <!-- Pagination links -->
+                    <div>
+                        {!! $allData->links() !!}
+                    </div>
+                </div>
             </div>
         </div>
 
