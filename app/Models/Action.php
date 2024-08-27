@@ -15,6 +15,7 @@ class Action extends Model
         'id',
         'action',
         'time',
+        'user_id',
     ];
     //mot action thuoc ve mot user
     public function user()

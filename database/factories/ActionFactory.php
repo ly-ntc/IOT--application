@@ -20,6 +20,7 @@ class ActionFactory extends Factory
             'device' => $this->faker->word, // Giả lập tên thiết bị
             'action' => $this->faker->randomElement(['on', 'off']), // Giả lập hành động bật/tắt
             'user_id' => 1, // ID người dùng luôn là 1
+            'time' => $this->faker->dateTimeBetween('-1 year', 'now'),
         ];
     }
 }

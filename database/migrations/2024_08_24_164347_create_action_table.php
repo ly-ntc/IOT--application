@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('device'); // Thiết bị
             $table->enum('action', ['on', 'off']); // Hành động (bật/tắt)
+            $table->date('time');
             $table->unsignedInteger('user_id'); // ID người dùng
             $table->timestamps();
 

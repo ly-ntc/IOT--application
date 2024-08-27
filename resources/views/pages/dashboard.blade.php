@@ -17,7 +17,7 @@
         }
 
         .dark\:bg-gradient-humidity-dark-light {
-            background: linear-gradient(135deg, #7db2e8, #e8f3fe);
+            background: linear-gradient(135deg, #53687e, #e8f3fe);
         }
 
         /* Light Background Gradient (Even Lighter) */
@@ -26,7 +26,7 @@
         }
 
         .dark\:bg-gradient-light-dark-light {
-            background: linear-gradient(135deg, #fff9d9, #fefde6);
+            background: linear-gradient(135deg, #f1e181, #fefde6);
         }
 
         .panel {
@@ -104,6 +104,7 @@
         /* Hiệu ứng quạt quay */
         .fan-icon.spin {
             animation: spin 1s linear infinite;
+            color: #4361EE;
         }
 
         /* Animation quay */
@@ -119,7 +120,7 @@
 
         /* Icon bật và tắt */
         .ac-icon.on {
-            color: blue;
+            color: #4361EE;
             /* Màu khi bật */
         }
 
@@ -138,7 +139,7 @@
         </ul>
 
         <div class="pt-5">
-            <div class="mb-6 grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
+            <div class="mb-6 grid gap-6 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3">
                 <!-- Temperature -->
                 <div x-ref="temperature"
                     class="rounded-lg bg-gradient-temperature-light dark:bg-gradient-temperature-dark-light">
@@ -242,12 +243,12 @@
             </div>
         </div>
     </div>
-    <div>
+    {{-- <div>
         <h2>Temperature Data</h2>
         <p>Temperature: <span id="temperature">Loading...</span></p>
         <p>Humidity: <span id="humidity">Loading...</span></p>
         <p>Time: <span id="time">Loading...</span></p>
-    </div>
+    </div> --}}
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     {{-- on/off --}}
     <script>
@@ -265,7 +266,7 @@
             var acSwitch = document.getElementById("acSwitch");
             var acIcon = document.getElementById("acIcon");
             if (acSwitch.checked) {
-                acIcon.style.color = "blue"; // Đổi màu khi bật
+                acIcon.style.color = "#4361EE"; // Đổi màu khi bật
             } else {
                 acIcon.style.color = "gray"; // Đổi màu khi tắt
             }
