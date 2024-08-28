@@ -775,7 +775,7 @@
                 },
                 get lightOptions() {
                     return {
-                        series: [75], // Example light intensity percentage
+                        series: [(300 / 1000) * 100], // Chuyển đổi 300 thành phần trăm của 1000
                         chart: {
                             type: 'radialBar',
                             height: 240,
@@ -786,22 +786,22 @@
                                         plotOptions: {
                                             radialBar: {
                                                 hollow: {
-                                                    size: '80%', // Increase size on hover
+                                                    size: '80%', // Tăng kích thước khi hover
                                                 },
                                                 track: {
-                                                    background: '#fffde7', // Light yellow background on hover
+                                                    background: '#fffde7', // Nền màu vàng nhạt khi hover
                                                 },
                                                 dataLabels: {
                                                     name: {
-                                                        fontSize: '22px', // Increase font size on hover
+                                                        fontSize: '22px', // Tăng kích thước font khi hover
                                                     },
                                                     value: {
-                                                        fontSize: '40px', // Increase font size on hover
+                                                        fontSize: '40px', // Tăng kích thước font khi hover
                                                     },
                                                 },
                                             },
                                         },
-                                        colors: ['#FFC107'], // Yellow color on hover
+                                        colors: ['#FFC107'], // Màu vàng khi hover
                                     });
                                 },
                                 mouseLeave: function(event, chartContext, config) {
@@ -809,22 +809,22 @@
                                         plotOptions: {
                                             radialBar: {
                                                 hollow: {
-                                                    size: '70%', // Original size
+                                                    size: '70%', // Kích thước gốc
                                                 },
                                                 track: {
-                                                    background: '#fff9c4', // Original track color
+                                                    background: '#fff9c4', // Màu nền track gốc
                                                 },
                                                 dataLabels: {
                                                     name: {
-                                                        fontSize: '20px', // Original font size
+                                                        fontSize: '20px', // Kích thước font gốc
                                                     },
                                                     value: {
-                                                        fontSize: '36px', // Original font size
+                                                        fontSize: '36px', // Kích thước font gốc
                                                     },
                                                 },
                                             },
                                         },
-                                        colors: ['#FFC107'], // Original color
+                                        colors: ['#FFC107'], // Màu gốc
                                     });
                                 },
                             },
@@ -839,7 +839,7 @@
                                 },
                                 track: {
                                     strokeWidth: '100%',
-                                    background: '#fff9c4', // Light yellow background
+                                    background: '#fff9c4', // Nền màu vàng nhạt
                                 },
                                 dataLabels: {
                                     name: {
@@ -853,20 +853,21 @@
                                         fontSize: '36px',
                                         color: '#333',
                                         offsetY: 10,
-                                        formatter: (val) => {
-                                            return `${val} Lux`;
+                                        formatter: () => {
+                                            return '300 Lux'; // Hiển thị giá trị thực tế là 300 Lux
                                         },
                                     },
                                 },
                             },
                         },
-                        colors: ['#FFC107'], // Base yellow color
+                        colors: ['#FFC107'], // Màu cơ bản vàng
                         stroke: {
                             lineCap: 'round',
                         },
                         labels: ['Light'],
                     };
                 },
+
             }));
         });
     </script>
