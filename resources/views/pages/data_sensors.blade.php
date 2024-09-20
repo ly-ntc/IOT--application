@@ -11,8 +11,9 @@
                 background-color: #f0f1f8;
             }
         }
-         /* Tùy chỉnh CSS */
-         .date-group {
+
+        /* Tùy chỉnh CSS */
+        .date-group {
             display: flex;
             align-items: center;
             margin-right: 2rem;
@@ -34,28 +35,53 @@
         <div class="mb-5 flex items-center justify-between">
             <h5 class="text-lg font-semibold dark:text-white-light">Data Sensors</h5>
         </div>
-                   <!-- Date Filter Form -->
-                   <form action="" method="GET" class="mb-4 flex justify-content-around space-x-12">
-                    @csrf
-                    <!-- Start Date Group -->
-                    <div class="flex items-center space-x-2" style="margin-right: 30px">
-                        <label for="start-date" class="text-sm font-medium text-gray-700 dark:text-gray-300">Start Date:</label>
-                        <input type="date" id="start-date" name="start_date" value="{{ request('start_date') }}"
-                            class="p-2 border rounded dark:bg-dark dark:text-white">
-                    </div>
-    
-                    <!-- End Date Group -->
-                    <div class="flex items-center space-x-2" style="margin-right: 30px">
-                        <label for="end-date" class="text-sm font-medium text-gray-700 dark:text-gray-300">End Date:</label>
-                        <input type="date" id="end-date" name="end_date" value="{{ request('end_date') }}"
-                            class="p-2 border rounded dark:bg-dark dark:text-white">
-                    </div>
-    
-                    <!-- Submit Button -->
-                    <div class="flex items-center">
-                        <button type="submit" class="text-white p-2 rounded" style="background: #4361ee">Apply Filter</button>
-                    </div>
-                </form>
+        <div class="sm:ltr:mr-auto sm:rtl:ml-auto" x-data="{ search: false }" @click.outside="search = false">
+            <form class="absolute inset-x-0 top-1/2 z-10 mx-4 hidden -translate-y-1/2 sm:relative sm:top-0 sm:mx-0 sm:block sm:translate-y-0" :class="{'!block' : search}" @submit.prevent="search = false" style="width: 600px">
+                <div class="relative">
+                    <input type="text" class="peer form-input bg-gray-100 placeholder:tracking-widest ltr:pl-9 ltr:pr-9 rtl:pl-9 rtl:pr-9 sm:bg-transparent ltr:sm:pr-4 rtl:sm:pl-4" placeholder="Search...">
+                    <button type="button" class="absolute inset-0 h-9 w-9 appearance-none peer-focus:text-primary ltr:right-auto rtl:left-auto">
+                        <svg class="mx-auto" width="16" height="16" viewbox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="11.5" cy="11.5" r="9.5" stroke="currentColor" stroke-width="1.5" opacity="0.5"></circle>
+                            <path d="M18.5 18.5L22 22" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path>
+                        </svg>
+                    </button>
+                    <button type="button" class="absolute top-1/2 block -translate-y-1/2 hover:opacity-80 ltr:right-2 rtl:left-2 sm:hidden" @click="search = false">
+                        <svg width="20" height="20" viewbox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle opacity="0.5" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.5"></circle>
+                            <path d="M14.5 9.50002L9.5 14.5M9.49998 9.5L14.5 14.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path>
+                        </svg>
+                    </button>
+                </div>
+            </form>
+            <button type="button" class="search_btn rounded-full bg-white-light/40 p-2 hover:bg-white-light/90 dark:bg-dark/40 dark:hover:bg-dark/60 sm:hidden" @click="search = ! search">
+                <svg class="mx-auto h-4.5 w-4.5 dark:text-[#d0d2d6]" width="20" height="20" viewbox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="11.5" cy="11.5" r="9.5" stroke="currentColor" stroke-width="1.5" opacity="0.5"></circle>
+                    <path d="M18.5 18.5L22 22" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path>
+                </svg>
+            </button>
+        </div>
+        <!-- Date Filter Form -->
+        <form action="" method="GET" class="mb-4 flex justify-content-around space-x-12">
+            @csrf
+            <!-- Start Date Group -->
+            <div class="flex items-center space-x-2" style="margin-right: 30px">
+                <label for="start-date" class="text-sm font-medium text-gray-700 dark:text-gray-300">Start Date:</label>
+                <input type="date" id="start-date" name="start_date" value="{{ request('start_date') }}"
+                    class="p-2 border rounded dark:bg-dark dark:text-white">
+            </div>
+
+            <!-- End Date Group -->
+            <div class="flex items-center space-x-2" style="margin-right: 30px">
+                <label for="end-date" class="text-sm font-medium text-gray-700 dark:text-gray-300">End Date:</label>
+                <input type="date" id="end-date" name="end_date" value="{{ request('end_date') }}"
+                    class="p-2 border rounded dark:bg-dark dark:text-white">
+            </div>
+
+            <!-- Submit Button -->
+            <div class="flex items-center">
+                <button type="submit" class="text-white p-2 rounded" style="background: #4361ee">Apply Filter</button>
+            </div>
+        </form>
 
         <div class="mb-5">
             <div class="table-responsive">

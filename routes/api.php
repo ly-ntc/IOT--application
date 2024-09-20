@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\ActionController;
+use App\Http\Controllers\MqttController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -17,3 +19,6 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+Route::get('/action_history', [ActionController::class, 'getAllAction'])->name('getAllAction');
+// Route::get('/mqtt/receive', [MqttController::class, 'receive']);
+

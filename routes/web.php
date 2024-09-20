@@ -31,9 +31,9 @@ Route::middleware('auth')->group(function () {
     //     return view('pages.data_sensors');
     // });
 
-    Route::get('/action_history', function () {
-        return view('pages.action_history');
-    });
+    // Route::get('/action_history', function () {
+    //     return view('pages.action_history');
+    // });
 
     Route::get('/profile', function () {
         $user = Auth::user();
@@ -41,6 +41,7 @@ Route::middleware('auth')->group(function () {
     });
 
     Route::get('/latest-data', [DataController::class, 'getLatestData']);
+    Route::get('/latest-10-data', [DataController::class, 'get10LatestData']);
+    
     Route::get('/data_sensors', [DataController::class, 'getAllData'])->name('getAllData');
-    Route::get('/action_history', [ActionController::class, 'getAllAction'])->name('getAllAction');
 });

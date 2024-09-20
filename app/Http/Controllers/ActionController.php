@@ -12,6 +12,9 @@ class ActionController extends Controller
         $itemsPerPage = $request->input('itemsPerPage', 10); // Default to 10 if not specified
         $allData = Action::paginate($itemsPerPage);
 
-        return view('pages.action_history ', compact('allData'));
+        // return view('pages.action_history ', compact('allData'));
+        return response()->json([
+            'data'=> $allData
+        ]);
     }
 }

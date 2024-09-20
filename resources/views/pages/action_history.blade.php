@@ -39,8 +39,10 @@
 
         <div class="mb-5">
             <!-- Date Filter Form -->
+            
             <form action="" method="GET" class="mb-4 flex justify-content-around space-x-12">
                 @csrf
+                <input type="text" class="peer form-input bg-gray-100 placeholder:tracking-widest ltr:pl-9 ltr:pr-9 rtl:pl-9 rtl:pr-9 sm:bg-transparent ltr:sm:pr-4 rtl:sm:pl-4" placeholder="Search...">   
                 <!-- Start Date Group -->
                 <div class="flex items-center space-x-2" style="margin-right: 30px">
                     <label for="start-date" class="text-sm font-medium text-gray-700 dark:text-gray-300">Start Date:</label>
@@ -60,9 +62,6 @@
                     <button type="submit" class="text-white p-2 rounded" style="background: #4361ee">Apply Filter</button>
                 </div>
             </form>
-
-
-
             <!-- Table -->
             <div class="table-responsive">
                 <table>

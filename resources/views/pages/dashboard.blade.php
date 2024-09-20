@@ -282,37 +282,9 @@
             }
         }
     </script>
+
     {{-- data --}}
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            function fetchLatestData() {
-                fetch('/latest-data')
-                    .then(response => response.json())
-                    .then(data => {
-                        // Kiểm tra dữ liệu
-                        if (data && typeof data.temperature === 'number' && typeof data.humidity === 'number') {
-                            // Cập nhật các phần tử DOM
-                            document.getElementById('temperature').textContent = temperature + '°C';
-                            document.getElementById('humidity').textContent = humidity + '%';
-                            document.getElementById('time').textContent = new Date(data.time).toLocaleString();
-
-                            // Có thể thực hiện thêm các hành động với biến temperature ở đây
-                            console.log('Updated temperature:', temperature);
-                        } else {
-                            console.error('Unexpected data format:', data);
-                        }
-                    })
-                    .catch(error => console.error('Error fetching data:', error));
-            }
-
-            // Lấy dữ liệu ngay lập tức
-            fetchLatestData();
-
-            // Cập nhật dữ liệu mỗi 10 giây
-            setInterval(fetchLatestData, 10000);
-        });
-
-
         document.addEventListener('alpine:init', () => {
             // content section
             Alpine.data('sales', () => ({
@@ -348,7 +320,21 @@
                         this.$refs.light.innerHTML = '';
                         this.light.render();
 
+
+                        window.temperatureChartInstance = this.temperature;
+                        window.humidityChartInstance = this.humidity;
+                        window.lightChartInstance = this.light;
+                        window.revenueChartInstance = this.revenueChart;
+
+
+                        this.fetchLatestData();
+                        setInterval(() => this.fetchLatestData(),
+                            10000); // Fetch data every 10 seconds
+
+                        this.fetchLatestData2();
+                        setInterval(() => this.fetchLatestData2(), 10000);
                     }, 300);
+
 
                     this.$watch('$store.app.theme', () => {
                         isDark = this.$store.app.theme === 'dark' || this.$store.app
@@ -357,6 +343,7 @@
                         this.temperature.updateOptions(this.temperatureOptions);
                         this.humidity.updateOptions(this.humidityOptions);
                         this.light.updateOptions(this.lightOptions);
+
                     });
 
                     this.$watch('$store.app.rtlClass', () => {
@@ -364,75 +351,20 @@
                         this.revenueChart.updateOptions(this.revenueChartOptions);
                     });
                 },
+
+
                 get revenueChartOptions() {
                     return {
                         series: [{
-                                name: 'Temperature',
-                                data: [
-                                    [new Date('2024-01-01').getTime(), 23],
-                                    [new Date('2024-02-01').getTime(), 24],
-                                    [new Date('2024-03-01').getTime(), 22],
-                                    [new Date('2024-04-01').getTime(), 25],
-                                    [new Date('2024-05-01').getTime(), 24],
-                                    [new Date('2024-06-01').getTime(), 26],
-                                    [new Date('2024-07-01').getTime(), 27],
-                                    [new Date('2024-08-01').getTime(), 26],
-                                    [new Date('2024-09-01').getTime(), 25],
-                                    [new Date('2024-10-01').getTime(), 24],
-                                    [new Date('2024-11-01').getTime(), 23],
-                                    [new Date('2024-12-01').getTime(), 24],
-                                ],
-                                yaxis: {
-                                    show: true,
-                                    seriesIndex: 0,
-                                    opposite: false,
-                                },
-                            },
-                            {
-                                name: 'Humidity',
-                                data: [
-                                    [new Date('2024-01-01').getTime(), 60],
-                                    [new Date('2024-02-01').getTime(), 62],
-                                    [new Date('2024-03-01').getTime(), 58],
-                                    [new Date('2024-04-01').getTime(), 65],
-                                    [new Date('2024-05-01').getTime(), 64],
-                                    [new Date('2024-06-01').getTime(), 67],
-                                    [new Date('2024-07-01').getTime(), 70],
-                                    [new Date('2024-08-01').getTime(), 66],
-                                    [new Date('2024-09-01').getTime(), 63],
-                                    [new Date('2024-10-01').getTime(), 62],
-                                    [new Date('2024-11-01').getTime(), 61],
-                                    [new Date('2024-12-01').getTime(), 60],
-                                ],
-                                yaxis: {
-                                    show: true,
-                                    seriesIndex: 1,
-                                    opposite: false,
-                                },
-                            },
-                            {
-                                name: 'Light',
-                                data: [
-                                    [new Date('2024-01-01').getTime(), 300],
-                                    [new Date('2024-02-01').getTime(), 320],
-                                    [new Date('2024-03-01').getTime(), 280],
-                                    [new Date('2024-04-01').getTime(), 350],
-                                    [new Date('2024-05-01').getTime(), 340],
-                                    [new Date('2024-06-01').getTime(), 360],
-                                    [new Date('2024-07-01').getTime(), 370],
-                                    [new Date('2024-08-01').getTime(), 340],
-                                    [new Date('2024-09-01').getTime(), 330],
-                                    [new Date('2024-10-01').getTime(), 320],
-                                    [new Date('2024-11-01').getTime(), 310],
-                                    [new Date('2024-12-01').getTime(), 300],
-                                ],
-                                yaxis: {
-                                    show: true,
-                                    seriesIndex: 2,
-                                    opposite: true,
-                                },
-                            }
-                        ],
+                            name: 'Temperature',
+                            data: [] // Placeholder for dynamic data
+                        }, {
+                            name: 'Humidity',
+                            data: [] // Placeholder for dynamic data
+                        }, {
+                            name: 'Light',
+                            data: [] // Placeholder for dynamic data
+                        }],
                         chart: {
                             height: 325,
                             type: 'area',
@@ -460,32 +392,29 @@
                             left: -7,
                             top: 22,
                         },
-                        colors: isDark ? ['#ff9800', '#00bcd4', '#4caf50'] : ['#ff5722', '#03a9f4',
-                            '#8bc34a'
+                        colors: this.isDark ? ['#ff9800', '#00bcd4', '#4caf50'] : ['#ff5722',
+                            '#03a9f4', '#8bc34a'
                         ],
                         markers: {
                             discrete: [{
-                                    seriesIndex: 0,
-                                    dataPointIndex: 6,
-                                    fillColor: '#ff9800',
-                                    strokeColor: 'transparent',
-                                    size: 7,
-                                },
-                                {
-                                    seriesIndex: 1,
-                                    dataPointIndex: 5,
-                                    fillColor: '#00bcd4',
-                                    strokeColor: 'transparent',
-                                    size: 7,
-                                },
-                                {
-                                    seriesIndex: 2,
-                                    dataPointIndex: 4,
-                                    fillColor: '#4caf50',
-                                    strokeColor: 'transparent',
-                                    size: 7,
-                                }
-                            ],
+                                seriesIndex: 0,
+                                dataPointIndex: 6,
+                                fillColor: '#ff9800',
+                                strokeColor: 'transparent',
+                                size: 7,
+                            }, {
+                                seriesIndex: 1,
+                                dataPointIndex: 5,
+                                fillColor: '#00bcd4',
+                                strokeColor: 'transparent',
+                                size: 7,
+                            }, {
+                                seriesIndex: 2,
+                                dataPointIndex: 4,
+                                fillColor: '#4caf50',
+                                strokeColor: 'transparent',
+                                size: 7,
+                            }],
                         },
                         xaxis: {
                             type: 'datetime',
@@ -504,35 +433,49 @@
                             },
                         },
                         yaxis: [{
-                                seriesIndex: 0,
-                                labels: {
-                                    formatter: (value) => value,
-                                    style: {
-                                        fontSize: '12px',
-                                        cssClass: 'apexcharts-yaxis-title',
-                                    },
-                                },
-                                title: {
-                                    text: 'Temperature / Humidity',
+                            seriesIndex: 0, // Temperature
+                            labels: {
+                                formatter: (value) => value,
+                                style: {
+                                    fontSize: '12px',
+                                    cssClass: 'apexcharts-yaxis-title',
                                 },
                             },
-                            {
-                                seriesIndex: 2,
-                                opposite: true,
-                                labels: {
-                                    formatter: (value) => value,
-                                    style: {
-                                        fontSize: '12px',
-                                        cssClass: 'apexcharts-yaxis-title',
-                                    },
+                            title: {
+                                text: 'Temperature / Humidity',
+                            },
+                            min: 0, // Minimum value for Temperature and Humidity
+                            max: 100, // Maximum value for Temperature and Humidity
+                        }, {
+                            seriesIndex: 1, // Humidity
+                            opposite: false, // Same side as Temperature
+                            labels: {
+                                formatter: (value) => value,
+                                style: {
+                                    fontSize: '12px',
+                                    cssClass: 'apexcharts-yaxis-title',
                                 },
-                                title: {
-                                    text: 'Light',
+                            },
+                            // You can omit the title here since it is already set in the first y-axis config
+                        }, {
+                            seriesIndex: 2, // Light
+                            opposite: true, // Opposite side
+                            labels: {
+                                formatter: (value) => value,
+                                style: {
+                                    fontSize: '12px',
+                                    cssClass: 'apexcharts-yaxis-title',
                                 },
-                            }
-                        ],
+                            },
+                            title: {
+                                text: 'Light',
+                            },
+                            min: 0, // Minimum value for Light
+                            max: 1000, // Maximum value for Light
+                        }],
+
                         grid: {
-                            borderColor: isDark ? '#191e3a' : '#e0e6ed',
+                            borderColor: this.isDark ? '#191e3a' : '#e0e6ed',
                             strokeDashArray: 5,
                             xaxis: {
                                 lines: {
@@ -577,17 +520,81 @@
                             type: 'gradient',
                             gradient: {
                                 shadeIntensity: 1,
-                                inverseColors: !1,
-                                opacityFrom: isDark ? 0.19 : 0.28,
+                                inverseColors: false,
+                                opacityFrom: this.isDark ? 0.19 : 0.28,
                                 opacityTo: 0.05,
-                                stops: isDark ? [100, 100] : [45, 100],
+                                stops: this.isDark ? [100, 100] : [45, 100],
                             },
                         },
                     };
                 },
+
+                async fetchLatestData2() {
+                    try {
+                        const response = await fetch('/latest-10-data');
+                        const data = await response.json();
+
+                        // Process the fetched data and update the chart
+                        const temperatures = data.map(item => [new Date(item.time).getTime(), item
+                            .temperature
+                        ]);
+                        const humidities = data.map(item => [new Date(item.time).getTime(), item
+                            .humidity
+                        ]);
+                        const lights = data.map(item => [new Date(item.time).getTime(), item
+                            .light
+                        ]);
+
+                        this.revenueChart.updateSeries([{
+                            name: 'Temperature',
+                            data: temperatures
+                        }, {
+                            name: 'Humidity',
+                            data: humidities
+                        }, {
+                            name: 'Light',
+                            data: lights
+                        }]);
+                    } catch (error) {
+                        console.error('Error fetching data:', error);
+                    }
+                },
+                fetchLatestData() {
+                    fetch('/latest-data')
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data) {
+                                // Update temperature chart
+                                if (window.temperatureChartInstance) {
+                                    window.temperatureChartInstance.updateSeries([data
+                                        .temperature
+                                    ]);
+                                    console.log('Temperature updated:', data.temperature);
+                                }
+
+                                // Update humidity chart
+                                if (window.humidityChartInstance) {
+                                    window.humidityChartInstance.updateSeries([data.humidity]);
+                                    console.log('Humidity updated:', data.humidity);
+                                }
+
+                                // Update light chart
+                                if (window.lightChartInstance) {
+                                    window.lightChartInstance.updateSeries([(data.light / 1000) *
+                                        100
+                                    ]);
+                                    console.log('Light updated:', data.light);
+                                }
+                            } else {
+                                console.error('Unexpected data format:', data);
+                            }
+                        })
+                        .catch(error => console.error('Error fetching data:', error));
+                },
+
                 get temperatureOptions() {
                     return {
-                        series: [30], // Example temperature percentage
+                        series: [this.currentTemperatureValue], // Example temperature percentage
                         chart: {
                             type: 'radialBar',
                             height: 240,
@@ -681,7 +688,7 @@
                 },
                 get humidityOptions() {
                     return {
-                        series: [75], // Example humidity percentage
+                        series: [this.currentHumidityValue], // Example humidity percentage
                         chart: {
                             type: 'radialBar',
                             height: 240,
@@ -775,7 +782,7 @@
                 },
                 get lightOptions() {
                     return {
-                        series: [(300 / 1000) * 100], // Chuyển đổi 300 thành phần trăm của 1000
+                        series: [this.currentLightValue], // Dynamically set the light value
                         chart: {
                             type: 'radialBar',
                             height: 240,
@@ -786,22 +793,22 @@
                                         plotOptions: {
                                             radialBar: {
                                                 hollow: {
-                                                    size: '80%', // Tăng kích thước khi hover
+                                                    size: '80%', // Increase size on hover
                                                 },
                                                 track: {
-                                                    background: '#fffde7', // Nền màu vàng nhạt khi hover
+                                                    background: '#fffde7', // Light yellow background on hover
                                                 },
                                                 dataLabels: {
                                                     name: {
-                                                        fontSize: '22px', // Tăng kích thước font khi hover
+                                                        fontSize: '22px', // Increase font size on hover
                                                     },
                                                     value: {
-                                                        fontSize: '40px', // Tăng kích thước font khi hover
+                                                        fontSize: '40px', // Increase font size on hover
                                                     },
                                                 },
                                             },
                                         },
-                                        colors: ['#FFC107'], // Màu vàng khi hover
+                                        colors: ['#FFC107'], // Yellow color on hover
                                     });
                                 },
                                 mouseLeave: function(event, chartContext, config) {
@@ -809,22 +816,22 @@
                                         plotOptions: {
                                             radialBar: {
                                                 hollow: {
-                                                    size: '70%', // Kích thước gốc
+                                                    size: '70%', // Default size
                                                 },
                                                 track: {
-                                                    background: '#fff9c4', // Màu nền track gốc
+                                                    background: '#fff9c4', // Default track background
                                                 },
                                                 dataLabels: {
                                                     name: {
-                                                        fontSize: '20px', // Kích thước font gốc
+                                                        fontSize: '20px', // Default font size
                                                     },
                                                     value: {
-                                                        fontSize: '36px', // Kích thước font gốc
+                                                        fontSize: '36px', // Default font size
                                                     },
                                                 },
                                             },
                                         },
-                                        colors: ['#FFC107'], // Màu gốc
+                                        colors: ['#FFC107'], // Default color
                                     });
                                 },
                             },
@@ -839,7 +846,7 @@
                                 },
                                 track: {
                                     strokeWidth: '100%',
-                                    background: '#fff9c4', // Nền màu vàng nhạt
+                                    background: '#fff9c4', // Light yellow background
                                 },
                                 dataLabels: {
                                     name: {
@@ -853,20 +860,19 @@
                                         fontSize: '36px',
                                         color: '#333',
                                         offsetY: 10,
-                                        formatter: () => {
-                                            return '300 Lux'; // Hiển thị giá trị thực tế là 300 Lux
-                                        },
+                                        formatter: (val) => `${val*10} Lux`, // Display actual value
                                     },
                                 },
                             },
                         },
-                        colors: ['#FFC107'], // Màu cơ bản vàng
+                        colors: ['#FFC107'], // Base yellow color
                         stroke: {
                             lineCap: 'round',
                         },
                         labels: ['Light'],
                     };
-                },
+                }
+
 
             }));
         });

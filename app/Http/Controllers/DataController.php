@@ -22,19 +22,37 @@ class DataController extends Controller
         return response()->json($latestData);
     }
 
-    // public function getAllData(){
-    //     // Lấy tất cả dữ liệu nhiệt độ theo thời gian sớm nhất
-    //     $allData = Data::orderBy('time', 'asc')->paginate(10) ;
-    //     // $allData = Data::all();
-
-    //     // Trả về dữ liệu dưới dạng JSON
-    //     return view('pages.data_sensors', compact('allData'));
-    // }
     public function getAllData(Request $request)
     {
         $itemsPerPage = $request->input('itemsPerPage', 10); // Default to 10 if not specified
-        $allData = Data::paginate($itemsPerPage);
 
-        return view('pages.data_sensors ', compact('allData'));
+        // Fetch all data ordered by 'time' in ascending order
+        $allData = Data::orderBy('time', 'desc')->paginate($itemsPerPage);
+
+        return view('pages.data_sensors', compact('allData'));
+    }
+
+
+    public function get10LatestData()
+    {
+        try {
+            // Fetch the 10 latest records sorted by 'time' in descending order
+            $latestData = Data::orderBy('time', 'desc')->take(10)->get();
+
+            // Optionally transform the data if needed, e.g., formatting dates
+            $formattedData = $latestData->map(function ($item) {
+                return [
+                    'time' => $item->time, // Adjust format as needed
+                    'temperature' => $item->temperature,
+                    'humidity' => $item->humidity,
+                    'light' => $item->light,
+                ];
+            });
+
+            // Return the data as JSON
+            return response()->json($formattedData);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
     }
 }
