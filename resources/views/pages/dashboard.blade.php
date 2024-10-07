@@ -531,7 +531,7 @@
 
                 async fetchLatestData2() {
                     try {
-                        const response = await fetch('/latest-10-data');
+                        const response = await fetch('api/latest-10-data');
                         const data = await response.json();
 
                         // Process the fetched data and update the chart
@@ -560,7 +560,7 @@
                     }
                 },
                 fetchLatestData() {
-                    fetch('/latest-data')
+                    fetch('api/latest-data')
                         .then(response => response.json())
                         .then(data => {
                             if (data) {

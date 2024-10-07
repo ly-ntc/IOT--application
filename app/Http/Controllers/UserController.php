@@ -2,17 +2,22 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Symfony\Component\CssSelector\Node\FunctionNode;
 
 class UserController extends Controller
 {
     public function profile()
     {
-        $user = Auth::user();
-        return view('pages.profile', compact('user'));
+        //lay thong tin user dau tien
+        $user = User::first();
+        return response()->json([
+            'message' => 'User profile',
+            'user' => $user
+        ], 200);
     }
+
     public function login(Request $request)
     {
         $request->validate([
@@ -23,20 +28,23 @@ class UserController extends Controller
         $credentials = $request->only('email', 'password');
 
         if (Auth::attempt($credentials)) {
-            return redirect()->intended('dashboard');
+            $user = Auth::user();
+            return response()->json([
+                'message' => 'Login successful',
+                'user' => $user
+            ], 200);
         }
 
-        return redirect()->back()->withErrors([
-            'email' => 'The provided credentials do not match our records.',
-        ]);
+        return response()->json([
+            'message' => 'The provided credentials do not match our records.'
+        ], 401);
     }
-    public function showLoginForm()
-    {
-        return view('auth.login');
-    }
+
     public function logout()
     {
-        Auth::logout(); 
-        return redirect('/'); 
+        Auth::logout();
+        return response()->json([
+            'message' => 'Logout successful'
+        ], 200);
     }
 }

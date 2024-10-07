@@ -53,7 +53,7 @@
                                     <h1 class="text-3xl font-extrabold uppercase !leading-snug text-primary md:text-4xl">Sign in</h1>
                                     <p class="text-base font-bold leading-normal text-white-dark">Enter your email and password to login</p>
                                 </div>
-                                <form class="space-y-5 dark:text-white"  action="{{route('login')}} " method="POST">
+                                <form id="loginForm" class="space-y-5 dark:text-white" action="{{route('login')}}" method="POST">
                                     @csrf
                                     <div>
                                         <label for="Email">Email</label>
@@ -109,6 +109,35 @@
 
         <script src="assets/js/custom.js"></script>
 
+        <script>
+            document.getElementById('loginForm').addEventListener('submit', function(event) {
+                event.preventDefault(); // Ngăn chặn form submit mặc định
+        
+                const formData = new FormData(this);
+        
+                fetch('{{ route('login') }}', {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                        'Accept': 'application/json',
+                    },
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        window.location.href = '{{ route('dashboard') }}'; // Chuyển hướng đến trang dashboard
+                    } else {
+                        // Xử lý lỗi đăng nhập
+                        alert('Login failed: ' + data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('An error occurred. Please try again.');
+                });
+            });
+        </script>
         
     </body>
 </html>

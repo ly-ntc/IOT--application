@@ -4,7 +4,7 @@
         <div class="h-full bg-white dark:bg-[#0e1726]">
             <div class="flex items-center justify-between px-4 py-3">
                 <a href="/dashboard" class="main-logo flex shrink-0 items-center">
-                    <img class="ml-[5px] w-10 h-10 flex-none rounded-full" src="{{ asset('images') }}/{{ auth()->user()->image }}">
+                    <img class="ml-[5px] w-10 h-10 flex-none rounded-full" src="{{ asset('images') }}/anhCv.jpg">
                     <span class="align-middle text-2xl font-semibold ltr:ml-1.5 rtl:mr-1.5 dark:text-white-light lg:inline"></span>
                 </a>
                 <a href="javascript:;" class="collapse-icon flex h-8 w-8 items-center rounded-full transition duration-300 hover:bg-gray-500/10 rtl:rotate-180 dark:text-white-light dark:hover:bg-dark-light/10" @click="$store.app.toggleSidebar()">

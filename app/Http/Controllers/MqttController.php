@@ -11,7 +11,7 @@ class MqttController extends Controller
 {
     public function receive()
     {
-        $server   = '192.168.0.100'; // Địa chỉ IP của MQTT broker
+        $server   = '172.20.10.5'; // Địa chỉ IP của MQTT broker
         $port     = 1993;            // Cổng của MQTT broker
         $clientId = 'laravel-client';
         $mqtt_user = 'ly';          // Username
