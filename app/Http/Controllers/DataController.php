@@ -25,10 +25,12 @@ class DataController extends Controller
         $temperature = $request->input('temperature');
         $humidity = $request->input('humidity');
         $light = $request->input('light');
-        
+
         $startDate = $request->input('startDate');
         $endDate = $request->input('endDate');
 
+        $sortField = $request->input('sortField', 'time'); // Cột mặc định là 'time'
+        $sortDirection = $request->input('sortDirection', 'desc'); // Hướng mặc định là 'desc'
 
         $query = Data::query();
 
@@ -54,10 +56,10 @@ class DataController extends Controller
            
             $query->whereDate('time', '<=', $endDate);
         }
-
+        $query->orderBy($sortField, $sortDirection);
         // Sắp xếp và phân trang dữ liệu
         $allData = $query->orderBy('time', 'desc')->paginate($itemsPerPage);
-
+        
         // Trả về dữ liệu dưới dạng JSON
         return response()->json([
             'message' => 'Get all data successfully',

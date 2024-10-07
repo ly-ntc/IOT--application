@@ -30,6 +30,16 @@
             margin-left: 0.5rem;
             /* Khoảng cách giữa nhãn và trường nhập liệu */
         }
+        .sort-icon {
+            cursor: pointer;
+            margin-left: 5px;
+            /* Khoảng cách giữa tiêu đề và biểu tượng */
+        }
+
+        .sort-icon.active {
+            color: blue;
+            /* Màu sắc cho biểu tượng đang được chọn */
+        }
     </style>
     <div class="panel">
         <div class="mb-5 flex items-center justify-between">
@@ -40,115 +50,286 @@
         <div class="mb-5">
             <!-- Date Filter Form -->
             
-            <form action="" method="GET" class="mb-4 flex justify-content-around space-x-12">
-                @csrf
-                <input type="text" class="peer form-input bg-gray-100 placeholder:tracking-widest ltr:pl-9 ltr:pr-9 rtl:pl-9 rtl:pr-9 sm:bg-transparent ltr:sm:pr-4 rtl:sm:pl-4" placeholder="Search...">   
-                <!-- Start Date Group -->
+            <div class="mb-4 flex justify-content-around space-x-12">
+
                 <div class="flex items-center space-x-2" style="margin-right: 30px">
                     <label for="start-date" class="text-sm font-medium text-gray-700 dark:text-gray-300">Start Date:</label>
-                    <input type="date" id="start-date" name="start_date" value="{{ request('start_date') }}"
+                    <input type="date" id="start-date" name="startDate" id="start-date"
                         class="p-2 border rounded dark:bg-dark dark:text-white">
                 </div>
-
-                <!-- End Date Group -->
                 <div class="flex items-center space-x-2" style="margin-right: 30px">
                     <label for="end-date" class="text-sm font-medium text-gray-700 dark:text-gray-300">End Date:</label>
-                    <input type="date" id="end-date" name="end_date" value="{{ request('end_date') }}"
+                    <input type="date" id="end-date" name="endDate" id="end-date"
                         class="p-2 border rounded dark:bg-dark dark:text-white">
                 </div>
-
-                <!-- Submit Button -->
                 <div class="flex items-center">
-                    <button type="submit" class="text-white p-2 rounded" style="background: #4361ee">Apply Filter</button>
+                    <button type="submit" class="text-white p-2 rounded" style="background: #4361ee" id="sumbitFilter">Apply
+                        Filter</button>
                 </div>
-            </form>
+                <span id="clearAllFilters" class="clear-filter"
+                    style="cursor: pointer; font-size: 24px; margin-left: 10px;display: none;">
+                    <i class="fa-solid fa-filter-circle-xmark"></i>
+                </span>
+    
+            </div>
             <!-- Table -->
-            <div class="table-responsive">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Id</th>
-                            <th>
-                                Device
-                                <a href="javascript:;" onclick="sortTable('temperature', 'asc')">↑</a>
-                                <a href="javascript:;" onclick="sortTable('temperature', 'desc')">↓</a>
-                            </th>
-                            <th>
-                                Action
-                                <a href="javascript:;" onclick="sortTable('humidity', 'asc')">↑</a>
-                                <a href="javascript:;" onclick="sortTable('humidity', 'desc')">↓</a>
-                            </th>
-                            <th>
-                                Time
-                                <a href="javascript:;" onclick="sortTable('light', 'asc')">↑</a>
-                                <a href="javascript:;" onclick="sortTable('light', 'desc')">↓</a>
-                            </th>
-                            <th>
-                                User
-                                <a href="javascript:;" onclick="sortTable('time', 'asc')">↑</a>
-                                <a href="javascript:;" onclick="sortTable('time', 'desc')">↓</a>
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!-- Sample Data Rows -->
-                        @foreach ($allData as $index => $item)
+            <div class="mb-5">
+                <div class="table-responsive">
+                    <table class="table text-center" id="dataTable">
+                        <thead>
                             <tr>
-                                <td>{{ $loop->iteration }}</td>
-                                <td>{{ $item->device }}</td>
-                                <td>{{ $item->action }}</td>
-                                <td>{{ $item->time }}</td>
-                                <td>{{ $item->user->name }}</td>
+                                <th>
+                                    Id
+                                </th>
+                                <th>
+                                    Device
+                                    <span class="sort-icon" data-sort-field="device"
+                                        data-sort-direction="asc">&#9650;</span> <!-- Mũi tên lên -->
+                                    <span class="sort-icon" data-sort-field="device"
+                                        data-sort-direction="desc">&#9660;</span> <!-- Mũi tên xuống -->
+                                </th>
+                                <th>
+                                    Action
+                                    <span class="sort-icon" data-sort-field="action" data-sort-direction="asc">&#9650;</span>
+                                    <!-- Mũi tên lên -->
+                                    <span class="sort-icon" data-sort-field="action" data-sort-direction="desc">&#9660;</span>
+                                    <!-- Mũi tên xuống -->
+                                </th>
+                                
+                                <th>
+                                    Time
+                                    <span class="sort-icon" data-sort-field="time" data-sort-direction="asc">&#9650;</span>
+                                    <!-- Mũi tên lên -->
+                                    <span class="sort-icon" data-sort-field="time" data-sort-direction="desc">&#9660;</span>
+                                    <!-- Mũi tên xuống -->
+                                </th>
                             </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-                <!-- Pagination and Items per Page -->
-                <div class="d-flex justify-content-between align-items-center mt-3">
-                    <!-- Dropdown to select number of items per page -->
-                    <form method="GET" action="{{ route('getAllAction') }}" class="">
-                        <span for="itemsPerPage" class="mr-2">Limit</span>
-                        <select name="itemsPerPage" id="itemsPerPage" class="form-control w-auto border"
-                            onchange="this.form.submit()">
-                            <option value="10" {{ request('itemsPerPage') == 10 ? 'selected' : '' }}>10</option>
-                            <option value="15" {{ request('itemsPerPage') == 15 ? 'selected' : '' }}>15</option>
-                            <option value="20" {{ request('itemsPerPage') == 20 ? 'selected' : '' }}>20</option>
-                        </select>
-                    </form>
-
-                    <!-- Pagination links -->
-                    <div>
-                        {!! $allData->links() !!}
+                            <tr>
+                                <th></th>
+                                <th>
+                                    <div class="input-group">
+                                        <input type="text" id="searchDevice" class="form-control"
+                                            placeholder="Search Device">
+                                        <span class="input-group-addon clear-filter" id="clearDevice"
+                                            style="display: none;">
+                                            <i class="fa-solid fa-filter-circle-xmark"></i>
+                                        </span>
+                                    </div>
+                                </th>
+                                <th>
+                                    <div class="input-group">
+                                        <input type="text" id="searchAction" class="form-control"
+                                            placeholder="Search Action">
+                                        <span class="input-group-addon clear-filter" id="clearAction" style="display: none;">
+                                            <i class="fa-solid fa-filter-circle-xmark"></i>
+                                        </span>
+                                    </div>
+                                </th>
+                                
+                                <th>
+                                    {{-- <div class="input-group">
+                                        <input type="date" id="searchTime" class="form-control" placeholder="Search Time">
+                                            <span class="input-group-addon clear-filter" id="clearTime" style="display: none;">
+                                            <i class="fa-solid fa-filter-circle-xmark"></i>
+                                        </span>
+                                    </div> --}}
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody id="dataTableBody">
+                            <!-- Data will be inserted here by JavaScript -->
+                        </tbody>
+                    </table>
+    
+                    <!-- Pagination and Limit Dropdown -->
+                    <div class="d-flex justify-content-between align-items-center mt-3">
+                        <!-- Dropdown to select number of items per page -->
+                        <div class="form-inline">
+                            <label for="itemsPerPage" class="mr-2">Limit</label>
+                            <select name="itemsPerPage" id="itemsPerPage" class="form-control w-auto" onchange="fetchData()">
+                                <option value="10">10</option>
+                                <option value="15">15</option>
+                                <option value="20">20</option>
+                            </select>
+                        </div>
+    
+                        <div id = "paginationLinks">
+    
+                        </div>
                     </div>
                 </div>
             </div>
+    
+            <!-- jQuery and AJAX Script to Fetch Data -->
+            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+            <script>
+                // Fetch data function
+                $(document).ready(function() {
+                    $('.sort-icon').on('click', function() {
+                        const sortField = $(this).data('sort-field'); // Lấy trường sắp xếp
+                        const sortDirection = $(this).data('sort-direction'); // Lấy hướng sắp xếp
+    
+                        // Gọi hàm fetchData với các tham số sắp xếp
+                        fetchData(1, sortField,
+                            sortDirection); // Fetch dữ liệu với trang đầu tiên và thông tin sắp xếp
+    
+                        // Làm nổi bật biểu tượng đang được sử dụng
+                        $('.sort-icon').removeClass('active'); // Bỏ chọn tất cả các biểu tượng
+                        $(this).addClass('active'); // Chọn biểu tượng hiện tại
+    
+                        // Thay đổi màu sắc biểu tượng khi được chọn
+                        $('.sort-icon').css('color', ''); // Reset màu
+                        $(this).css('color', 'blue'); // Màu của biểu tượng đang chọn
+                    });
+                    // Fetch data function
+                    function fetchData(page = 1, sortField = 'time', sortDirection = 'desc') {
+                        const itemsPerPage = $('#itemsPerPage').val();
+                        // console.log("Items per page:", itemsPerPage); // Log items per page
+                        //xử lý sự kiện click chuột vào nút submitFilter
+                        const startDate = $('#start-date').val();
+                        const endDate = $('#end-date').val();
+                        const searchDevice = $('#searchDevice').val();
+                        const searchAction = $('#searchAction').val();
+                        
+    
+                        $.ajax({
+                            url: `/api/action_history`,
+                            type: 'GET',
+                            data: {
+                                page: page,
+                                itemsPerPage: itemsPerPage,
+                                startDate: startDate,
+                                endDate: endDate,
+                                device: searchDevice,
+                                action: searchAction,
+                                sortField: sortField, // Truyền cột cần sắp xếp
+                                sortDirection: sortDirection // Truyền thứ tự sắp xếp (asc/desc)
+                            },
+                            success: function(response) {
+                                $('#dataTableBody').empty(); // Clear old table data
+                                if (response.data && response.data.length > 0) {
+                                    response.data.forEach(item => {
+                                        $('#dataTableBody').append(`
+                                <tr>
+                                    <td>${item.id}</td>
+                                    <td>${item.device}</td>
+                                    <td>${item.action}</td>
+                                    <td>${item.time}</td>
+                                </tr>
+                            `);
+                                    });
+                                } else {
+                                    $('#dataTableBody').append(`
+                            <tr>
+                                <td colspan="5" class="text-center">No data found</td>
+                            </tr>
+                        `);
+                                }
+                                $('#paginationLinks').html(response.links);
+                            },
+                            error: function(error) {
+                                console.log("Error:", error);
+                            }
+                        });
+                    }
+                    $('#sumbitFilter').on('click', function(e) {
+                        e.preventDefault(); // Ngăn chặn hành vi submit mặc định của form (nếu là button trong form)
+                        fetchData(); // Gọi fetchData sau khi nhấn nút submit
+                    });
+                    // Function to toggle clear filter icon
+                    function toggleClearFilterIcon(inputId, iconId) {
+                        const inputVal = $(inputId).val();
+                        // console.log(`Value of ${inputId}:`, inputVal.length);
+                        // console.log(`Icon ID: ${iconId}`);
+                        $(iconId).toggle(inputVal.length > 0); // Show the icon if there is input
+                        if ($('.clear-filter:visible').length === 0) {
+                            $('#clearAllFilters').hide(); // Hide the clear all filters icon
+                        } else {
+                            $('#clearAllFilters')
+                                .show(); // Show the clear all filters icon if any clear-filter icon is visible
+                        }
+                    }
+    
+                    // Handle input events for filtering
+                    $('#searchDevice, #searchAction').on('input change', function() {
+                        const inputId = `#${this.id}`;
+                        const iconId = `#clear${this.id.replace('search', '')}`
+    
+                        // Toggle the icon visibility based on input value
+                        toggleClearFilterIcon(inputId, iconId);
+    
+                        // Fetch data on input change
+                        fetchData();
+                    });
+    
+                    // Clear input on icon click
+                    $('.clear-filter').on('click', function() {
+                        const inputId = `#search${$(this).attr('id').replace('clear', '')}`;
+                        $(inputId).val(''); // Clear the input
+                        $(this).hide(); // Hide the icon
+                        toggleClearAllFiltersIcon();
+                        fetchData(); // Fetch data after clearing
+                    });
+    
+                    // Trigger fetch on items per page change
+                    $(document).on('change', '#itemsPerPage', function() {
+                        fetchData(); // Fetch data when items per page changes
+                    });
+    
+                    // Handle pagination link clicks
+                    $(document).on('click', '#paginationLinks a', function(e) {
+                        e.preventDefault(); // Prevent default link behavior
+                        let page = $(this).attr('href').split('page=')[1]; // Get the page number from the link
+                        fetchData(page); // Fetch data from the new page
+                    });
+    
+                    // Trigger initial data fetch when the page loads
+                    fetchData(); // Initial data fetch
+                });
+                // Function to toggle the visibility of the clear all filters icon
+                function toggleClearAllFiltersIcon() {
+                    const startDate = $('#start-date').val();
+                    const endDate = $('#end-date').val();
+                    const searchDevice = $('#searchDevice').val();
+                    const searchAction = $('#searchAction').val();
+                  
+    
+                    // Show icon if any of the inputs have a value
+                    const shouldShowIcon = startDate.length > 0 || endDate.length > 0 ||
+                        searchAction.length > 0 ||
+                        searchDevice.length > 0;
+    
+                    $('#clearAllFilters').toggle(shouldShowIcon); // Show or hide the icon
+                }
+    
+                // Event listener for input change on date and search fields
+                $('#searchDevice, #searchAction').on('input change', function() {
+                    toggleClearAllFiltersIcon(); // Check whether to show the clear icon
+                });
+    
+                // Clear all filters on icon click
+                $('#clearAllFilters').on('click', function() {
+                    // Clear the input fields
+                    $('#start-date').val('');
+                    $('#end-date').val('');
+                    $('#searchDevice').val('');
+                    $('#searchAction').val('');
+                    // Hide all the small clear filter icons
+                    $('.clear-filter').hide(); // Hide all clear-filter icons
+    
+                    // Hide the clear all filters icon
+                    $(this).hide();
+    
+                });
+    
+                // Initial call to ensure icon is hidden on page load
+                $(document).ready(function() {
+                    $('#clearAllFilters').hide(); // Hide the icon initially
+                });
+            </script>
         </div>
 
 
     </div>
-    <script>
-        function sortTable(column, order) {
-            // Implement sorting logic here
-            console.log(`Sorting ${column} in ${order} order.`);
-        }
-
-        document.getElementById('searchInput').addEventListener('input', function() {
-            let filter = this.value.toLowerCase();
-            let rows = document.querySelectorAll('#tableBody tr');
-
-            rows.forEach(row => {
-                let cells = row.getElementsByTagName('td');
-                let match = false;
-
-                for (let i = 0; i < cells.length; i++) {
-                    if (cells[i].textContent.toLowerCase().includes(filter)) {
-                        match = true;
-                        break;
-                    }
-                }
-
-                row.style.display = match ? '' : 'none';
-            });
-        });
-    </script>
+    
 @endsection

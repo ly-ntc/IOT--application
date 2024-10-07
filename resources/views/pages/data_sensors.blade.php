@@ -38,6 +38,17 @@
             margin-top: 10px;
             /* Thêm khoảng cách giữa nút xóa và các ô input */
         }
+
+        .sort-icon {
+            cursor: pointer;
+            margin-left: 5px;
+            /* Khoảng cách giữa tiêu đề và biểu tượng */
+        }
+
+        .sort-icon.active {
+            color: blue;
+            /* Màu sắc cho biểu tượng đang được chọn */
+        }
     </style>
     <div class="panel">
         <div class="mb-5 flex items-center justify-between">
@@ -120,11 +131,37 @@
                 <table class="table text-center" id="dataTable">
                     <thead>
                         <tr>
-                            <th>Id</th>
-                            <th>Temperature</th>
-                            <th>Humidity</th>
-                            <th>Light</th>
-                            <th>Time</th>
+                            <th>
+                                Id
+                            </th>
+                            <th>
+                                Temperature
+                                <span class="sort-icon" data-sort-field="temperature"
+                                    data-sort-direction="asc">&#9650;</span> <!-- Mũi tên lên -->
+                                <span class="sort-icon" data-sort-field="temperature"
+                                    data-sort-direction="desc">&#9660;</span> <!-- Mũi tên xuống -->
+                            </th>
+                            <th>
+                                Humidity
+                                <span class="sort-icon" data-sort-field="humidity" data-sort-direction="asc">&#9650;</span>
+                                <!-- Mũi tên lên -->
+                                <span class="sort-icon" data-sort-field="humidity" data-sort-direction="desc">&#9660;</span>
+                                <!-- Mũi tên xuống -->
+                            </th>
+                            <th>
+                                Light
+                                <span class="sort-icon" data-sort-field="light" data-sort-direction="asc">&#9650;</span>
+                                <!-- Mũi tên lên -->
+                                <span class="sort-icon" data-sort-field="light" data-sort-direction="desc">&#9660;</span>
+                                <!-- Mũi tên xuống -->
+                            </th>
+                            <th>
+                                Time
+                                <span class="sort-icon" data-sort-field="time" data-sort-direction="asc">&#9650;</span>
+                                <!-- Mũi tên lên -->
+                                <span class="sort-icon" data-sort-field="time" data-sort-direction="desc">&#9660;</span>
+                                <!-- Mũi tên xuống -->
+                            </th>
                         </tr>
                         <tr>
                             <th></th>
@@ -158,7 +195,7 @@
                             <th>
                                 {{-- <div class="input-group">
                                     <input type="date" id="searchTime" class="form-control" placeholder="Search Time">
-                                    <span class="input-group-addon clear-filter" id="clearTime" style="display: none;">
+                                        <span class="input-group-addon clear-filter" id="clearTime" style="display: none;">
                                         <i class="fa-solid fa-filter-circle-xmark"></i>
                                     </span>
                                 </div> --}}
@@ -194,8 +231,24 @@
         <script>
             // Fetch data function
             $(document).ready(function() {
+                $('.sort-icon').on('click', function() {
+                    const sortField = $(this).data('sort-field'); // Lấy trường sắp xếp
+                    const sortDirection = $(this).data('sort-direction'); // Lấy hướng sắp xếp
+
+                    // Gọi hàm fetchData với các tham số sắp xếp
+                    fetchData(1, sortField,
+                        sortDirection); // Fetch dữ liệu với trang đầu tiên và thông tin sắp xếp
+
+                    // Làm nổi bật biểu tượng đang được sử dụng
+                    $('.sort-icon').removeClass('active'); // Bỏ chọn tất cả các biểu tượng
+                    $(this).addClass('active'); // Chọn biểu tượng hiện tại
+
+                    // Thay đổi màu sắc biểu tượng khi được chọn
+                    $('.sort-icon').css('color', ''); // Reset màu
+                    $(this).css('color', 'blue'); // Màu của biểu tượng đang chọn
+                });
                 // Fetch data function
-                function fetchData(page = 1) {
+                function fetchData(page = 1, sortField = 'time', sortDirection = 'desc') {
                     const itemsPerPage = $('#itemsPerPage').val();
                     // console.log("Items per page:", itemsPerPage); // Log items per page
                     //xử lý sự kiện click chuột vào nút submitFilter
@@ -217,7 +270,9 @@
                             temperature: searchTemperature,
                             humidity: searchHumidity,
                             light: searchLight,
-                            time: searchTime
+                            time: searchTime,
+                            sortField: sortField, // Truyền cột cần sắp xếp
+                            sortDirection: sortDirection // Truyền thứ tự sắp xếp (asc/desc)
                         },
                         success: function(response) {
                             $('#dataTableBody').empty(); // Clear old table data
@@ -337,7 +392,7 @@
 
                 // Hide the clear all filters icon
                 $(this).hide();
-                
+
             });
 
             // Initial call to ensure icon is hidden on page load
