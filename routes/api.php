@@ -37,3 +37,7 @@ Route::get('/action_history', [ActionController::class, 'getAllAction'])->name('
 Route::get('/dashboard', function () {
     return view('pages.dashboard');
 })->name('dashboard');
+
+Route::post('/toggle-fan', [ActionController::class, 'toggleFan']);
+Route::post('/toggle-ac', [ActionController::class, 'toggleAC']);
+Route::post('/toggle-light', [ActionController::class, 'toggleLight']);

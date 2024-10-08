@@ -243,45 +243,92 @@
             </div>
         </div>
     </div>
-    {{-- <div>
-        <h2>Temperature Data</h2>
-        <p>Temperature: <span id="temperature">Loading...</span></p>
-        <p>Humidity: <span id="humidity">Loading...</span></p>
-        <p>Time: <span id="time">Loading...</span></p>
-    </div> --}}
+
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     {{-- on/off --}}
     <script>
-        function toggleFan() {
-            var fanSwitch = document.getElementById("fanSwitch");
-            var fanIcon = document.getElementById("fanIcon");
-            if (fanSwitch.checked) {
-                fanIcon.classList.add("spin"); // Quạt quay
-            } else {
-                fanIcon.classList.remove("spin"); // Quạt dừng quay
-            }
-        }
-
         function toggleAC() {
             var acSwitch = document.getElementById("acSwitch");
             var acIcon = document.getElementById("acIcon");
-            if (acSwitch.checked) {
-                acIcon.style.color = "#4361EE"; // Đổi màu khi bật
-            } else {
-                acIcon.style.color = "gray"; // Đổi màu khi tắt
-            }
+
+            // Determine the status based on the switch's checked property
+            var status = acSwitch.checked ? 'ON' : 'OFF'; // Send 'ON' or 'OFF'
+
+            // Send the status to Laravel
+            fetch('/api/toggle-ac', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify({
+                    status: status
+                }) // Send the status directly
+            }).then(response => {
+                if (response.ok) {
+                    // Update icon color based on switch state
+                    acIcon.style.color = acSwitch.checked ? "#4361EE" : "gray";
+                }
+            }).catch(error => {
+                console.error("Error:", error);
+            });
+        }
+
+        // Similar functions for Fan and Light can be created like this:
+        function toggleFan() {
+            var fanSwitch = document.getElementById("fanSwitch");
+            var fanIcon = document.getElementById("fanIcon");
+
+            var status = fanSwitch.checked ? 'ON' : 'OFF'; // Send 'ON' or 'OFF'
+
+            fetch('/api/toggle-fan', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify({
+                    status: status
+                })
+            }).then(response => {
+                if (response.ok) {
+                    if (fanSwitch.checked) {
+                        fanIcon.classList.add("spin"); // Quạt quay
+                    } else {
+                        fanIcon.classList.remove("spin"); // Quạt dừng quay
+                        fanIcon.style.color = "gray"; // Màu xám
+                    }
+                }
+            }).catch(error => {
+                console.error("Error:", error);
+            });
         }
 
         function toggleLight() {
             var lightSwitch = document.getElementById("lightSwitch");
             var lightIcon = document.getElementById("lightIcon");
-            if (lightSwitch.checked) {
-                lightIcon.style.color = "yellow"; // Đổi màu khi bật
-            } else {
-                lightIcon.style.color = ""; // Trở về màu ban đầu khi tắt
-            }
+
+            var status = lightSwitch.checked ? 'ON' : 'OFF'; // Send 'ON' or 'OFF'
+
+            fetch('/api/toggle-light', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify({
+                    status: status
+                })
+            }).then(response => {
+                if (response.ok) {
+                    lightIcon.style.color = lightSwitch.checked ? "yellow" : "gray";
+                }
+            }).catch(error => {
+                console.error("Error:", error);
+            });
         }
     </script>
+
 
     {{-- data --}}
     <script>

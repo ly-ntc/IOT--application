@@ -3,7 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Action;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use PhpMqtt\Client\ConnectionSettings;
+use PhpMqtt\Client\Facades\Mqtt;
+use PhpMqtt\Client\MqttClient;
 
 class ActionController extends Controller
 {
@@ -25,26 +30,26 @@ class ActionController extends Controller
 
         if (!empty($device)) {
             //những thiết bị có tên chứa chuỗi device
-            $query->where('device','like' , '%'.$device.'%');
+            $query->where('device', 'like', '%' . $device . '%');
         }
 
         if (!empty($action)) {
-            $query->where('action', 'like', '%'.$action.'%');
+            $query->where('action', 'like', '%' . $action . '%');
         }
         if (!empty($startDate) && !empty($endDate)) {
 
             $query->whereBetween('time', [$startDate, $endDate]);
         } elseif (!empty($startDate)) {
-            
+
             $query->whereDate('time', '>=', $startDate);
         } elseif (!empty($endDate)) {
-           
+
             $query->whereDate('time', '<=', $endDate);
         }
         $query->orderBy($sortField, $sortDirection);
         // Sắp xếp và phân trang dữ liệu
         $allData = $query->orderBy('time', 'desc')->paginate($itemsPerPage);
-        
+
         // Trả về dữ liệu dưới dạng JSON
         return response()->json([
             'message' => 'Get all data successfully',
@@ -53,8 +58,62 @@ class ActionController extends Controller
             'perPage' => $allData->perPage(),
             'currentPage' => $allData->currentPage(),
             'lastPage' => $allData->lastPage(),
-            'links' => (string) $allData->links() 
+            'links' => (string) $allData->links()
         ]);
-        
     }
+
+    public function toggleAC(Request $request)
+    {
+        $status = $request->input('status'); // 'ON' or 'OFF'
+        
+        // Publish message to MQTT
+        $this->publishToMqtt('device/ac', $status);
+        $this->subscribeFromMqtt('device/log');
+
+        return response()->json(['success' => true]);
+    }
+
+    // Toggle Fan
+    public function toggleFan(Request $request)
+    {
+        $status = $request->input('status'); // 'ON' or 'OFF'
+        
+        // Publish message to MQTT
+        $this->publishToMqtt('device/fan', $status);
+         $this->subscribeFromMqtt('device/log');
+
+        return response()->json(['success' => true]);
+    }
+
+    // Toggle Light
+    public function toggleLight(Request $request)
+    {
+        $status = $request->input('status'); // 'ON' or 'OFF'
+        
+        // Publish message to MQTT
+        $this->publishToMqtt('device/light', $status);
+        $this->subscribeFromMqtt('device/log');
+
+        return response()->json(['success' => true]);
+    }
+
+    // Helper function to publish MQTT message
+    private function publishToMqtt($topic, $message)
+    {
+        $server = '192.168.0.103'; // MQTT broker IP
+        $port = 1993; // MQTT port
+        $clientId = 'mqtt_client';
+
+        // Connect to MQTT broker
+        $client = new MqttClient($server, $port, $clientId);
+        $connectionSettings = (new ConnectionSettings)
+            ->setUsername('ly')
+            ->setPassword('123');
+
+        $client->connect($connectionSettings, true);
+        $client->publish($topic, $message);
+        $client->disconnect();
+    }
+    
+   
 }
