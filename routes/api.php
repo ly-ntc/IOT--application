@@ -43,3 +43,5 @@ Route::post('/toggle-ac', [ActionController::class, 'toggleAC']);
 Route::post('/toggle-light', [ActionController::class, 'toggleLight']);
 Route::get('/get-mqtt-data', [ActionController::class, 'getMqttData']);
 Route::get('/get-ac-status', [ActionController::class, 'getACStatus']);
+Route::get('/get-fan-status', [ActionController::class, 'getFanStatus']);
+Route::get('/get-light-status', [ActionController::class, 'getLightStatus']);

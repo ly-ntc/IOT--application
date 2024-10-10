@@ -64,26 +64,65 @@ class ActionController extends Controller
         ]);
     }
     public function getAcStatus()
-{
-    // Giả sử bạn lưu trạng thái AC trong bảng actions
-    $latestAction = DB::table('actions')
-                      ->where('device', 'ac')
-                      ->orderBy('time', 'desc')
-                      ->first();
+    {
+        // Giả sử bạn lưu trạng thái AC trong bảng actions
+        $latestAction = DB::table('actions')
+            ->where('device', 'ac')
+            ->orderBy('time', 'desc')
+            ->first();
 
-    if ($latestAction) {
-        return response()->json([
-            'success' => true,
-            'status' => $latestAction->action
-        ]);
-    } else {
-        return response()->json([
-            'success' => false,
-            'message' => 'No AC status found'
-        ]);
+        if ($latestAction) {
+            return response()->json([
+                'success' => true,
+                'status' => $latestAction->action
+            ]);
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'No AC status found'
+            ]);
+        }
     }
-}
+    public function getFanStatus()
+    {
+        // Giả sử bạn lưu trạng thái AC trong bảng actions
+        $latestAction = DB::table('actions')
+            ->where('device', 'fan')
+            ->orderBy('time', 'desc')
+            ->first();
 
+        if ($latestAction) {
+            return response()->json([
+                'success' => true,
+                'status' => $latestAction->action
+            ]);
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'No AC status found'
+            ]);
+        }
+    }
+    public function getLightStatus()
+    {
+        // Giả sử bạn lưu trạng thái AC trong bảng actions
+        $latestAction = DB::table('actions')
+            ->where('device', 'light')
+            ->orderBy('time', 'desc')
+            ->first();
+
+        if ($latestAction) {
+            return response()->json([
+                'success' => true,
+                'status' => $latestAction->action
+            ]);
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'No AC status found'
+            ]);
+        }
+    }
     public function toggleAC(Request $request)
     {
         $status = $request->input('status'); // 'ON' or 'OFF'
@@ -147,16 +186,16 @@ class ActionController extends Controller
     //     $connectionSettings = (new ConnectionSettings)
     //         ->setUsername('ly')
     //         ->setPassword('123');
-        
+
     //     try {
     //         $client->connect($connectionSettings, true);
 
-           
+
     //         $mqttData = null;
     //         $check = false;
-            
+
     //         $client->subscribe('device/log', function (string $topic, string $message) use (&$mqttData, &$check) {
-               
+
     //             $mqttData = $message;
 
     //             list($device, $action) = explode(',', $mqttData);
@@ -172,11 +211,11 @@ class ActionController extends Controller
     //             $check = true;
     //         }, 0); 
 
-            
+
     //         while (!$check) {
     //             $client->loop(true, true);
     //         }
-            
+
     //         $client->disconnect();
 
     //         if ($mqttData) {
@@ -199,66 +238,65 @@ class ActionController extends Controller
     //     }
     // }
     public function getMqttData(Request $request)
-{
-    $server = '192.168.0.103'; // MQTT broker IP
-    $port = 1993; // MQTT port
-    $clientId = 'mqtt_client_' . uniqid(); // Unique client ID
+    {
+        $server = '192.168.0.103'; // MQTT broker IP
+        $port = 1993; // MQTT port
+        $clientId = 'mqtt_client_' . uniqid(); // Unique client ID
 
-    // Kết nối với MQTT broker
-    $client = new MqttClient($server, $port, $clientId);
-    $connectionSettings = (new ConnectionSettings)
-        ->setUsername('ly')
-        ->setPassword('123');
-    
-    try {
-        $client->connect($connectionSettings, true);
+        // Kết nối với MQTT broker
+        $client = new MqttClient($server, $port, $clientId);
+        $connectionSettings = (new ConnectionSettings)
+            ->setUsername('ly')
+            ->setPassword('123');
 
-        $mqttData = null;
-        $check = false;
-        $timeout = 10; // Timeout in seconds
-        $startTime = time();
+        try {
+            $client->connect($connectionSettings, true);
 
-        $client->subscribe('device/log', function (string $topic, string $message) use (&$mqttData, &$check, $client) {
-            $mqttData = $message;
+            $mqttData = null;
+            $check = false;
+            $timeout = 10; // Timeout in seconds
+            $startTime = time();
 
-            list($device, $action) = explode(',', $mqttData);
+            $client->subscribe('device/log', function (string $topic, string $message) use (&$mqttData, &$check, $client) {
+                $mqttData = $message;
 
-            DB::table('actions')->insert([
-                'device' => $device,
-                'action' => $action,
-                'time' => now(),
-                'user_id' => 1, 
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]);
-            $check = true;
-            $client->interrupt();
-        }, 0); 
+                list($device, $action) = explode(',', $mqttData);
 
-        while (!$check && (time() - $startTime) < $timeout) {
-            $client->loop(true, true);
-        }
-        
-        $client->disconnect();
+                DB::table('actions')->insert([
+                    'device' => $device,
+                    'action' => $action,
+                    'time' => now(),
+                    'user_id' => 1,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]);
+                $check = true;
+                $client->interrupt();
+            }, 0);
 
-        if ($mqttData) {
-            return response()->json([
-                'success' => true,
-                'message' => 'Data retrieved and saved to database successfully',
-                'data' => $mqttData
-            ]);
-        } else {
+            while (!$check && (time() - $startTime) < $timeout) {
+                $client->loop(true, true);
+            }
+
+            $client->disconnect();
+
+            if ($mqttData) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Data retrieved and saved to database successfully',
+                    'data' => $mqttData
+                ]);
+            } else {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'No data received from MQTT'
+                ]);
+            }
+        } catch (MqttClientException $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'No data received from MQTT'
+                'message' => 'Failed to connect to MQTT: ' . $e->getMessage()
             ]);
         }
-    } catch (MqttClientException $e) {
-        return response()->json([
-            'success' => false,
-            'message' => 'Failed to connect to MQTT: ' . $e->getMessage()
-        ]);
     }
-}
-    
 }

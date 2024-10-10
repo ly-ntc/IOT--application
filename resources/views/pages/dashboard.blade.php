@@ -279,9 +279,75 @@
             }
         }
 
+        async function getLatestFanStatus() {
+            try {
+                // Gọi API để lấy trạng thái AC hiện tại từ cơ sở dữ liệu
+                let statusResponse = await fetch('/api/get-fan-status', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                // Nếu API trả về dữ liệu thành công
+                if (statusResponse.ok) {
+                    let statusData = await statusResponse.json();
+                    let fanSwitch = document.getElementById("fanSwitch");
+                    let fanIcon = document.getElementById("fanIcon");
+
+                    // Cập nhật trạng thái của công tắc và icon dựa trên dữ liệu nhận được
+                    if (statusData.status === 'on') {
+                        fanSwitch.checked = true;
+                        fanIcon.style.color = "#4361EE"; // Màu khi bật
+                        fanIcon.classList.add("spin"); // Quạt quay
+                    } else {
+                        fanSwitch.checked = false;
+                        fanIcon.style.color = "gray"; // Màu khi tắt
+                        fanIcon.classList.remove("spin"); // Quạt dừng quay
+                    }
+                } else {
+                    console.error("Failed to retrieve fan status from database.");
+                }
+            } catch (error) {
+                console.error("Error fetching fan status:", error);
+            }
+        }
+        async function getLatestLightStatus() {
+            try {
+                // Gọi API để lấy trạng thái AC hiện tại từ cơ sở dữ liệu
+                let statusResponse = await fetch('/api/get-light-status', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                // Nếu API trả về dữ liệu thành công
+                if (statusResponse.ok) {
+                    let statusData = await statusResponse.json();
+                    let lightSwitch = document.getElementById("lightSwitch");
+                    let lightIcon = document.getElementById("lightIcon");
+
+                    // Cập nhật trạng thái của công tắc và icon dựa trên dữ liệu nhận được
+                    if (statusData.status === 'on') {
+                        lightSwitch.checked = true;
+                        lightIcon.style.color = "yellow"; // Màu khi bật
+                    } else {
+                        lightSwitch.checked = false;
+                        lightIcon.style.color = "gray"; // Màu khi tắt
+                    }
+                } else {
+                    console.error("Failed to retrieve AC status from database.");
+                }
+            } catch (error) {
+                console.error("Error fetching AC status:", error);
+            }
+        }
         // Gọi hàm này khi trang được tải
         document.addEventListener("DOMContentLoaded", function() {
             getLatestACStatus();
+            getLatestFanStatus();
+            getLatestLightStatus();
         });
 
         async function toggleAC() {
