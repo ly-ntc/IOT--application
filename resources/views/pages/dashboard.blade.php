@@ -247,31 +247,92 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     {{-- on/off --}}
     <script>
-        function toggleAC() {
+        async function getLatestACStatus() {
+            try {
+                // Gọi API để lấy trạng thái AC hiện tại từ cơ sở dữ liệu
+                let statusResponse = await fetch('/api/get-ac-status', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                // Nếu API trả về dữ liệu thành công
+                if (statusResponse.ok) {
+                    let statusData = await statusResponse.json();
+                    let acSwitch = document.getElementById("acSwitch");
+                    let acIcon = document.getElementById("acIcon");
+
+                    // Cập nhật trạng thái của công tắc và icon dựa trên dữ liệu nhận được
+                    if (statusData.status === 'on') {
+                        acSwitch.checked = true;
+                        acIcon.style.color = "#4361EE"; // Màu khi bật
+                    } else {
+                        acSwitch.checked = false;
+                        acIcon.style.color = "gray"; // Màu khi tắt
+                    }
+                } else {
+                    console.error("Failed to retrieve AC status from database.");
+                }
+            } catch (error) {
+                console.error("Error fetching AC status:", error);
+            }
+        }
+
+        // Gọi hàm này khi trang được tải
+        document.addEventListener("DOMContentLoaded", function() {
+            getLatestACStatus();
+        });
+
+        async function toggleAC() {
             var acSwitch = document.getElementById("acSwitch");
             var acIcon = document.getElementById("acIcon");
 
             // Determine the status based on the switch's checked property
             var status = acSwitch.checked ? 'ON' : 'OFF'; // Send 'ON' or 'OFF'
 
-            // Send the status to Laravel
-            fetch('/api/toggle-ac', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                },
-                body: JSON.stringify({
-                    status: status
-                }) // Send the status directly
-            }).then(response => {
-                if (response.ok) {
-                    // Update icon color based on switch state
-                    acIcon.style.color = acSwitch.checked ? "#4361EE" : "gray";
+            try {
+                // Gửi trạng thái (ON/OFF) tới Laravel
+                let toggleResponse = await fetch('/api/toggle-ac', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify({
+                        status: status
+                    })
+                });
+
+                // Kiểm tra nếu API toggle đã thành công
+                if (toggleResponse.ok) {
+                    console.log("AC status sent successfully.");
+
+                    // await new Promise(resolve => setTimeout(resolve, 5000));
+                    // Gọi API khác để nhận dữ liệu từ MQTT
+                    let mqttResponse = await fetch('/api/get-mqtt-data', {
+                        method: 'GET',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    });
+
+                    // Nếu MQTT trả về dữ liệu thành công
+                    if (mqttResponse.ok) {
+                        let mqttData = await mqttResponse.json();
+                        console.log("Received MQTT data:", mqttData);
+
+                        // Cập nhật màu sắc của icon dựa trên trạng thái của công tắc
+                        acIcon.style.color = acSwitch.checked ? "#4361EE" : "gray";
+                    } else {
+                        console.error("Failed to retrieve data from MQTT.");
+                    }
+                } else {
+                    console.error("Failed to toggle AC status.");
                 }
-            }).catch(error => {
+            } catch (error) {
                 console.error("Error:", error);
-            });
+            }
         }
 
         // Similar functions for Fan and Light can be created like this:
@@ -616,13 +677,13 @@
                                     window.temperatureChartInstance.updateSeries([data
                                         .temperature
                                     ]);
-                                    console.log('Temperature updated:', data.temperature);
+                                    // console.log('Temperature updated:', data.temperature);
                                 }
 
                                 // Update humidity chart
                                 if (window.humidityChartInstance) {
                                     window.humidityChartInstance.updateSeries([data.humidity]);
-                                    console.log('Humidity updated:', data.humidity);
+                                    // console.log('Humidity updated:', data.humidity);
                                 }
 
                                 // Update light chart
@@ -630,7 +691,7 @@
                                     window.lightChartInstance.updateSeries([(data.light / 1000) *
                                         100
                                     ]);
-                                    console.log('Light updated:', data.light);
+                                    // console.log('Light updated:', data.light);
                                 }
                             } else {
                                 console.error('Unexpected data format:', data);

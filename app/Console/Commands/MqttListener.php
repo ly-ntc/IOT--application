@@ -43,6 +43,7 @@ class MqttListener extends Command
             ]);
         });
         // $client->subscribe('device/log', function (string $topic, string $message) {
+        //     $this->info("Received message from MQTT topic {$topic}: {$message}");
         //     // Split the message into device and action
         //     list($device, $action) = explode(',', $message);
         
@@ -60,8 +61,9 @@ class MqttListener extends Command
 
         // Chạy vòng lặp để lắng nghe dữ liệu
         while (true) {
-            $client->loop();
-            sleep(1); // Chờ 1 giây trước khi lặp lại
+            // $client->loop();
+            // sleep(1); // Chờ 1 giây trước khi lặp lại
+            $client->loop(true, true); 
         }
     }
 }

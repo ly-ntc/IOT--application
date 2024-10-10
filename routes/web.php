@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\Route;
 // });
 
 
-Route::get('/dashboard', function () {
+Route::get('/', function () {
     return view('pages.dashboard');
 })->name('dashboard');
 Route::get('/data_sensors', function () {
