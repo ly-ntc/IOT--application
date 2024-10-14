@@ -1,4 +1,3 @@
-
 ## Giao diện
 
 Giao diện của trang web như sau:
@@ -15,7 +14,14 @@ Giao diện của trang web như sau:
       ![image](https://github.com/user-attachments/assets/14b70d97-e1b9-443c-be5e-836afa5f5924)
 
 ## Cách cài đặt project
-
-
+- Cài đặt composer
+- Tải project
+- Tải các gói cho project
+```
+composer insatll
+```
+-Chạy project
+```
+php artisan serve
+```
 ## Cấu trúc thư mục
-
