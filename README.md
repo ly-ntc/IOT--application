@@ -1,25 +1,18 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## Giao diện
 
-## About Laravel
+Giao diện của trang web như sau:
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- Giao diện trang chủ:
+      ![image](https://github.com/user-attachments/assets/5f166ca5-98ee-43ed-b42f-e8fb79d2f721)
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- Giao diện trang quản lý thiết bị:
+      ![image](https://github.com/user-attachments/assets/c904a56a-5b76-4332-9666-35c31703ccac)
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- Giao diện quản lý lịch sử:
+      ![image](https://github.com/user-attachments/assets/51f14f89-05dc-4578-af95-190c88e92d86)
+- Giao diện thông tin cá nhân:
+      ![image](https://github.com/user-attachments/assets/14b70d97-e1b9-443c-be5e-836afa5f5924)
 
 ## Learning Laravel
 
