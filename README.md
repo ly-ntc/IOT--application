@@ -24,4 +24,4 @@ composer insatll
 ```
 php artisan serve
 ```
-## Cấu trúc thư mục
+

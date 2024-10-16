@@ -687,7 +687,7 @@
                                     cssClass: 'apexcharts-yaxis-title',
                                 },
                             },
-                            // You can omit the title here since it is already set in the first y-axis config
+                            
                         }, {
                             seriesIndex: 2, // Light
                             opposite: true, // Opposite side
@@ -702,7 +702,7 @@
                                 text: 'Light',
                             },
                             min: 0, // Minimum value for Light
-                            max: 1000, // Maximum value for Light
+                            max: 2500, // Maximum value for Light
                         }],
 
                         grid: {
@@ -811,7 +811,7 @@
 
                                 // Update light chart
                                 if (window.lightChartInstance) {
-                                    window.lightChartInstance.updateSeries([(data.light / 1000) *
+                                    window.lightChartInstance.updateSeries([(data.light / 2000) *
                                         100
                                     ]);
                                     // console.log('Light updated:', data.light);
@@ -1091,7 +1091,7 @@
                                         fontSize: '36px',
                                         color: '#333',
                                         offsetY: 10,
-                                        formatter: (val) => `${val*10} Lux`, // Display actual value
+                                        formatter: (val) => `${Math.round(val * 20)} Lux`,
                                     },
                                 },
                             },
