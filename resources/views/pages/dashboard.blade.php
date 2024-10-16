@@ -388,8 +388,9 @@
                         let mqttData = await mqttResponse.json();
                         console.log("Received MQTT data:", mqttData);
 
-                        // Cập nhật màu sắc của icon dựa trên trạng thái của công tắc
-                        acIcon.style.color = acSwitch.checked ? "#4361EE" : "gray";
+                        setTimeout(() => {
+                            acIcon.style.color = acSwitch.checked ? "#4361EE" : "gray";
+                        }, 5000);
                     } else {
                         console.error("Failed to retrieve data from MQTT.");
                     }
@@ -402,57 +403,113 @@
         }
 
         // Similar functions for Fan and Light can be created like this:
-        function toggleFan() {
+        async function toggleFan() {
             var fanSwitch = document.getElementById("fanSwitch");
             var fanIcon = document.getElementById("fanIcon");
 
             var status = fanSwitch.checked ? 'ON' : 'OFF'; // Send 'ON' or 'OFF'
 
-            fetch('/api/toggle-fan', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                },
-                body: JSON.stringify({
-                    status: status
-                })
-            }).then(response => {
-                if (response.ok) {
-                    if (fanSwitch.checked) {
-                        fanIcon.classList.add("spin"); // Quạt quay
+            try {
+                // Gửi trạng thái (ON/OFF) tới Laravel
+                let toggleResponse = await fetch('/api/toggle-fan', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify({
+                        status: status
+                    })
+                });
+
+                // Kiểm tra nếu API toggle đã thành công
+                if (toggleResponse.ok) {
+                    console.log("Fan status sent successfully.");
+
+                    // Gọi API khác để nhận dữ liệu từ MQTT
+                    let mqttResponse = await fetch('/api/get-mqtt-data', {
+                        method: 'GET',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    });
+
+                    // Nếu MQTT trả về dữ liệu thành công
+                    if (mqttResponse.ok) {
+                        let mqttData = await mqttResponse.json();
+                        console.log("Received MQTT data:", mqttData);
+
+                        setTimeout(() => {
+                            if (fanSwitch.checked) {
+                                fanIcon.style.color = "#4361EE";
+                                fanIcon.classList.add("spin");
+                            } else {
+                                fanIcon.style.color = "gray";
+                                fanIcon.classList.remove("spin");
+                            }
+                        }, 5000);
                     } else {
-                        fanIcon.classList.remove("spin"); // Quạt dừng quay
-                        fanIcon.style.color = "gray"; // Màu xám
+                        console.error("Failed to retrieve data from MQTT. Status:", mqttResponse.status);
                     }
+                } else {
+                    console.error("Failed to toggle fan status. Status:", toggleResponse.status);
                 }
-            }).catch(error => {
+            } catch (error) {
                 console.error("Error:", error);
-            });
+            }
         }
 
-        function toggleLight() {
+
+        async function toggleLight() {
             var lightSwitch = document.getElementById("lightSwitch");
             var lightIcon = document.getElementById("lightIcon");
 
-            var status = lightSwitch.checked ? 'ON' : 'OFF'; // Send 'ON' or 'OFF'
+            var status = lightSwitch.checked ? 'ON' : 'OFF'; // Gửi 'ON' hoặc 'OFF'
 
-            fetch('/api/toggle-light', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                },
-                body: JSON.stringify({
-                    status: status
-                })
-            }).then(response => {
-                if (response.ok) {
-                    lightIcon.style.color = lightSwitch.checked ? "yellow" : "gray";
+            try {
+                // Gửi trạng thái (ON/OFF) tới Laravel
+                let toggleResponse = await fetch('/api/toggle-light', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify({
+                        status: status
+                    })
+                });
+
+                // Kiểm tra nếu API toggle đã thành công
+                if (toggleResponse.ok) {
+                    console.log("Light status sent successfully.");
+
+                    // Gọi API khác để nhận dữ liệu từ MQTT
+                    let mqttResponse = await fetch('/api/get-mqtt-data', {
+                        method: 'GET',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    });
+
+                    // Nếu MQTT trả về dữ liệu thành công
+                    if (mqttResponse.ok) {
+                        let mqttData = await mqttResponse.json();
+                        console.log("Received MQTT data:", mqttData);
+
+                        setTimeout(() => {
+                            lightIcon.style.color = lightSwitch.checked ? "yellow" : "gray";
+                        }, 5000);
+                    } else {
+                        console.error("Failed to retrieve data from MQTT. Status:", mqttResponse.status);
+                    }
+                } else {
+                    const errorText = await toggleResponse.text(); // Lấy thông tin lỗi từ phản hồi
+                    console.error("Failed to toggle light status. Status:", toggleResponse.status, "Response:",
+                        errorText);
                 }
-            }).catch(error => {
-                console.error("Error:", error);
-            });
+            } catch (error) {
+                console.error("Error during toggleLight function:", error);
+            }
         }
     </script>
 
