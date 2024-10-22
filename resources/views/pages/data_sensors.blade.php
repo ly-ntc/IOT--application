@@ -104,7 +104,7 @@
         <!-- Search and Filter Form -->
         <div class="mb-4 flex justify-content-around space-x-12">
 
-            <div class="flex items-center space-x-2" style="margin-right: 30px">
+            {{-- <div class="flex items-center space-x-2" style="margin-right: 30px">
                 <label for="start-date" class="text-sm font-medium text-gray-700 dark:text-gray-300">Start Date:</label>
                 <input type="date" id="start-date" name="startDate" id="start-date"
                     class="p-2 border rounded dark:bg-dark dark:text-white">
@@ -117,7 +117,7 @@
             <div class="flex items-center">
                 <button type="submit" class="text-white p-2 rounded" style="background: #4361ee" id="sumbitFilter">Apply
                     Filter</button>
-            </div>
+            </div> --}}
             <span id="clearAllFilters" class="clear-filter"
                 style="cursor: pointer; font-size: 24px; margin-left: 10px;display: none;">
                 <i class="fa-solid fa-filter-circle-xmark"></i>
@@ -193,12 +193,13 @@
                                 </div>
                             </th>
                             <th>
-                                {{-- <div class="input-group">
-                                    <input type="date" id="searchTime" class="form-control" placeholder="Search Time">
-                                        <span class="input-group-addon clear-filter" id="clearTime" style="display: none;">
+                                <div class="input-group">
+                                    <input type="datetime-local" id="searchTime" class="form-control" placeholder="Search Time">
+                                    <span class="input-group-addon clear-filter" id="clearTime" style="display: none;">
                                         <i class="fa-solid fa-filter-circle-xmark"></i>
                                     </span>
-                                </div> --}}
+                                </div>
+                                
                             </th>
                         </tr>
                     </thead>
@@ -252,12 +253,12 @@
                     const itemsPerPage = $('#itemsPerPage').val();
                     // console.log("Items per page:", itemsPerPage); // Log items per page
                     //xử lý sự kiện click chuột vào nút submitFilter
-                    const startDate = $('#start-date').val();
-                    const endDate = $('#end-date').val();
                     const searchTemperature = $('#searchTemperature').val();
                     const searchHumidity = $('#searchHumidity').val();
                     const searchLight = $('#searchLight').val();
                     const searchTime = $('#searchTime').val();
+
+                    console.log("search time", searchTime);
 
                     $.ajax({
                         url: `/api/data_sensors`,
@@ -265,17 +266,15 @@
                         data: {
                             page: page,
                             itemsPerPage: itemsPerPage,
-                            startDate: startDate,
-                            endDate: endDate,
                             temperature: searchTemperature,
                             humidity: searchHumidity,
                             light: searchLight,
                             time: searchTime,
-                            sortField: sortField, // Truyền cột cần sắp xếp
-                            sortDirection: sortDirection // Truyền thứ tự sắp xếp (asc/desc)
+                            sortField: sortField, 
+                            sortDirection: sortDirection 
                         },
                         success: function(response) {
-                            $('#dataTableBody').empty(); // Clear old table data
+                            $('#dataTableBody').empty(); 
                             if (response.data && response.data.length > 0) {
                                 response.data.forEach(item => {
                                     $('#dataTableBody').append(`
@@ -358,14 +357,13 @@
             });
             // Function to toggle the visibility of the clear all filters icon
             function toggleClearAllFiltersIcon() {
-                const startDate = $('#start-date').val();
-                const endDate = $('#end-date').val();
                 const searchTemperature = $('#searchTemperature').val();
                 const searchHumidity = $('#searchHumidity').val();
                 const searchLight = $('#searchLight').val();
+                const searchTime = $('#searchTime').val();
 
                 // Show icon if any of the inputs have a value
-                const shouldShowIcon = startDate.length > 0 || endDate.length > 0 ||
+                const shouldShowIcon = searchTime.length > 0 ||
                     searchTemperature.length > 0 ||
                     searchHumidity.length > 0 ||
                     searchLight.length > 0;
@@ -374,19 +372,17 @@
             }
 
             // Event listener for input change on date and search fields
-            $('#start-date, #end-date, #searchTemperature, #searchHumidity, #searchLight').on('input change', function() {
+            $('#searchTemperature, #searchHumidity, #searchLight, #searchTime').on('input change', function() {
                 toggleClearAllFiltersIcon(); // Check whether to show the clear icon
             });
 
             // Clear all filters on icon click
             $('#clearAllFilters').on('click', function() {
                 // Clear the input fields
-                $('#start-date').val('');
-                $('#end-date').val('');
                 $('#searchTemperature').val('');
                 $('#searchHumidity').val('');
                 $('#searchLight').val('');
-
+                $('#searchTime').val('');
                 // Hide all the small clear filter icons
                 $('.clear-filter').hide(); // Hide all clear-filter icons
 

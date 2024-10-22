@@ -18,41 +18,37 @@ class ActionController extends Controller
     {
         $itemsPerPage = $request->input('itemsPerPage', 10);
 
-        // Nhận giá trị từ các input tìm kiếm
         $device = $request->input('device');
         $action = $request->input('action');
 
-        $startDate = $request->input('startDate');
-        $endDate = $request->input('endDate');
-
-        $sortField = $request->input('sortField', 'time'); // Cột mặc định là 'time'
-        $sortDirection = $request->input('sortDirection', 'desc'); // Hướng mặc định là 'desc'
+        $time = $request->input('time');
+        $sortField = $request->input('sortField', 'time'); 
+        $sortDirection = $request->input('sortDirection', 'desc'); 
 
         $query = Action::query();
 
         if (!empty($device)) {
-            //những thiết bị có tên chứa chuỗi device
             $query->where('device', 'like', '%' . $device . '%');
         }
 
         if (!empty($action)) {
             $query->where('action', 'like', '%' . $action . '%');
         }
-        if (!empty($startDate) && !empty($endDate)) {
-
-            $query->whereBetween('time', [$startDate, $endDate]);
-        } elseif (!empty($startDate)) {
-
-            $query->whereDate('time', '>=', $startDate);
-        } elseif (!empty($endDate)) {
-
-            $query->whereDate('time', '<=', $endDate);
+        if(!empty($time)){
+            try {
+                $time1 = Carbon::createFromFormat('Y-m-d\TH:i', $time);
+            } catch (\Exception $e) {
+                return back()->withErrors(['searchTime' => 'Invalid datetime format']);
+            }
+        
+            $startOfMinute = $time1->format('Y-m-d H:i:00'); 
+            $endOfMinute = $time1->format('Y-m-d H:i:59');    
+            $query->whereBetween('time', [$startOfMinute, $endOfMinute]);
         }
         $query->orderBy($sortField, $sortDirection);
-        // Sắp xếp và phân trang dữ liệu
+
         $allData = $query->orderBy('time', 'desc')->paginate($itemsPerPage);
 
-        // Trả về dữ liệu dưới dạng JSON
         return response()->json([
             'message' => 'Get all data successfully',
             'data' => $allData->items(),

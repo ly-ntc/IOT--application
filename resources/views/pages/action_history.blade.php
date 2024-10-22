@@ -51,21 +51,6 @@
             <!-- Date Filter Form -->
             
             <div class="mb-4 flex justify-content-around space-x-12">
-
-                <div class="flex items-center space-x-2" style="margin-right: 30px">
-                    <label for="start-date" class="text-sm font-medium text-gray-700 dark:text-gray-300">Start Date:</label>
-                    <input type="date" id="start-date" name="startDate" id="start-date"
-                        class="p-2 border rounded dark:bg-dark dark:text-white">
-                </div>
-                <div class="flex items-center space-x-2" style="margin-right: 30px">
-                    <label for="end-date" class="text-sm font-medium text-gray-700 dark:text-gray-300">End Date:</label>
-                    <input type="date" id="end-date" name="endDate" id="end-date"
-                        class="p-2 border rounded dark:bg-dark dark:text-white">
-                </div>
-                <div class="flex items-center">
-                    <button type="submit" class="text-white p-2 rounded" style="background: #4361ee" id="sumbitFilter">Apply
-                        Filter</button>
-                </div>
                 <span id="clearAllFilters" class="clear-filter"
                     style="cursor: pointer; font-size: 24px; margin-left: 10px;display: none;">
                     <i class="fa-solid fa-filter-circle-xmark"></i>
@@ -127,12 +112,13 @@
                                 </th>
                                 
                                 <th>
-                                    {{-- <div class="input-group">
-                                        <input type="date" id="searchTime" class="form-control" placeholder="Search Time">
-                                            <span class="input-group-addon clear-filter" id="clearTime" style="display: none;">
+                                    <div class="input-group">
+                                        <input type="datetime-local" id="searchTime" class="form-control" placeholder="Search Time">
+                                        <span class="input-group-addon clear-filter" id="clearTime" style="display: none;">
                                             <i class="fa-solid fa-filter-circle-xmark"></i>
                                         </span>
-                                    </div> --}}
+                                    </div>
+                                    
                                 </th>
                             </tr>
                         </thead>
@@ -184,10 +170,7 @@
                     // Fetch data function
                     function fetchData(page = 1, sortField = 'time', sortDirection = 'desc') {
                         const itemsPerPage = $('#itemsPerPage').val();
-                        // console.log("Items per page:", itemsPerPage); // Log items per page
-                        //xử lý sự kiện click chuột vào nút submitFilter
-                        const startDate = $('#start-date').val();
-                        const endDate = $('#end-date').val();
+                        const searchTime = $('#searchTime').val();
                         const searchDevice = $('#searchDevice').val();
                         const searchAction = $('#searchAction').val();
                         
@@ -198,8 +181,7 @@
                             data: {
                                 page: page,
                                 itemsPerPage: itemsPerPage,
-                                startDate: startDate,
-                                endDate: endDate,
+                                time: searchTime,
                                 device: searchDevice,
                                 action: searchAction,
                                 sortField: sortField, // Truyền cột cần sắp xếp
@@ -251,7 +233,7 @@
                     }
     
                     // Handle input events for filtering
-                    $('#searchDevice, #searchAction').on('input change', function() {
+                    $('#searchDevice, #searchAction, #searchTime').on('input change', function() {
                         const inputId = `#${this.id}`;
                         const iconId = `#clear${this.id.replace('search', '')}`
     
@@ -288,14 +270,13 @@
                 });
                 // Function to toggle the visibility of the clear all filters icon
                 function toggleClearAllFiltersIcon() {
-                    const startDate = $('#start-date').val();
-                    const endDate = $('#end-date').val();
+                    const searchTime = $('#searchTime').val();
                     const searchDevice = $('#searchDevice').val();
                     const searchAction = $('#searchAction').val();
                   
     
                     // Show icon if any of the inputs have a value
-                    const shouldShowIcon = startDate.length > 0 || endDate.length > 0 ||
+                    const shouldShowIcon = searchTime.length>0 ||
                         searchAction.length > 0 ||
                         searchDevice.length > 0;
     
@@ -303,15 +284,14 @@
                 }
     
                 // Event listener for input change on date and search fields
-                $('#searchDevice, #searchAction').on('input change', function() {
+                $('#searchDevice, #searchAction, #searchTime').on('input change', function() {
                     toggleClearAllFiltersIcon(); // Check whether to show the clear icon
                 });
     
                 // Clear all filters on icon click
                 $('#clearAllFilters').on('click', function() {
                     // Clear the input fields
-                    $('#start-date').val('');
-                    $('#end-date').val('');
+                   $('#searchTime').val('');
                     $('#searchDevice').val('');
                     $('#searchAction').val('');
                     // Hide all the small clear filter icons

@@ -390,7 +390,7 @@
 
                         setTimeout(() => {
                             acIcon.style.color = acSwitch.checked ? "#4361EE" : "gray";
-                        }, 5000);
+                        }, 2000);
                     } else {
                         console.error("Failed to retrieve data from MQTT.");
                     }
@@ -447,7 +447,7 @@
                                 fanIcon.style.color = "gray";
                                 fanIcon.classList.remove("spin");
                             }
-                        }, 5000);
+                        }, 2000);
                     } else {
                         console.error("Failed to retrieve data from MQTT. Status:", mqttResponse.status);
                     }
@@ -498,7 +498,7 @@
 
                         setTimeout(() => {
                             lightIcon.style.color = lightSwitch.checked ? "yellow" : "gray";
-                        }, 5000);
+                        }, 2000);
                     } else {
                         console.error("Failed to retrieve data from MQTT. Status:", mqttResponse.status);
                     }
@@ -560,10 +560,10 @@
 
                         this.fetchLatestData();
                         setInterval(() => this.fetchLatestData(),
-                            10000); // Fetch data every 10 seconds
+                            5000); // Fetch data every 10 seconds
 
                         this.fetchLatestData2();
-                        setInterval(() => this.fetchLatestData2(), 10000);
+                        setInterval(() => this.fetchLatestData2(), 5000);
                     }, 300);
 
 
@@ -675,8 +675,8 @@
                             title: {
                                 text: 'Temperature / Humidity',
                             },
-                            min: 0, // Minimum value for Temperature and Humidity
-                            max: 100, // Maximum value for Temperature and Humidity
+                            min: 0, 
+                            max: 100, 
                         }, {
                             seriesIndex: 1, // Humidity
                             opposite: false, // Same side as Temperature
@@ -687,10 +687,12 @@
                                     cssClass: 'apexcharts-yaxis-title',
                                 },
                             },
+                            min: 0, 
+                            max: 100, 
                             
                         }, {
-                            seriesIndex: 2, // Light
-                            opposite: true, // Opposite side
+                            seriesIndex: 2, 
+                            opposite: true, 
                             labels: {
                                 formatter: (value) => value,
                                 style: {

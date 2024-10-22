@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Data;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -24,47 +25,44 @@ class DataController extends Controller
     public function getAllData(Request $request)
     {
         $itemsPerPage = $request->input('itemsPerPage', 10);
-
-        // Nhận giá trị từ các input tìm kiếm
         $temperature = $request->input('temperature');
         $humidity = $request->input('humidity');
         $light = $request->input('light');
-
-        $startDate = $request->input('startDate');
-        $endDate = $request->input('endDate');
-
-        $sortField = $request->input('sortField', 'time'); // Cột mặc định là 'time'
-        $sortDirection = $request->input('sortDirection', 'desc'); // Hướng mặc định là 'desc'
+        $time = $request->input('time');
+        $sortField = $request->input('sortField', 'time'); 
+        $sortDirection = $request->input('sortDirection', 'desc'); 
 
         $query = Data::query();
 
         if (!empty($temperature)) {
-            $query->whereBetween('temperature', [$temperature, $temperature + 1]);
+            $query->where('temperature', '>=', $temperature)
+                  ->where('temperature', '<', $temperature + 1);
         }
-
+        
         if (!empty($humidity)) {
-            $query->whereBetween('humidity', [$humidity, $humidity + 1]);
+            $query->where('humidity', '>=', $humidity)
+                  ->where('humidity', '<', $humidity + 1);
         }
-
+        
         if (!empty($light)) {
-            $query->whereBetween('light', [$light, $light + 1]);
+            $query->where('light', '>=', $light)
+                  ->where('light', '<', $light + 1);
+        }
+        if(!empty($time)){
+            try {
+                $time1 = Carbon::createFromFormat('Y-m-d\TH:i', $time);
+            } catch (\Exception $e) {
+                return back()->withErrors(['searchTime' => 'Invalid datetime format']);
+            }
+        
+            $startOfMinute = $time1->format('Y-m-d H:i:00'); 
+            $endOfMinute = $time1->format('Y-m-d H:i:59');    
+            $query->whereBetween('time', [$startOfMinute, $endOfMinute]);
         }
 
-        if (!empty($startDate) && !empty($endDate)) {
-
-            $query->whereBetween('time', [$startDate, $endDate]);
-        } elseif (!empty($startDate)) {
-            
-            $query->whereDate('time', '>=', $startDate);
-        } elseif (!empty($endDate)) {
-           
-            $query->whereDate('time', '<=', $endDate);
-        }
         $query->orderBy($sortField, $sortDirection);
-        // Sắp xếp và phân trang dữ liệu
         $allData = $query->orderBy('time', 'desc')->paginate($itemsPerPage);
         
-        // Trả về dữ liệu dưới dạng JSON
         return response()->json([
             'message' => 'Get all data successfully',
             'data' => $allData->items(),
@@ -103,7 +101,7 @@ class DataController extends Controller
     public function saveData(Request $request)
     {
         $server = '192.168.0.103'; // MQTT broker IP
-        $port = 1993; // MQTT port
+        $port = 1993; // MQTT broker port
         $clientId = 'mqtt_client_' . uniqid(); // Unique client ID
     
         // Kết nối với MQTT broker
@@ -141,14 +139,12 @@ class DataController extends Controller
                     'light' => $light
                 ];
             }, 0); // QoS level set to 0
-    
-            // Wait for a short duration to receive the message
+   
             $client->loop(true, 1000); // Duration of loop for processing
     
-            // Disconnect from the MQTT broker after processing
+          
             $client->disconnect();
     
-            // Check if data was received and return a response accordingly
             if ($mqttData) {
                 return response()->json([
                     'success' => true,
