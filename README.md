@@ -20,8 +20,17 @@ Giao diện của trang web như sau:
 ```
 composer insatll
 ```
+-Cấu hình file env để tạo kết nối với database
+-Sau đó chạy lệnh sau để tạo database
+```
+php artisan migrate
+```
 -Chạy project
 ```
 php artisan serve
+```
+-Chạy lệnh sau để có thể luôn lấy dữ liệu đẩy lên từ phần cứng:
+```
+php artisan mqtt:fetch
 ```
 
