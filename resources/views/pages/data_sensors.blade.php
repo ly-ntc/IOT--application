@@ -156,6 +156,13 @@
                                 <!-- Mũi tên xuống -->
                             </th>
                             <th>
+                                Dust
+                                <span class="sort-icon" data-sort-field="dust" data-sort-direction="asc">&#9650;</span>
+                                <!-- Mũi tên lên -->
+                                <span class="sort-icon" data-sort-field="dust" data-sort-direction="desc">&#9660;</span>
+                                <!-- Mũi tên xuống -->
+                            </th>
+                            <th>
                                 Time
                                 <span class="sort-icon" data-sort-field="time" data-sort-direction="asc">&#9650;</span>
                                 <!-- Mũi tên lên -->
@@ -187,6 +194,14 @@
                             <th>
                                 <div class="input-group">
                                     <input type="text" id="searchLight" class="form-control" placeholder="Search Light">
+                                    <span class="input-group-addon clear-filter" id="clearLight" style="display: none;">
+                                        <i class="fa-solid fa-filter-circle-xmark"></i>
+                                    </span>
+                                </div>
+                            </th>
+                            <th>
+                                <div class="input-group">
+                                    <input type="text" id="searchDust" class="form-control" placeholder="Search Dust">
                                     <span class="input-group-addon clear-filter" id="clearLight" style="display: none;">
                                         <i class="fa-solid fa-filter-circle-xmark"></i>
                                     </span>
@@ -256,6 +271,7 @@
                     const searchTemperature = $('#searchTemperature').val();
                     const searchHumidity = $('#searchHumidity').val();
                     const searchLight = $('#searchLight').val();
+                    const searchDust = $('#searchDust').val();
                     const searchTime = $('#searchTime').val();
 
                     console.log("search time", searchTime);
@@ -269,6 +285,7 @@
                             temperature: searchTemperature,
                             humidity: searchHumidity,
                             light: searchLight,
+                            dust: searchDust,
                             time: searchTime,
                             sortField: sortField, 
                             sortDirection: sortDirection 
@@ -283,6 +300,7 @@
                                 <td>${item.temperature}</td>
                                 <td>${item.humidity}</td>
                                 <td>${item.light}</td>
+                                <td>${item.dust}</td>
                                 <td>${item.time}</td>
                             </tr>
                         `);
@@ -320,7 +338,7 @@
                 }
 
                 // Handle input events for filtering
-                $('#searchTemperature, #searchHumidity, #searchLight, #searchTime').on('input change', function() {
+                $('#searchTemperature, #searchHumidity, #searchLight,#searchDust, #searchTime').on('input change', function() {
                     const inputId = `#${this.id}`;
                     const iconId = `#clear${this.id.replace('search', '')}`
 
@@ -351,8 +369,6 @@
                     let page = $(this).attr('href').split('page=')[1]; // Get the page number from the link
                     fetchData(page); // Fetch data from the new page
                 });
-
-                // Trigger initial data fetch when the page loads
                 fetchData(); // Initial data fetch
             });
             // Function to toggle the visibility of the clear all filters icon
@@ -360,10 +376,12 @@
                 const searchTemperature = $('#searchTemperature').val();
                 const searchHumidity = $('#searchHumidity').val();
                 const searchLight = $('#searchLight').val();
+                const searchDust = $('#searchDust').val();
                 const searchTime = $('#searchTime').val();
 
                 // Show icon if any of the inputs have a value
                 const shouldShowIcon = searchTime.length > 0 ||
+                    searchDust.length > 0 ||
                     searchTemperature.length > 0 ||
                     searchHumidity.length > 0 ||
                     searchLight.length > 0;
@@ -372,7 +390,7 @@
             }
 
             // Event listener for input change on date and search fields
-            $('#searchTemperature, #searchHumidity, #searchLight, #searchTime').on('input change', function() {
+            $('#searchTemperature, #searchHumidity, #searchLight,#searchDust, #searchTime').on('input change', function() {
                 toggleClearAllFiltersIcon(); // Check whether to show the clear icon
             });
 
@@ -382,6 +400,7 @@
                 $('#searchTemperature').val('');
                 $('#searchHumidity').val('');
                 $('#searchLight').val('');
+                $('#searchDust').val('');
                 $('#searchTime').val('');
                 // Hide all the small clear filter icons
                 $('.clear-filter').hide(); // Hide all clear-filter icons

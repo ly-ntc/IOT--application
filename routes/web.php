@@ -33,3 +33,6 @@ Route::get('/action_history', function () {
 Route::get('/profile', function () {
     return view('pages.profile');
 });
+Route::get('/new_page', function () {
+    return view('pages.new_page');
+});

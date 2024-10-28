@@ -21,48 +21,66 @@ class DataController extends Controller
 
         return response()->json($latestData);
     }
-
+    public function getLatestDust()
+    {
+        // Lấy 10 bản ghi mới nhất dựa trên cột 'time' và chỉ lấy giá trị 'dust' và 'time'
+        $latestData = Data::latest('time')->select('time', 'dust')->take(10)->get();
+    
+        // Kiểm tra nếu không có dữ liệu
+        if ($latestData->isEmpty()) {
+            return response()->json(['error' => 'No data found'], 404);
+        }
+    
+        // Trả về dữ liệu dưới dạng JSON
+        return response()->json($latestData);
+    }
+    
     public function getAllData(Request $request)
     {
         $itemsPerPage = $request->input('itemsPerPage', 10);
         $temperature = $request->input('temperature');
         $humidity = $request->input('humidity');
         $light = $request->input('light');
+        $dust = $request->input('dust');
         $time = $request->input('time');
-        $sortField = $request->input('sortField', 'time'); 
-        $sortDirection = $request->input('sortDirection', 'desc'); 
+        $sortField = $request->input('sortField', 'time');
+        $sortDirection = $request->input('sortDirection', 'desc');
 
         $query = Data::query();
 
         if (!empty($temperature)) {
             $query->where('temperature', '>=', $temperature)
-                  ->where('temperature', '<', $temperature + 1);
+                ->where('temperature', '<', $temperature + 1);
         }
-        
+
         if (!empty($humidity)) {
             $query->where('humidity', '>=', $humidity)
-                  ->where('humidity', '<', $humidity + 1);
+                ->where('humidity', '<', $humidity + 1);
         }
-        
+
         if (!empty($light)) {
             $query->where('light', '>=', $light)
-                  ->where('light', '<', $light + 1);
+                ->where('light', '<', $light + 1);
         }
-        if(!empty($time)){
+        if(!empty($dust)){
+            $query->where('dust', '>=', $dust)
+                ->where('dust', '<', $dust + 1);
+        }
+        if (!empty($time)) {
             try {
                 $time1 = Carbon::createFromFormat('Y-m-d\TH:i', $time);
             } catch (\Exception $e) {
                 return back()->withErrors(['searchTime' => 'Invalid datetime format']);
             }
-        
-            $startOfMinute = $time1->format('Y-m-d H:i:00'); 
-            $endOfMinute = $time1->format('Y-m-d H:i:59');    
+
+            $startOfMinute = $time1->format('Y-m-d H:i:00');
+            $endOfMinute = $time1->format('Y-m-d H:i:59');
             $query->whereBetween('time', [$startOfMinute, $endOfMinute]);
         }
 
         $query->orderBy($sortField, $sortDirection);
         $allData = $query->orderBy('time', 'desc')->paginate($itemsPerPage);
-        
+
         return response()->json([
             'message' => 'Get all data successfully',
             'data' => $allData->items(),
@@ -70,9 +88,8 @@ class DataController extends Controller
             'perPage' => $allData->perPage(),
             'currentPage' => $allData->currentPage(),
             'lastPage' => $allData->lastPage(),
-            'links' => (string) $allData->links() 
+            'links' => (string) $allData->links()
         ]);
-        
     }
 
     public function get10LatestData()
@@ -100,51 +117,51 @@ class DataController extends Controller
 
     public function saveData(Request $request)
     {
-        $server = '192.168.0.103'; // MQTT broker IP
-        $port = 1993; // MQTT broker port
-        $clientId = 'mqtt_client_' . uniqid(); // Unique client ID
-    
-        // Kết nối với MQTT broker
+        $server = '172.20.10.3'; 
+        $port = 1993; 
+        $clientId = 'mqtt_client_' . uniqid(); 
+
+        
         $client = new MqttClient($server, $port, $clientId);
         $connectionSettings = (new ConnectionSettings)
             ->setUsername('ly')
             ->setPassword('123');
-    
+
         try {
-            // Connect to the MQTT broker
+            
             $client->connect($connectionSettings, true);
-    
-            // Variable to store the received data
+
+            
             $mqttData = null;
-    
-            // Subscribe to the 'sensor/data' topic and define the callback
+
+            
             $client->subscribe('sensor/data', function (string $topic, string $message) use (&$mqttData) {
-                // Split the incoming message into temperature, humidity, and light values
-                list($temperature, $humidity, $light) = explode(',', $message);
-    
-                // Save the data into the database
+                
+                list($temperature, $humidity, $light, $dust) = explode(',', $message);
+
+                
                 DB::table('datas')->insert([
                     'temperature' => $temperature,
                     'humidity' => $humidity,
                     'light' => $light,
+                    'dust' => $dust,
                     'time' => now(),
                     'created_at' => now(),
                     'updated_at' => now(),
                 ]);
-    
+
                 // Store the data for response
                 $mqttData = [
                     'temperature' => $temperature,
                     'humidity' => $humidity,
                     'light' => $light
                 ];
-            }, 0); // QoS level set to 0
-   
-            $client->loop(true, 1000); // Duration of loop for processing
-    
-          
+            }, 0); 
+
+            $client->loop(true, 1000); 
+
             $client->disconnect();
-    
+
             if ($mqttData) {
                 return response()->json([
                     'success' => true,
@@ -165,6 +182,4 @@ class DataController extends Controller
             ]);
         }
     }
-    
-    
 }

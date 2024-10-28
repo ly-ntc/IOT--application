@@ -18,11 +18,8 @@ return new class extends Migration
             $table->string('device'); // Thiết bị
             $table->enum('action', ['on', 'off']); // Hành động (bật/tắt)
             $table->timestamp('time');
-            $table->unsignedInteger('user_id'); // ID người dùng
             $table->timestamps();
 
-            // Thêm khóa ngoại (nếu cần)
-            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 

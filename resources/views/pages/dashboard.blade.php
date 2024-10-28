@@ -128,6 +128,17 @@
             color: gray;
             /* Màu khi tắt */
         }
+
+        .blink {
+            animation: blink-animation 1s steps(5, start) infinite;
+            color: red;
+        }
+
+        @keyframes blink-animation {
+            to {
+                visibility: hidden;
+            }
+        }
     </style>
     <!-- start main content section -->
     <div x-data="sales">
@@ -170,6 +181,7 @@
                             class="inline-flex h-5 w-5 animate-spin rounded-full border-2 border-black !border-l-transparent dark:border-white"></span>
                     </div>
                 </div>
+                
             </div>
 
 
@@ -528,13 +540,13 @@
                     const temperature = null;
                     const humidity = null;
                     const light = null;
+
                     // revenue
                     setTimeout(() => {
                         this.revenueChart = new ApexCharts(this.$refs.revenueChart, this
                             .revenueChartOptions);
                         this.$refs.revenueChart.innerHTML = '';
                         this.revenueChart.render();
-
                         //temperature
                         this.temperature = new ApexCharts(this.$refs.temperature, this
                             .temperatureOptions);
@@ -564,12 +576,14 @@
 
                         this.fetchLatestData2();
                         setInterval(() => this.fetchLatestData2(), 5000);
+
                     }, 300);
 
 
                     this.$watch('$store.app.theme', () => {
                         isDark = this.$store.app.theme === 'dark' || this.$store.app
                             .isDarkMode ? true : false;
+
                         this.revenueChart.updateOptions(this.revenueChartOptions);
                         this.temperature.updateOptions(this.temperatureOptions);
                         this.humidity.updateOptions(this.humidityOptions);
@@ -580,6 +594,7 @@
                     this.$watch('$store.app.rtlClass', () => {
                         isRtl = this.$store.app.rtlClass === 'rtl' ? true : false;
                         this.revenueChart.updateOptions(this.revenueChartOptions);
+                     
                     });
                 },
 
@@ -675,8 +690,8 @@
                             title: {
                                 text: 'Temperature / Humidity',
                             },
-                            min: 0, 
-                            max: 100, 
+                            min: 0,
+                            max: 100,
                         }, {
                             seriesIndex: 1, // Humidity
                             opposite: false, // Same side as Temperature
@@ -687,12 +702,12 @@
                                     cssClass: 'apexcharts-yaxis-title',
                                 },
                             },
-                            min: 0, 
-                            max: 100, 
-                            
+                            min: 0,
+                            max: 100,
+
                         }, {
-                            seriesIndex: 2, 
-                            opposite: true, 
+                            seriesIndex: 2,
+                            opposite: true,
                             labels: {
                                 formatter: (value) => value,
                                 style: {
@@ -761,7 +776,6 @@
                         },
                     };
                 },
-
                 async fetchLatestData2() {
                     try {
                         const response = await fetch('api/latest-10-data');
@@ -818,6 +832,7 @@
                                     ]);
                                     // console.log('Light updated:', data.light);
                                 }
+
                             } else {
                                 console.error('Unexpected data format:', data);
                             }
@@ -1104,9 +1119,7 @@
                         },
                         labels: ['Light'],
                     };
-                }
-
-
+                },
             }));
         });
     </script>

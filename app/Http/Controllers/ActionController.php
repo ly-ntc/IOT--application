@@ -22,8 +22,8 @@ class ActionController extends Controller
         $action = $request->input('action');
 
         $time = $request->input('time');
-        $sortField = $request->input('sortField', 'time'); 
-        $sortDirection = $request->input('sortDirection', 'desc'); 
+        $sortField = $request->input('sortField', 'time');
+        $sortDirection = $request->input('sortDirection', 'desc');
 
         $query = Action::query();
 
@@ -34,15 +34,15 @@ class ActionController extends Controller
         if (!empty($action)) {
             $query->where('action', 'like', '%' . $action . '%');
         }
-        if(!empty($time)){
+        if (!empty($time)) {
             try {
                 $time1 = Carbon::createFromFormat('Y-m-d\TH:i', $time);
             } catch (\Exception $e) {
                 return back()->withErrors(['searchTime' => 'Invalid datetime format']);
             }
-        
-            $startOfMinute = $time1->format('Y-m-d H:i:00'); 
-            $endOfMinute = $time1->format('Y-m-d H:i:59');    
+
+            $startOfMinute = $time1->format('Y-m-d H:i:00');
+            $endOfMinute = $time1->format('Y-m-d H:i:59');
             $query->whereBetween('time', [$startOfMinute, $endOfMinute]);
         }
         $query->orderBy($sortField, $sortDirection);
@@ -61,7 +61,7 @@ class ActionController extends Controller
     }
     public function getAcStatus()
     {
-        // Giả sử bạn lưu trạng thái AC trong bảng actions
+        
         $latestAction = DB::table('actions')
             ->where('device', 'ac')
             ->orderBy('time', 'desc')
@@ -81,7 +81,7 @@ class ActionController extends Controller
     }
     public function getFanStatus()
     {
-        // Giả sử bạn lưu trạng thái AC trong bảng actions
+       
         $latestAction = DB::table('actions')
             ->where('device', 'fan')
             ->orderBy('time', 'desc')
@@ -101,7 +101,7 @@ class ActionController extends Controller
     }
     public function getLightStatus()
     {
-        // Giả sử bạn lưu trạng thái AC trong bảng actions
+        
         $latestAction = DB::table('actions')
             ->where('device', 'light')
             ->orderBy('time', 'desc')
@@ -119,14 +119,34 @@ class ActionController extends Controller
             ]);
         }
     }
+    public function getCookStatus()
+    {
+        
+        $latestAction = DB::table('actions')
+            ->where('device', 'cook')
+            ->orderBy('time', 'desc')
+            ->first();
+
+        if ($latestAction) {
+            return response()->json([
+                'success' => true,
+                'status' => $latestAction->action
+            ]);
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'No AC status found'
+            ]);
+        }
+    }
+    // Toggle AC
     public function toggleAC(Request $request)
     {
-        $status = $request->input('status'); // 'ON' or 'OFF'
+        $status = $request->input('status'); 
 
-        // Publish message to MQTT
+        
         $this->publishToMqtt('device/ac', $status);
-        // $this->subscribeFromMqtt('device/log');
-
+     
         return response()->json(['success' => true]);
     }
 
@@ -145,18 +165,61 @@ class ActionController extends Controller
     // Toggle Light
     public function toggleLight(Request $request)
     {
-        $status = $request->input('status'); // 'ON' or 'OFF'
+        $status = $request->input('status'); 
 
         $this->publishToMqtt('device/light', $status);
 
         return response()->json(['success' => true]);
     }
+    //Toggle cook
+    public function toggleCook(Request $request)
+    {
+        $status = $request->input('status'); 
 
-    // Helper function to publish MQTT message
+        $this->publishToMqtt('device/cook', $status);
+
+        return response()->json(['success' => true]);
+    }
+    public function alter(Request $request)
+    {
+      
+        $status = $request->input('status'); // 'ON' or 'OFF'
+
+        if (!in_array($status, ['ON', 'OFF'])) {
+            return response()->json(['success' => false, 'message' => 'Invalid status value'], 400);
+        }
+
+        try {
+           
+            $this->publishToMqtt('device/alter', $status);
+
+          
+            return response()->json(['success' => true]);
+        } catch (\Exception $e) {
+          
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to publish to MQTT: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function getCb()
+    {
+        $count = DB::table('datas')
+            ->where('dust', '>', 70)
+            ->whereDate('created_at', '=', Carbon::today()) 
+            ->count();
+
+        return response()->json([
+            'success' => true,
+            'count' => $count,
+        ]);
+    }
 
     private function publishToMqtt($topic, $message)
     {
-        $server = '192.168.0.103'; // MQTT broker IP
+        $server = '172.20.10.3'; // MQTT broker IP
         $port = 1993; // MQTT port
         $clientId = 'mqtt_client';
 
@@ -171,75 +234,14 @@ class ActionController extends Controller
 
         $client->disconnect();
     }
-    // public function getMqttData(Request $request)
-    // {
-    //     $server = '192.168.0.103'; // MQTT broker IP
-    //     $port = 1993; // MQTT port
-    //     $clientId = 'mqtt_client_' . uniqid(); // Unique client ID
-
-    //     // Kết nối với MQTT broker
-    //     $client = new MqttClient($server, $port, $clientId);
-    //     $connectionSettings = (new ConnectionSettings)
-    //         ->setUsername('ly')
-    //         ->setPassword('123');
-
-    //     try {
-    //         $client->connect($connectionSettings, true);
-
-
-    //         $mqttData = null;
-    //         $check = false;
-
-    //         $client->subscribe('device/log', function (string $topic, string $message) use (&$mqttData, &$check) {
-
-    //             $mqttData = $message;
-
-    //             list($device, $action) = explode(',', $mqttData);
-
-    //             DB::table('actions')->insert([
-    //                 'device' => $device,
-    //                 'action' => $action,
-    //                 'time' => now(),
-    //                 'user_id' => 1, 
-    //                 'created_at' => now(),
-    //                 'updated_at' => now(),
-    //             ]);
-    //             $check = true;
-    //         }, 0); 
-
-
-    //         while (!$check) {
-    //             $client->loop(true, true);
-    //         }
-
-    //         $client->disconnect();
-
-    //         if ($mqttData) {
-    //             return response()->json([
-    //                 'success' => true,
-    //                 'message' => 'Data retrieved and saved to database successfully',
-    //                 'data' => $mqttData
-    //             ]);
-    //         } else {
-    //             return response()->json([
-    //                 'success' => false,
-    //                 'message' => 'No data received from MQTT'
-    //             ]);
-    //         }
-    //     } catch (MqttClientException $e) {
-    //         return response()->json([
-    //             'success' => false,
-    //             'message' => 'Failed to connect to MQTT: ' . $e->getMessage()
-    //         ]);
-    //     }
-    // }
+   
     public function getMqttData(Request $request)
     {
-        $server = '192.168.0.103'; // MQTT broker IP
-        $port = 1993; // MQTT port
-        $clientId = 'mqtt_client_' . uniqid(); // Unique client ID
+        $server = '172.20.10.3'; 
+        $port = 1993;
+        $clientId = 'mqtt_client_' . uniqid(); 
 
-        // Kết nối với MQTT broker
+       
         $client = new MqttClient($server, $port, $clientId);
         $connectionSettings = (new ConnectionSettings)
             ->setUsername('ly')

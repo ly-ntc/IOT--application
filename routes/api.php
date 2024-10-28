@@ -41,7 +41,14 @@ Route::get('/dashboard', function () {
 Route::post('/toggle-fan', [ActionController::class, 'toggleFan']);
 Route::post('/toggle-ac', [ActionController::class, 'toggleAC']);
 Route::post('/toggle-light', [ActionController::class, 'toggleLight']);
+Route::post('/toggle-cook', [ActionController::class, 'toggleCook']);
+Route::post('/alter', [ActionController::class, 'alter']);
+Route::get('/getCB', [ActionController::class, 'getCB']);
 Route::get('/get-mqtt-data', [ActionController::class, 'getMqttData']);
 Route::get('/get-ac-status', [ActionController::class, 'getACStatus']);
 Route::get('/get-fan-status', [ActionController::class, 'getFanStatus']);
 Route::get('/get-light-status', [ActionController::class, 'getLightStatus']);
+Route::get('/get-cook-status', [ActionController::class, 'getCookStatus']);
+
+// test
+Route::get('/get-dust', [DataController::class, 'getLatestDust']);
